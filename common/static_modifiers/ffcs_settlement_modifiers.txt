@@ -1,0 +1,2 @@
+# Empty by design: this is a player-visible project marker, not a hidden bonus.
+ffcs_cultural_settlement_project = { }

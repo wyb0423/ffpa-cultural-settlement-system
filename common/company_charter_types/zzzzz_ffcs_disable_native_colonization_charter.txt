@@ -1,0 +1,13 @@
+# A colonization charter is a second engine-native seed-colony entry point.
+# Countries using Colonial Resettlement must use FFCS for all new settlements.
+INJECT:colonization_charter = {
+	possible = {
+		owner ?= {
+			NOT = { is_country_type = unrecognized }
+			custom_tooltip = {
+				text = FFCS_NATIVE_COLONIZATION_DISABLED_TT
+				NOT = { has_law_or_variant = law_type:law_colonial_resettlement }
+			}
+		}
+	}
+}

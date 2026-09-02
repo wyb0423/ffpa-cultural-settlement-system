@@ -1,0 +1,185 @@
+da_ffcs_establish_cultural_settlement = {
+	groups = { general }
+
+	requires_approval = no
+	should_notify_third_parties = yes
+	show_effect_in_tooltip = yes
+	state_selection = second_required
+	second_state_list = second_country
+
+	selectable = {
+		NOT = { is_country_type = decentralized }
+		has_law_or_variant = law_type:law_colonial_resettlement
+		has_technology_researched = colonization
+	}
+
+	potential = {
+		NOT = { scope:target_country = root }
+		scope:target_country = {
+			OR = {
+				is_country_type = decentralized
+				is_country_type = unrecognized
+			}
+		}
+	}
+
+	possible = {
+		is_at_war = no
+		in_default = no
+		ffcs_below_settlement_cap = yes
+		scope:target_country = {
+			OR = {
+				is_subject = no
+				this.overlord ?= {
+					NOT = { is_country_type = recognized }
+				}
+			}
+		}
+	}
+
+	second_state_trigger = {
+		ffcs_state_is_eligible_for_settlement = { COUNTRY = scope:country }
+	}
+
+	accept_effect = {
+		if = {
+			limit = { exists = scope:second_state }
+
+			ffcs_initialize_country_schema_v1 = yes
+			if = {
+				limit = { NOT = { has_variable = ffcs_active_settlement_count_v1 } }
+				set_variable = { name = ffcs_active_settlement_count_v1 value = 0 }
+			}
+			change_variable = {
+				name = ffcs_active_settlement_count_v1
+				add = 1
+			}
+			add_treasury = -5000
+			scope:target_country = { ffcs_initialize_country_schema_v1 = yes }
+
+			scope:second_state = {
+				add_modifier = { name = ffcs_cultural_settlement_project }
+				set_variable = {
+					name = ffcs_settlement_sponsor_v1
+					value = root
+				}
+				set_variable = {
+					name = ffcs_settlement_original_owner_v1
+					value = owner
+				}
+				set_variable = { name = ffcs_settlement_progress_v1 value = 0 }
+				set_variable = { name = ffcs_settlement_phase_v1 value = 0 }
+				set_variable = {
+					name = ffcs_settlement_resistance_v1
+					value = {
+						add = 10
+						add = {
+							value = state_population
+							divide = 100000
+							max = 30
+						}
+					}
+				}
+				owner = {
+					if = {
+						limit = { NOT = { has_variable = ffcs_inbound_settlement_count_v1 } }
+						set_variable = { name = ffcs_inbound_settlement_count_v1 value = 0 }
+					}
+					change_variable = {
+						name = ffcs_inbound_settlement_count_v1
+						add = 1
+					}
+				}
+				if = {
+					limit = { has_global_variable = ffcs_debug_enabled_v1 }
+					save_temporary_scope_as = ffcs_debug_state
+					var:ffcs_settlement_sponsor_v1 ?= {
+						save_temporary_scope_as = ffcs_debug_sponsor
+					}
+					debug_log = "FFCS|CANDIDATE_CREATED|DATE=[TimeKeeper.GetCurrentDate.GetString]|SPONSOR=[SCOPE.sCountry('ffcs_debug_sponsor').GetNameNoFormatting]|STATE=[SCOPE.sState('ffcs_debug_state').GetNameNoFormatting]"
+				}
+			}
+
+			create_incident = {
+				country = scope:target_country
+				value = 5
+			}
+		}
+		else = {
+			custom_tooltip = FFCS_SELECT_TARGET_STATE_TT
+		}
+	}
+
+	is_hostile = yes
+
+	ai = {
+		evaluation_chance = {
+			value = 0
+			if = {
+				limit = {
+					has_law_or_variant = law_type:law_colonial_resettlement
+					has_technology_researched = colonization
+					in_default = no
+					is_at_war = no
+					ffcs_below_settlement_cap = yes
+				}
+				if = {
+					limit = { country_rank = rank_value:great_power }
+					add = 0.10
+				}
+				else_if = {
+					limit = { country_rank = rank_value:major_power }
+					add = 0.05
+				}
+				if = {
+					limit = { country_is_colonial_or_company = yes }
+					add = 0.05
+				}
+			}
+		}
+
+		will_select_as_second_state = {
+			always = yes
+		}
+
+		will_propose_with_states = {
+			exists = scope:second_state
+			scope:second_state = {
+				ffcs_state_is_eligible_for_settlement = { COUNTRY = root }
+			}
+		}
+
+		propose_score = {
+			value = 10
+
+			if = {
+				limit = { is_adjacent_to_state = scope:second_state }
+				add = 50
+			}
+			else = {
+				multiply = 0.25
+			}
+
+			if = {
+				limit = { scope:second_state = { has_claim_by = root } }
+				add = 40
+			}
+			if = {
+				limit = {
+					scope:second_state.region = {
+						any_scope_state = { owner = root }
+					}
+				}
+				add = 30
+			}
+			if = {
+				limit = { scope:second_state = { is_coastal = yes } }
+				add = 10
+			}
+		}
+
+		will_propose = {
+			always = yes
+		}
+	}
+}

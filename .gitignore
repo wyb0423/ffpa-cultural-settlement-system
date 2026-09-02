@@ -1,0 +1,12 @@
+/.idea/
+/.vscode/
+/crashes/
+/logs/
+/save games/
+*.zip
+*.7z
+*.log
+*.dmp
+__pycache__/
+*.pyc
+

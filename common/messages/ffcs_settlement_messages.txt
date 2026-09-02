@@ -1,0 +1,23 @@
+ffcs_settlement_foothold = {
+	type = country
+	texture = "gfx/interface/icons/notification_icons/colonial.dds"
+	notification_type = feed
+}
+
+ffcs_settlement_setback = {
+	type = country
+	texture = "gfx/interface/icons/notification_icons/colonial.dds"
+	notification_type = feed
+}
+
+ffcs_settlement_completed = {
+	type = country
+	texture = "gfx/interface/icons/notification_icons/colonial.dds"
+	notification_type = toast
+}
+
+ffcs_settlement_cancelled = {
+	type = country
+	texture = "gfx/interface/icons/notification_icons/colonial.dds"
+	notification_type = feed
+}

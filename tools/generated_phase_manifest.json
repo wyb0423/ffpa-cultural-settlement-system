@@ -1,0 +1,7384 @@
+{
+  "generator_schema": 1,
+  "state_region_count": 670,
+  "province_count": 40054,
+  "transferred_province_count": 39384,
+  "reserved_province_count": 670,
+  "disconnected_state_region_count": 86,
+  "duplicate_province_resolutions": {
+    "xC02050": "STATE_NORTH_ANGOLA"
+  },
+  "output_sha256": "1a67c3ce1355216111ca51720eeb031aa52786318e2003ecab19cc7798cc9001",
+  "states": {
+    "STATE_ABRUZZO": {
+      "province_count": 5,
+      "seed": "x0AE57A",
+      "phase_counts": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "reserved": "xF34DC0"
+    },
+    "STATE_ABU_DHABI": {
+      "province_count": 19,
+      "seed": "x65A581",
+      "phase_counts": [
+        5,
+        5,
+        4,
+        4
+      ],
+      "reserved": "x505AE0"
+    },
+    "STATE_ACEH": {
+      "province_count": 21,
+      "seed": "x1C8420",
+      "phase_counts": [
+        5,
+        5,
+        5,
+        5
+      ],
+      "reserved": "xE3CB2E"
+    },
+    "STATE_ACRE": {
+      "province_count": 29,
+      "seed": "xFD1ADF",
+      "phase_counts": [
+        7,
+        7,
+        7,
+        7
+      ],
+      "reserved": "xFDB1E8"
+    },
+    "STATE_ADANA": {
+      "province_count": 15,
+      "seed": "x2111E0",
+      "phase_counts": [
+        4,
+        4,
+        3,
+        3
+      ],
+      "reserved": "x7DD48B"
+    },
+    "STATE_AGRA": {
+      "province_count": 37,
+      "seed": "xB050DF",
+      "phase_counts": [
+        9,
+        9,
+        9,
+        9
+      ],
+      "reserved": "x117021"
+    },
+    "STATE_AKMOLINSK": {
+      "province_count": 212,
+      "seed": "xD7671E",
+      "phase_counts": [
+        53,
+        53,
+        53,
+        52
+      ],
+      "reserved": "x765568"
+    },
+    "STATE_AKTOBE": {
+      "province_count": 99,
+      "seed": "x1E7905",
+      "phase_counts": [
+        25,
+        25,
+        24,
+        24
+      ],
+      "reserved": "xB0FEAB"
+    },
+    "STATE_ALABAMA": {
+      "province_count": 29,
+      "seed": "x807000",
+      "phase_counts": [
+        7,
+        7,
+        7,
+        7
+      ],
+      "reserved": "xC8BB61"
+    },
+    "STATE_ALAND": {
+      "province_count": 2,
+      "seed": "x459052",
+      "phase_counts": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "reserved": "xE04161"
+    },
+    "STATE_ALASKA": {
+      "province_count": 1028,
+      "seed": "xF423DB",
+      "phase_counts": [
+        257,
+        257,
+        257,
+        256
+      ],
+      "reserved": "xC00000"
+    },
+    "STATE_ALBANIA": {
+      "province_count": 9,
+      "seed": "xC771E0",
+      "phase_counts": [
+        2,
+        2,
+        2,
+        2
+      ],
+      "reserved": "xC42EC6"
+    },
+    "STATE_ALBERTA": {
+      "province_count": 296,
+      "seed": "x8F67DC",
+      "phase_counts": [
+        74,
+        74,
+        74,
+        73
+      ],
+      "reserved": "x0EC207"
+    },
+    "STATE_ALENTEJO": {
+      "province_count": 9,
+      "seed": "x88DCE1",
+      "phase_counts": [
+        2,
+        2,
+        2,
+        2
+      ],
+      "reserved": "x84A822"
+    },
+    "STATE_ALEPPO": {
+      "province_count": 8,
+      "seed": "x619060",
+      "phase_counts": [
+        2,
+        2,
+        2,
+        1
+      ],
+      "reserved": "x7125D6"
+    },
+    "STATE_ALGIERS": {
+      "province_count": 24,
+      "seed": "xA75E78",
+      "phase_counts": [
+        6,
+        6,
+        6,
+        5
+      ],
+      "reserved": "x20EF80"
+    },
+    "STATE_ALSACE_LORRAINE": {
+      "province_count": 4,
+      "seed": "x6E4891",
+      "phase_counts": [
+        1,
+        1,
+        1,
+        0
+      ],
+      "reserved": "xF0C0A0"
+    },
+    "STATE_ALTAI": {
+      "province_count": 54,
+      "seed": "xC1B1E8",
+      "phase_counts": [
+        14,
+        13,
+        13,
+        13
+      ],
+      "reserved": "x3C450E"
+    },
+    "STATE_ALTO_PARAGUAY": {
+      "province_count": 50,
+      "seed": "x8CCFFD",
+      "phase_counts": [
+        13,
+        12,
+        12,
+        12
+      ],
+      "reserved": "x42596B"
+    },
+    "STATE_ALXA": {
+      "province_count": 79,
+      "seed": "x0A8ABF",
+      "phase_counts": [
+        20,
+        20,
+        19,
+        19
+      ],
+      "reserved": "xEC70ED"
+    },
+    "STATE_AL_RIF": {
+      "province_count": 6,
+      "seed": "xCA9F75",
+      "phase_counts": [
+        2,
+        1,
+        1,
+        1
+      ],
+      "reserved": "xA0B0C0"
+    },
+    "STATE_AMAZONAS": {
+      "province_count": 336,
+      "seed": "xE921FB",
+      "phase_counts": [
+        84,
+        84,
+        84,
+        83
+      ],
+      "reserved": "x2F15DF"
+    },
+    "STATE_AMHARA": {
+      "province_count": 68,
+      "seed": "xB332F3",
+      "phase_counts": [
+        17,
+        17,
+        17,
+        16
+      ],
+      "reserved": "xD7A4AF"
+    },
+    "STATE_AMUR": {
+      "province_count": 258,
+      "seed": "x35771E",
+      "phase_counts": [
+        65,
+        64,
+        64,
+        64
+      ],
+      "reserved": "x326CF6"
+    },
+    "STATE_ANHALT": {
+      "province_count": 11,
+      "seed": "xA080E0",
+      "phase_counts": [
+        3,
+        3,
+        2,
+        2
+      ],
+      "reserved": "x34386E"
+    },
+    "STATE_ANKARA": {
+      "province_count": 39,
+      "seed": "x17B19B",
+      "phase_counts": [
+        10,
+        10,
+        9,
+        9
+      ],
+      "reserved": "x8713CE"
+    },
+    "STATE_ANNAM": {
+      "province_count": 17,
+      "seed": "x2A870A",
+      "phase_counts": [
+        4,
+        4,
+        4,
+        4
+      ],
+      "reserved": "xEF3060"
+    },
+    "STATE_ANTIOQUIA": {
+      "province_count": 57,
+      "seed": "x303844",
+      "phase_counts": [
+        14,
+        14,
+        14,
+        14
+      ],
+      "reserved": "x004090"
+    },
+    "STATE_ANTOFAGASTA": {
+      "province_count": 25,
+      "seed": "x2000F0",
+      "phase_counts": [
+        6,
+        6,
+        6,
+        6
+      ],
+      "reserved": "xDE43F7"
+    },
+    "STATE_APULIA": {
+      "province_count": 7,
+      "seed": "x74BD9B",
+      "phase_counts": [
+        2,
+        2,
+        1,
+        1
+      ],
+      "reserved": "x704020"
+    },
+    "STATE_AQUITAINE": {
+      "province_count": 12,
+      "seed": "x6E16BB",
+      "phase_counts": [
+        3,
+        3,
+        3,
+        2
+      ],
+      "reserved": "xA220D0"
+    },
+    "STATE_ARAGON": {
+      "province_count": 11,
+      "seed": "x45B331",
+      "phase_counts": [
+        3,
+        3,
+        2,
+        2
+      ],
+      "reserved": "x076DE0"
+    },
+    "STATE_ARAKAN": {
+      "province_count": 6,
+      "seed": "xD5DB0B",
+      "phase_counts": [
+        2,
+        1,
+        1,
+        1
+      ],
+      "reserved": "xF691D2"
+    },
+    "STATE_AREQUIPA": {
+      "province_count": 24,
+      "seed": "xF6869A",
+      "phase_counts": [
+        6,
+        6,
+        6,
+        5
+      ],
+      "reserved": "xD619E0"
+    },
+    "STATE_ARIZONA": {
+      "province_count": 77,
+      "seed": "xD331E1",
+      "phase_counts": [
+        19,
+        19,
+        19,
+        19
+      ],
+      "reserved": "xB03D4F"
+    },
+    "STATE_ARKANSAS": {
+      "province_count": 36,
+      "seed": "x316588",
+      "phase_counts": [
+        9,
+        9,
+        9,
+        8
+      ],
+      "reserved": "x1402BF"
+    },
+    "STATE_ARKHANGELSK": {
+      "province_count": 81,
+      "seed": "x125781",
+      "phase_counts": [
+        20,
+        20,
+        20,
+        20
+      ],
+      "reserved": "xC699CC"
+    },
+    "STATE_ARMENIA": {
+      "province_count": 7,
+      "seed": "x805000",
+      "phase_counts": [
+        2,
+        2,
+        1,
+        1
+      ],
+      "reserved": "xDC0812"
+    },
+    "STATE_ASSAM": {
+      "province_count": 43,
+      "seed": "xFB1561",
+      "phase_counts": [
+        11,
+        11,
+        10,
+        10
+      ],
+      "reserved": "x673438"
+    },
+    "STATE_ASTRAKHAN": {
+      "province_count": 31,
+      "seed": "x0E39F5",
+      "phase_counts": [
+        8,
+        8,
+        7,
+        7
+      ],
+      "reserved": "xB5D0F6"
+    },
+    "STATE_ASTURIAS": {
+      "province_count": 4,
+      "seed": "x0F84B8",
+      "phase_counts": [
+        1,
+        1,
+        1,
+        0
+      ],
+      "reserved": "x3E77F9"
+    },
+    "STATE_ATTICA": {
+      "province_count": 8,
+      "seed": "x518791",
+      "phase_counts": [
+        2,
+        2,
+        2,
+        1
+      ],
+      "reserved": "x8D7F62"
+    },
+    "STATE_AUSTRIA": {
+      "province_count": 11,
+      "seed": "x316141",
+      "phase_counts": [
+        3,
+        3,
+        2,
+        2
+      ],
+      "reserved": "xFDA6CB"
+    },
+    "STATE_AUVERGNE_LIMOUSIN": {
+      "province_count": 13,
+      "seed": "x61609A",
+      "phase_counts": [
+        3,
+        3,
+        3,
+        3
+      ],
+      "reserved": "x70C060"
+    },
+    "STATE_AWADH": {
+      "province_count": 28,
+      "seed": "x7D9692",
+      "phase_counts": [
+        7,
+        7,
+        7,
+        6
+      ],
+      "reserved": "xD0B0A0"
+    },
+    "STATE_AYDIN": {
+      "province_count": 12,
+      "seed": "xB020E0",
+      "phase_counts": [
+        3,
+        3,
+        3,
+        2
+      ],
+      "reserved": "xABD1D0"
+    },
+    "STATE_AZERBAIJAN": {
+      "province_count": 11,
+      "seed": "x6EB08E",
+      "phase_counts": [
+        3,
+        3,
+        2,
+        2
+      ],
+      "reserved": "x007060"
+    },
+    "STATE_AZORES": {
+      "province_count": 3,
+      "seed": "x769456",
+      "phase_counts": [
+        1,
+        1,
+        0,
+        0
+      ],
+      "reserved": "x9B6D87"
+    },
+    "STATE_BADEN": {
+      "province_count": 5,
+      "seed": "xE0A2B9",
+      "phase_counts": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "reserved": "xAEBA2A"
+    },
+    "STATE_BAGHDAD": {
+      "province_count": 34,
+      "seed": "x205060",
+      "phase_counts": [
+        9,
+        8,
+        8,
+        8
+      ],
+      "reserved": "x281DD3"
+    },
+    "STATE_BAHAMAS": {
+      "province_count": 4,
+      "seed": "x72C072",
+      "phase_counts": [
+        1,
+        1,
+        1,
+        0
+      ],
+      "reserved": "x7A6FA3"
+    },
+    "STATE_BAHIA": {
+      "province_count": 110,
+      "seed": "xB7E216",
+      "phase_counts": [
+        28,
+        27,
+        27,
+        27
+      ],
+      "reserved": "x6AE5BE"
+    },
+    "STATE_BAJA_CALIFORNIA": {
+      "province_count": 28,
+      "seed": "x57EBCB",
+      "phase_counts": [
+        7,
+        7,
+        7,
+        6
+      ],
+      "reserved": "x205040"
+    },
+    "STATE_BAJIO": {
+      "province_count": 22,
+      "seed": "x725961",
+      "phase_counts": [
+        6,
+        5,
+        5,
+        5
+      ],
+      "reserved": "xC0B001"
+    },
+    "STATE_BAJO_PARAGUAY": {
+      "province_count": 31,
+      "seed": "xB63BAD",
+      "phase_counts": [
+        8,
+        8,
+        7,
+        7
+      ],
+      "reserved": "xFBD28B"
+    },
+    "STATE_BALEARIC_ISLANDS": {
+      "province_count": 2,
+      "seed": "x7D3FD7",
+      "phase_counts": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "reserved": "x60F080"
+    },
+    "STATE_BALKH": {
+      "province_count": 39,
+      "seed": "xB7ED78",
+      "phase_counts": [
+        10,
+        10,
+        9,
+        9
+      ],
+      "reserved": "x4E989A"
+    },
+    "STATE_BALUCHISTAN": {
+      "province_count": 66,
+      "seed": "xB7B2BD",
+      "phase_counts": [
+        17,
+        16,
+        16,
+        16
+      ],
+      "reserved": "xE92A58"
+    },
+    "STATE_BANAT": {
+      "province_count": 9,
+      "seed": "x90E021",
+      "phase_counts": [
+        2,
+        2,
+        2,
+        2
+      ],
+      "reserved": "xC381B6"
+    },
+    "STATE_BANGKOK": {
+      "province_count": 21,
+      "seed": "x10AFE0",
+      "phase_counts": [
+        5,
+        5,
+        5,
+        5
+      ],
+      "reserved": "x194621"
+    },
+    "STATE_BASQUE_COUNTRY": {
+      "province_count": 5,
+      "seed": "x48868C",
+      "phase_counts": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "reserved": "x9EC9B8"
+    },
+    "STATE_BASRA": {
+      "province_count": 17,
+      "seed": "x00F060",
+      "phase_counts": [
+        4,
+        4,
+        4,
+        4
+      ],
+      "reserved": "x88ADC8"
+    },
+    "STATE_BAS_CONGO": {
+      "province_count": 50,
+      "seed": "x811426",
+      "phase_counts": [
+        13,
+        12,
+        12,
+        12
+      ],
+      "reserved": "x70E55C"
+    },
+    "STATE_BAVARIA": {
+      "province_count": 17,
+      "seed": "xE76994",
+      "phase_counts": [
+        4,
+        4,
+        4,
+        4
+      ],
+      "reserved": "xB08021"
+    },
+    "STATE_BEIJING": {
+      "province_count": 66,
+      "seed": "xB00D9D",
+      "phase_counts": [
+        17,
+        16,
+        16,
+        16
+      ],
+      "reserved": "x49C04A"
+    },
+    "STATE_BEIRA": {
+      "province_count": 6,
+      "seed": "xA0F6EC",
+      "phase_counts": [
+        2,
+        1,
+        1,
+        1
+      ],
+      "reserved": "xE24C15"
+    },
+    "STATE_BEKES": {
+      "province_count": 6,
+      "seed": "x5161A0",
+      "phase_counts": [
+        2,
+        1,
+        1,
+        1
+      ],
+      "reserved": "x5D1E04"
+    },
+    "STATE_BENIN": {
+      "province_count": 15,
+      "seed": "xF1E4DA",
+      "phase_counts": [
+        4,
+        4,
+        3,
+        3
+      ],
+      "reserved": "xC0E090"
+    },
+    "STATE_BERMUDA": {
+      "province_count": 2,
+      "seed": "x169E2D",
+      "phase_counts": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "reserved": "xE55147"
+    },
+    "STATE_BESSARABIA": {
+      "province_count": 14,
+      "seed": "x23621B",
+      "phase_counts": [
+        4,
+        3,
+        3,
+        3
+      ],
+      "reserved": "x79D62E"
+    },
+    "STATE_BIHAR": {
+      "province_count": 39,
+      "seed": "x21B060",
+      "phase_counts": [
+        10,
+        10,
+        9,
+        9
+      ],
+      "reserved": "x11F020"
+    },
+    "STATE_BLUE_NILE": {
+      "province_count": 72,
+      "seed": "x058803",
+      "phase_counts": [
+        18,
+        18,
+        18,
+        17
+      ],
+      "reserved": "xD07ADF"
+    },
+    "STATE_BOHEMIA": {
+      "province_count": 21,
+      "seed": "x81C142",
+      "phase_counts": [
+        5,
+        5,
+        5,
+        5
+      ],
+      "reserved": "xFA371D"
+    },
+    "STATE_BOLIVAR": {
+      "province_count": 95,
+      "seed": "xA10AB0",
+      "phase_counts": [
+        24,
+        24,
+        23,
+        23
+      ],
+      "reserved": "xDBC941"
+    },
+    "STATE_BOMBAY": {
+      "province_count": 39,
+      "seed": "x51F0A0",
+      "phase_counts": [
+        10,
+        10,
+        9,
+        9
+      ],
+      "reserved": "xEBD7BE"
+    },
+    "STATE_BORNU": {
+      "province_count": 22,
+      "seed": "xAEED3D",
+      "phase_counts": [
+        6,
+        5,
+        5,
+        5
+      ],
+      "reserved": "xAA28B4"
+    },
+    "STATE_BOSNIA": {
+      "province_count": 17,
+      "seed": "x51A0A0",
+      "phase_counts": [
+        4,
+        4,
+        4,
+        4
+      ],
+      "reserved": "x1E7362"
+    },
+    "STATE_BOTSWANA": {
+      "province_count": 129,
+      "seed": "x958940",
+      "phase_counts": [
+        32,
+        32,
+        32,
+        32
+      ],
+      "reserved": "x0DDFB8"
+    },
+    "STATE_BOUGAINVILLE": {
+      "province_count": 3,
+      "seed": "x97FBC3",
+      "phase_counts": [
+        1,
+        1,
+        0,
+        0
+      ],
+      "reserved": "x9BC5AD"
+    },
+    "STATE_BRANDENBURG": {
+      "province_count": 16,
+      "seed": "xF8D457",
+      "phase_counts": [
+        4,
+        4,
+        4,
+        3
+      ],
+      "reserved": "x514C51"
+    },
+    "STATE_BREST": {
+      "province_count": 32,
+      "seed": "x8ABE62",
+      "phase_counts": [
+        8,
+        8,
+        8,
+        7
+      ],
+      "reserved": "x936BF9"
+    },
+    "STATE_BRITISH_COLUMBIA": {
+      "province_count": 414,
+      "seed": "x38DFFE",
+      "phase_counts": [
+        104,
+        103,
+        103,
+        103
+      ],
+      "reserved": "xE040C0"
+    },
+    "STATE_BRITTANY": {
+      "province_count": 14,
+      "seed": "x32C2E2",
+      "phase_counts": [
+        4,
+        3,
+        3,
+        3
+      ],
+      "reserved": "x85E5AC"
+    },
+    "STATE_BRUNSWICK": {
+      "province_count": 5,
+      "seed": "xA61E6E",
+      "phase_counts": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "reserved": "x4C16EA"
+    },
+    "STATE_BUENOS_AIRES": {
+      "province_count": 81,
+      "seed": "x672B93",
+      "phase_counts": [
+        20,
+        20,
+        20,
+        20
+      ],
+      "reserved": "xC8D04B"
+    },
+    "STATE_BUKOVINA": {
+      "province_count": 5,
+      "seed": "x00A7F4",
+      "phase_counts": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "reserved": "x31A0A0"
+    },
+    "STATE_BULGARIA": {
+      "province_count": 16,
+      "seed": "xF0A0A0",
+      "phase_counts": [
+        4,
+        4,
+        4,
+        3
+      ],
+      "reserved": "x52BF3E"
+    },
+    "STATE_BUNDELKHAND": {
+      "province_count": 24,
+      "seed": "x5272B3",
+      "phase_counts": [
+        6,
+        6,
+        6,
+        5
+      ],
+      "reserved": "x7884D6"
+    },
+    "STATE_BURGUNDY": {
+      "province_count": 12,
+      "seed": "x8C3297",
+      "phase_counts": [
+        3,
+        3,
+        3,
+        2
+      ],
+      "reserved": "xC69235"
+    },
+    "STATE_BURYATIA": {
+      "province_count": 127,
+      "seed": "xF5017B",
+      "phase_counts": [
+        32,
+        32,
+        31,
+        31
+      ],
+      "reserved": "x36B3BF"
+    },
+    "STATE_BUSAN": {
+      "province_count": 7,
+      "seed": "xC3F34F",
+      "phase_counts": [
+        2,
+        2,
+        1,
+        1
+      ],
+      "reserved": "x076864"
+    },
+    "STATE_CAJAMARCA": {
+      "province_count": 34,
+      "seed": "xF91A3D",
+      "phase_counts": [
+        9,
+        8,
+        8,
+        8
+      ],
+      "reserved": "xEF024D"
+    },
+    "STATE_CALABRIA": {
+      "province_count": 4,
+      "seed": "xC01020",
+      "phase_counts": [
+        1,
+        1,
+        1,
+        0
+      ],
+      "reserved": "xE78C7B"
+    },
+    "STATE_CALIFORNIA": {
+      "province_count": 110,
+      "seed": "x1116AA",
+      "phase_counts": [
+        28,
+        27,
+        27,
+        27
+      ],
+      "reserved": "xD00000"
+    },
+    "STATE_CAMBODIA": {
+      "province_count": 34,
+      "seed": "x7A5B5E",
+      "phase_counts": [
+        9,
+        8,
+        8,
+        8
+      ],
+      "reserved": "x73E2F0"
+    },
+    "STATE_CAMPANIA": {
+      "province_count": 6,
+      "seed": "xDF1CE3",
+      "phase_counts": [
+        2,
+        1,
+        1,
+        1
+      ],
+      "reserved": "x0E8BCC"
+    },
+    "STATE_CANARY_ISLANDS": {
+      "province_count": 5,
+      "seed": "x655491",
+      "phase_counts": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "reserved": "xF0EF86"
+    },
+    "STATE_CAPE_COLONY": {
+      "province_count": 43,
+      "seed": "x31E050",
+      "phase_counts": [
+        11,
+        11,
+        10,
+        10
+      ],
+      "reserved": "x4E1F70"
+    },
+    "STATE_CAPE_VERDE": {
+      "province_count": 4,
+      "seed": "x4B7FA5",
+      "phase_counts": [
+        1,
+        1,
+        1,
+        0
+      ],
+      "reserved": "xE8E7A2"
+    },
+    "STATE_CATALONIA": {
+      "province_count": 11,
+      "seed": "x890622",
+      "phase_counts": [
+        3,
+        3,
+        2,
+        2
+      ],
+      "reserved": "xD616D2"
+    },
+    "STATE_CAUCA": {
+      "province_count": 19,
+      "seed": "x488A71",
+      "phase_counts": [
+        5,
+        5,
+        4,
+        4
+      ],
+      "reserved": "x008050"
+    },
+    "STATE_CEARA": {
+      "province_count": 28,
+      "seed": "xA6BA83",
+      "phase_counts": [
+        7,
+        7,
+        7,
+        6
+      ],
+      "reserved": "x510F08"
+    },
+    "STATE_CELEBES": {
+      "province_count": 34,
+      "seed": "x0C7820",
+      "phase_counts": [
+        9,
+        8,
+        8,
+        8
+      ],
+      "reserved": "xB14D58"
+    },
+    "STATE_CENTRAL_CUBA": {
+      "province_count": 10,
+      "seed": "xFE4123",
+      "phase_counts": [
+        3,
+        2,
+        2,
+        2
+      ],
+      "reserved": "xEBE1C7"
+    },
+    "STATE_CENTRAL_HIGHLANDS": {
+      "province_count": 27,
+      "seed": "xAD7935",
+      "phase_counts": [
+        7,
+        7,
+        6,
+        6
+      ],
+      "reserved": "x8FACBC"
+    },
+    "STATE_CENTRAL_HUNGARY": {
+      "province_count": 19,
+      "seed": "x5C685C",
+      "phase_counts": [
+        5,
+        5,
+        4,
+        4
+      ],
+      "reserved": "xCA364D"
+    },
+    "STATE_CENTRAL_JAVA": {
+      "province_count": 11,
+      "seed": "xA06070",
+      "phase_counts": [
+        3,
+        3,
+        2,
+        2
+      ],
+      "reserved": "xEB0621"
+    },
+    "STATE_CENTRAL_PROVINCES": {
+      "province_count": 65,
+      "seed": "xA939B9",
+      "phase_counts": [
+        16,
+        16,
+        16,
+        16
+      ],
+      "reserved": "x78E85C"
+    },
+    "STATE_CEYLON": {
+      "province_count": 15,
+      "seed": "x8D6FA8",
+      "phase_counts": [
+        4,
+        4,
+        3,
+        3
+      ],
+      "reserved": "x95AAA3"
+    },
+    "STATE_CHACO": {
+      "province_count": 65,
+      "seed": "xB0C011",
+      "phase_counts": [
+        16,
+        16,
+        16,
+        16
+      ],
+      "reserved": "xB315A7"
+    },
+    "STATE_CHAD": {
+      "province_count": 175,
+      "seed": "x0ED3DF",
+      "phase_counts": [
+        44,
+        44,
+        43,
+        43
+      ],
+      "reserved": "x49D8EA"
+    },
+    "STATE_CHAMPAGNE": {
+      "province_count": 10,
+      "seed": "xD6A06D",
+      "phase_counts": [
+        3,
+        2,
+        2,
+        2
+      ],
+      "reserved": "x600883"
+    },
+    "STATE_CHELYABINSK": {
+      "province_count": 52,
+      "seed": "x2FE367",
+      "phase_counts": [
+        13,
+        13,
+        13,
+        12
+      ],
+      "reserved": "xDFE045"
+    },
+    "STATE_CHERNIHIV": {
+      "province_count": 22,
+      "seed": "x9723F8",
+      "phase_counts": [
+        6,
+        5,
+        5,
+        5
+      ],
+      "reserved": "x0A69A9"
+    },
+    "STATE_CHERSON": {
+      "province_count": 35,
+      "seed": "x716121",
+      "phase_counts": [
+        9,
+        9,
+        8,
+        8
+      ],
+      "reserved": "xB285AE"
+    },
+    "STATE_CHIANG_MAI": {
+      "province_count": 24,
+      "seed": "xAB195B",
+      "phase_counts": [
+        6,
+        6,
+        6,
+        5
+      ],
+      "reserved": "xFBF0A4"
+    },
+    "STATE_CHIAPAS": {
+      "province_count": 14,
+      "seed": "xF19260",
+      "phase_counts": [
+        4,
+        3,
+        3,
+        3
+      ],
+      "reserved": "x31E49A"
+    },
+    "STATE_CHIHUAHUA": {
+      "province_count": 62,
+      "seed": "x2B7E93",
+      "phase_counts": [
+        16,
+        15,
+        15,
+        15
+      ],
+      "reserved": "x8FB2D5"
+    },
+    "STATE_CHONGQING": {
+      "province_count": 40,
+      "seed": "x6CAE25",
+      "phase_counts": [
+        10,
+        10,
+        10,
+        9
+      ],
+      "reserved": "x98D5B2"
+    },
+    "STATE_CHUGOKU": {
+      "province_count": 8,
+      "seed": "x715101",
+      "phase_counts": [
+        2,
+        2,
+        2,
+        1
+      ],
+      "reserved": "xC8AE5C"
+    },
+    "STATE_CHUKOTKA": {
+      "province_count": 474,
+      "seed": "xE720A3",
+      "phase_counts": [
+        119,
+        118,
+        118,
+        118
+      ],
+      "reserved": "x6DD6EC"
+    },
+    "STATE_CHUVASHIA": {
+      "province_count": 18,
+      "seed": "x83DB48",
+      "phase_counts": [
+        5,
+        4,
+        4,
+        4
+      ],
+      "reserved": "xDB5DBD"
+    },
+    "STATE_CIRCARS": {
+      "province_count": 24,
+      "seed": "x477063",
+      "phase_counts": [
+        6,
+        6,
+        6,
+        5
+      ],
+      "reserved": "xCFF020"
+    },
+    "STATE_COLORADO": {
+      "province_count": 73,
+      "seed": "x52080F",
+      "phase_counts": [
+        18,
+        18,
+        18,
+        18
+      ],
+      "reserved": "xBF0C47"
+    },
+    "STATE_CONGO": {
+      "province_count": 68,
+      "seed": "x406070",
+      "phase_counts": [
+        17,
+        17,
+        17,
+        16
+      ],
+      "reserved": "x3C6925"
+    },
+    "STATE_CONGO_ORIENTALE": {
+      "province_count": 131,
+      "seed": "x485FF5",
+      "phase_counts": [
+        33,
+        33,
+        32,
+        32
+      ],
+      "reserved": "x886533"
+    },
+    "STATE_CONNAUGHT": {
+      "province_count": 9,
+      "seed": "x5DEF58",
+      "phase_counts": [
+        2,
+        2,
+        2,
+        2
+      ],
+      "reserved": "xA0C0E0"
+    },
+    "STATE_CONNECTICUT": {
+      "province_count": 3,
+      "seed": "x7DE678",
+      "phase_counts": [
+        1,
+        1,
+        0,
+        0
+      ],
+      "reserved": "x9D3A73"
+    },
+    "STATE_CONSTANTINE": {
+      "province_count": 34,
+      "seed": "x0050A0",
+      "phase_counts": [
+        9,
+        8,
+        8,
+        8
+      ],
+      "reserved": "x79D029"
+    },
+    "STATE_CORRIENTES": {
+      "province_count": 29,
+      "seed": "x759354",
+      "phase_counts": [
+        7,
+        7,
+        7,
+        7
+      ],
+      "reserved": "x0EF9D4"
+    },
+    "STATE_CORSICA": {
+      "province_count": 3,
+      "seed": "x706E78",
+      "phase_counts": [
+        1,
+        1,
+        0,
+        0
+      ],
+      "reserved": "xEF4020"
+    },
+    "STATE_COSTA_RICA": {
+      "province_count": 11,
+      "seed": "xEF90DC",
+      "phase_counts": [
+        3,
+        3,
+        2,
+        2
+      ],
+      "reserved": "x8342D1"
+    },
+    "STATE_COURLAND": {
+      "province_count": 13,
+      "seed": "x4A8E5D",
+      "phase_counts": [
+        3,
+        3,
+        3,
+        3
+      ],
+      "reserved": "xF8BBB0"
+    },
+    "STATE_CRETE": {
+      "province_count": 2,
+      "seed": "x6010A0",
+      "phase_counts": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "reserved": "x0B9BBE"
+    },
+    "STATE_CRIMEA": {
+      "province_count": 9,
+      "seed": "xB0DFDF",
+      "phase_counts": [
+        2,
+        2,
+        2,
+        2
+      ],
+      "reserved": "x87516C"
+    },
+    "STATE_CROATIA": {
+      "province_count": 8,
+      "seed": "xF021C0",
+      "phase_counts": [
+        2,
+        2,
+        2,
+        1
+      ],
+      "reserved": "x71A0C0"
+    },
+    "STATE_CUNDINAMARCA": {
+      "province_count": 17,
+      "seed": "x6E10FF",
+      "phase_counts": [
+        4,
+        4,
+        4,
+        4
+      ],
+      "reserved": "x869C0B"
+    },
+    "STATE_CYPRUS": {
+      "province_count": 3,
+      "seed": "xBF3020",
+      "phase_counts": [
+        1,
+        1,
+        0,
+        0
+      ],
+      "reserved": "x79685E"
+    },
+    "STATE_DAGESTAN": {
+      "province_count": 13,
+      "seed": "x72A1AB",
+      "phase_counts": [
+        3,
+        3,
+        3,
+        3
+      ],
+      "reserved": "x537501"
+    },
+    "STATE_DAHOMEY": {
+      "province_count": 22,
+      "seed": "x01A011",
+      "phase_counts": [
+        6,
+        5,
+        5,
+        5
+      ],
+      "reserved": "x02DAF6"
+    },
+    "STATE_DALMATIA": {
+      "province_count": 3,
+      "seed": "xEFA0C0",
+      "phase_counts": [
+        1,
+        1,
+        0,
+        0
+      ],
+      "reserved": "x11A0E0"
+    },
+    "STATE_DARFUR": {
+      "province_count": 96,
+      "seed": "x89EB91",
+      "phase_counts": [
+        24,
+        24,
+        24,
+        23
+      ],
+      "reserved": "xCD6EAD"
+    },
+    "STATE_DEIR_EZ_ZOR": {
+      "province_count": 24,
+      "seed": "x849047",
+      "phase_counts": [
+        6,
+        6,
+        6,
+        5
+      ],
+      "reserved": "x56095E"
+    },
+    "STATE_DELAWARE": {
+      "province_count": 2,
+      "seed": "xEBA646",
+      "phase_counts": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "reserved": "x708000"
+    },
+    "STATE_DELHI": {
+      "province_count": 11,
+      "seed": "xE0EFA0",
+      "phase_counts": [
+        3,
+        3,
+        2,
+        2
+      ],
+      "reserved": "x947B18"
+    },
+    "STATE_DELVIDEK": {
+      "province_count": 6,
+      "seed": "x11E021",
+      "phase_counts": [
+        2,
+        1,
+        1,
+        1
+      ],
+      "reserved": "xC347D8"
+    },
+    "STATE_DISTRICT_OF_COLUMBIA": {
+      "province_count": 2,
+      "seed": "x700080",
+      "phase_counts": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "reserved": "x44578C"
+    },
+    "STATE_DIYARBAKIR": {
+      "province_count": 26,
+      "seed": "xC9CF24",
+      "phase_counts": [
+        7,
+        6,
+        6,
+        6
+      ],
+      "reserved": "x00D000"
+    },
+    "STATE_DOBRUDJA": {
+      "province_count": 8,
+      "seed": "xB06121",
+      "phase_counts": [
+        2,
+        2,
+        2,
+        1
+      ],
+      "reserved": "x50F5CB"
+    },
+    "STATE_DONGOLA": {
+      "province_count": 134,
+      "seed": "xF4022B",
+      "phase_counts": [
+        34,
+        33,
+        33,
+        33
+      ],
+      "reserved": "x44C39B"
+    },
+    "STATE_DURANGO": {
+      "province_count": 26,
+      "seed": "xE755F0",
+      "phase_counts": [
+        7,
+        6,
+        6,
+        6
+      ],
+      "reserved": "x476D93"
+    },
+    "STATE_DZUNGARIA": {
+      "province_count": 238,
+      "seed": "x7B100B",
+      "phase_counts": [
+        60,
+        59,
+        59,
+        59
+      ],
+      "reserved": "x374810"
+    },
+    "STATE_EASTERN_CAPE": {
+      "province_count": 38,
+      "seed": "x8B9EB1",
+      "phase_counts": [
+        10,
+        9,
+        9,
+        9
+      ],
+      "reserved": "xCE073B"
+    },
+    "STATE_EASTERN_CUBA": {
+      "province_count": 6,
+      "seed": "x69C041",
+      "phase_counts": [
+        2,
+        1,
+        1,
+        1
+      ],
+      "reserved": "x30B001"
+    },
+    "STATE_EASTERN_HIMALAYAS": {
+      "province_count": 27,
+      "seed": "xDA7F32",
+      "phase_counts": [
+        7,
+        7,
+        6,
+        6
+      ],
+      "reserved": "xA1341A"
+    },
+    "STATE_EASTERN_HUBEI": {
+      "province_count": 16,
+      "seed": "xA6A054",
+      "phase_counts": [
+        4,
+        4,
+        4,
+        3
+      ],
+      "reserved": "x9A9CE3"
+    },
+    "STATE_EASTERN_MALI": {
+      "province_count": 41,
+      "seed": "x320EE8",
+      "phase_counts": [
+        10,
+        10,
+        10,
+        10
+      ],
+      "reserved": "x273CD4"
+    },
+    "STATE_EASTERN_NEW_GUINEA": {
+      "province_count": 85,
+      "seed": "x686A28",
+      "phase_counts": [
+        21,
+        21,
+        21,
+        21
+      ],
+      "reserved": "xD2799B"
+    },
+    "STATE_EASTERN_NORWAY": {
+      "province_count": 40,
+      "seed": "xC041E0",
+      "phase_counts": [
+        10,
+        10,
+        10,
+        9
+      ],
+      "reserved": "x8277CF"
+    },
+    "STATE_EASTERN_SERBIA": {
+      "province_count": 9,
+      "seed": "x334B53",
+      "phase_counts": [
+        2,
+        2,
+        2,
+        2
+      ],
+      "reserved": "x3B6092"
+    },
+    "STATE_EASTERN_THRACE": {
+      "province_count": 7,
+      "seed": "x2073F0",
+      "phase_counts": [
+        2,
+        2,
+        1,
+        1
+      ],
+      "reserved": "xF0A020"
+    },
+    "STATE_EAST_AEGEAN_ISLANDS": {
+      "province_count": 3,
+      "seed": "xE011A0",
+      "phase_counts": [
+        1,
+        1,
+        0,
+        0
+      ],
+      "reserved": "xC56452"
+    },
+    "STATE_EAST_ANGLIA": {
+      "province_count": 9,
+      "seed": "xE02040",
+      "phase_counts": [
+        2,
+        2,
+        2,
+        2
+      ],
+      "reserved": "xE0A040"
+    },
+    "STATE_EAST_ANGOLA": {
+      "province_count": 146,
+      "seed": "xB92820",
+      "phase_counts": [
+        37,
+        36,
+        36,
+        36
+      ],
+      "reserved": "xB5F875"
+    },
+    "STATE_EAST_BENGAL": {
+      "province_count": 30,
+      "seed": "x3C68C9",
+      "phase_counts": [
+        8,
+        7,
+        7,
+        7
+      ],
+      "reserved": "xE6CD14"
+    },
+    "STATE_EAST_BORNEO": {
+      "province_count": 63,
+      "seed": "x4D4D9B",
+      "phase_counts": [
+        16,
+        16,
+        15,
+        15
+      ],
+      "reserved": "x69AF77"
+    },
+    "STATE_EAST_GALICIA": {
+      "province_count": 17,
+      "seed": "x11A021",
+      "phase_counts": [
+        4,
+        4,
+        4,
+        4
+      ],
+      "reserved": "xB021A0"
+    },
+    "STATE_EAST_HAUSALAND": {
+      "province_count": 30,
+      "seed": "x436974",
+      "phase_counts": [
+        8,
+        7,
+        7,
+        7
+      ],
+      "reserved": "x8E01B6"
+    },
+    "STATE_EAST_JAVA": {
+      "province_count": 10,
+      "seed": "x1D38B7",
+      "phase_counts": [
+        3,
+        2,
+        2,
+        2
+      ],
+      "reserved": "x5C2250"
+    },
+    "STATE_EAST_KARELIA": {
+      "province_count": 111,
+      "seed": "xE3121F",
+      "phase_counts": [
+        28,
+        28,
+        27,
+        27
+      ],
+      "reserved": "xC7ABED"
+    },
+    "STATE_EAST_MICRONESIA": {
+      "province_count": 6,
+      "seed": "x808011",
+      "phase_counts": [
+        2,
+        1,
+        1,
+        1
+      ],
+      "reserved": "xF5DBBF"
+    },
+    "STATE_EAST_PRUSSIA": {
+      "province_count": 19,
+      "seed": "x72FDF3",
+      "phase_counts": [
+        5,
+        5,
+        4,
+        4
+      ],
+      "reserved": "x7A6061"
+    },
+    "STATE_EAST_SAHARA": {
+      "province_count": 272,
+      "seed": "xF97F78",
+      "phase_counts": [
+        68,
+        68,
+        68,
+        67
+      ],
+      "reserved": "xCD4F3F"
+    },
+    "STATE_EAST_SWITZERLAND": {
+      "province_count": 5,
+      "seed": "x5FB41E",
+      "phase_counts": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "reserved": "x11C0E0"
+    },
+    "STATE_ECUADOR": {
+      "province_count": 49,
+      "seed": "x0582C9",
+      "phase_counts": [
+        12,
+        12,
+        12,
+        12
+      ],
+      "reserved": "x6ECA62"
+    },
+    "STATE_EGYPTIAN_DESERT": {
+      "province_count": 96,
+      "seed": "xBD5993",
+      "phase_counts": [
+        24,
+        24,
+        24,
+        23
+      ],
+      "reserved": "x83E020"
+    },
+    "STATE_ELBE": {
+      "province_count": 9,
+      "seed": "x68BE66",
+      "phase_counts": [
+        2,
+        2,
+        2,
+        2
+      ],
+      "reserved": "x7C8FD3"
+    },
+    "STATE_ELIZAVETPOL": {
+      "province_count": 11,
+      "seed": "x80D041",
+      "phase_counts": [
+        3,
+        3,
+        2,
+        2
+      ],
+      "reserved": "xB7DDE5"
+    },
+    "STATE_EMILIA": {
+      "province_count": 5,
+      "seed": "xF080A0",
+      "phase_counts": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "reserved": "x700120"
+    },
+    "STATE_ENTRE_DOURO_E_MINHO": {
+      "province_count": 6,
+      "seed": "xD0A000",
+      "phase_counts": [
+        2,
+        1,
+        1,
+        1
+      ],
+      "reserved": "xD0E0C0"
+    },
+    "STATE_EQUATEUR": {
+      "province_count": 102,
+      "seed": "x5AAE1D",
+      "phase_counts": [
+        26,
+        25,
+        25,
+        25
+      ],
+      "reserved": "x9FF9FF"
+    },
+    "STATE_EQUATORIA": {
+      "province_count": 105,
+      "seed": "x19094A",
+      "phase_counts": [
+        26,
+        26,
+        26,
+        26
+      ],
+      "reserved": "xE4BC4E"
+    },
+    "STATE_ERITREA": {
+      "province_count": 28,
+      "seed": "x40E050",
+      "phase_counts": [
+        7,
+        7,
+        7,
+        6
+      ],
+      "reserved": "x569C7E"
+    },
+    "STATE_ERZURUM": {
+      "province_count": 27,
+      "seed": "x895074",
+      "phase_counts": [
+        7,
+        7,
+        6,
+        6
+      ],
+      "reserved": "x25E046"
+    },
+    "STATE_ESTREMADURA": {
+      "province_count": 4,
+      "seed": "x545164",
+      "phase_counts": [
+        1,
+        1,
+        1,
+        0
+      ],
+      "reserved": "x50A000"
+    },
+    "STATE_EXTREMADURA": {
+      "province_count": 12,
+      "seed": "x679A01",
+      "phase_counts": [
+        3,
+        3,
+        3,
+        2
+      ],
+      "reserved": "x97FBA4"
+    },
+    "STATE_FARS": {
+      "province_count": 34,
+      "seed": "x0130E0",
+      "phase_counts": [
+        9,
+        8,
+        8,
+        8
+      ],
+      "reserved": "xB2B395"
+    },
+    "STATE_FERGANA": {
+      "province_count": 16,
+      "seed": "x3D854F",
+      "phase_counts": [
+        4,
+        4,
+        4,
+        3
+      ],
+      "reserved": "xBB21A5"
+    },
+    "STATE_FEZ": {
+      "province_count": 14,
+      "seed": "xD6AD03",
+      "phase_counts": [
+        4,
+        3,
+        3,
+        3
+      ],
+      "reserved": "xE445EF"
+    },
+    "STATE_FIJI": {
+      "province_count": 3,
+      "seed": "x61A3E3",
+      "phase_counts": [
+        1,
+        1,
+        0,
+        0
+      ],
+      "reserved": "x53FA6E"
+    },
+    "STATE_FLANDERS": {
+      "province_count": 6,
+      "seed": "x0141A0",
+      "phase_counts": [
+        2,
+        1,
+        1,
+        1
+      ],
+      "reserved": "x808061"
+    },
+    "STATE_FLORIDA": {
+      "province_count": 35,
+      "seed": "xE58A3D",
+      "phase_counts": [
+        9,
+        9,
+        8,
+        8
+      ],
+      "reserved": "x4070C0"
+    },
+    "STATE_FORMOSA": {
+      "province_count": 7,
+      "seed": "x44797F",
+      "phase_counts": [
+        2,
+        2,
+        1,
+        1
+      ],
+      "reserved": "xAEA2D8"
+    },
+    "STATE_FRANCHE_COMTE": {
+      "province_count": 6,
+      "seed": "xCF46D1",
+      "phase_counts": [
+        2,
+        1,
+        1,
+        1
+      ],
+      "reserved": "xB000E0"
+    },
+    "STATE_FRANCONIA": {
+      "province_count": 8,
+      "seed": "xD0C0A0",
+      "phase_counts": [
+        2,
+        2,
+        2,
+        1
+      ],
+      "reserved": "xF91154"
+    },
+    "STATE_FRENCH_LOW_COUNTRIES": {
+      "province_count": 6,
+      "seed": "xD0854D",
+      "phase_counts": [
+        2,
+        1,
+        1,
+        1
+      ],
+      "reserved": "x70C020"
+    },
+    "STATE_FRIESLAND": {
+      "province_count": 5,
+      "seed": "x41C021",
+      "phase_counts": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "reserved": "x4141A0"
+    },
+    "STATE_FUJIAN": {
+      "province_count": 31,
+      "seed": "x67D814",
+      "phase_counts": [
+        8,
+        8,
+        7,
+        7
+      ],
+      "reserved": "x4BB46A"
+    },
+    "STATE_GABON": {
+      "province_count": 50,
+      "seed": "xC02090",
+      "phase_counts": [
+        13,
+        12,
+        12,
+        12
+      ],
+      "reserved": "xC0A090"
+    },
+    "STATE_GALICH": {
+      "province_count": 282,
+      "seed": "xF42CBB",
+      "phase_counts": [
+        71,
+        70,
+        70,
+        70
+      ],
+      "reserved": "xF96FC5"
+    },
+    "STATE_GALICIA": {
+      "province_count": 8,
+      "seed": "xB85939",
+      "phase_counts": [
+        2,
+        2,
+        2,
+        1
+      ],
+      "reserved": "x583E92"
+    },
+    "STATE_GANSU": {
+      "province_count": 69,
+      "seed": "xA4641B",
+      "phase_counts": [
+        17,
+        17,
+        17,
+        17
+      ],
+      "reserved": "x0FA31C"
+    },
+    "STATE_GELRE": {
+      "province_count": 5,
+      "seed": "xC0C0A0",
+      "phase_counts": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "reserved": "x41C0A0"
+    },
+    "STATE_GEORGIA": {
+      "province_count": 37,
+      "seed": "x13B302",
+      "phase_counts": [
+        9,
+        9,
+        9,
+        9
+      ],
+      "reserved": "xB3D9D8"
+    },
+    "STATE_GOIAS": {
+      "province_count": 116,
+      "seed": "xC2B97E",
+      "phase_counts": [
+        29,
+        29,
+        29,
+        28
+      ],
+      "reserved": "x37E1AD"
+    },
+    "STATE_GOLD_COAST": {
+      "province_count": 39,
+      "seed": "x802111",
+      "phase_counts": [
+        10,
+        10,
+        9,
+        9
+      ],
+      "reserved": "xAAFDFC"
+    },
+    "STATE_GONDER": {
+      "province_count": 54,
+      "seed": "xDF2090",
+      "phase_counts": [
+        14,
+        13,
+        13,
+        13
+      ],
+      "reserved": "x9FA061"
+    },
+    "STATE_GOTALAND": {
+      "province_count": 27,
+      "seed": "x41C0E0",
+      "phase_counts": [
+        7,
+        7,
+        6,
+        6
+      ],
+      "reserved": "x4040DF"
+    },
+    "STATE_GOTLAND": {
+      "province_count": 2,
+      "seed": "x21C0E0",
+      "phase_counts": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "reserved": "xF93B61"
+    },
+    "STATE_GREATER_CAUCASUS": {
+      "province_count": 19,
+      "seed": "x011141",
+      "phase_counts": [
+        5,
+        5,
+        4,
+        4
+      ],
+      "reserved": "x9BC69B"
+    },
+    "STATE_GREATER_POLAND": {
+      "province_count": 24,
+      "seed": "xA03316",
+      "phase_counts": [
+        6,
+        6,
+        6,
+        5
+      ],
+      "reserved": "xD0A0E0"
+    },
+    "STATE_GREENLAND": {
+      "province_count": 349,
+      "seed": "x5B326C",
+      "phase_counts": [
+        87,
+        87,
+        87,
+        87
+      ],
+      "reserved": "x485920"
+    },
+    "STATE_GUANGDONG": {
+      "province_count": 26,
+      "seed": "xB031E0",
+      "phase_counts": [
+        7,
+        6,
+        6,
+        6
+      ],
+      "reserved": "xCB457A"
+    },
+    "STATE_GUANGXI": {
+      "province_count": 61,
+      "seed": "x37E3AC",
+      "phase_counts": [
+        15,
+        15,
+        15,
+        15
+      ],
+      "reserved": "x9E70F2"
+    },
+    "STATE_GUATEMALA": {
+      "province_count": 25,
+      "seed": "x02073E",
+      "phase_counts": [
+        6,
+        6,
+        6,
+        6
+      ],
+      "reserved": "x42124E"
+    },
+    "STATE_GUAVIARE": {
+      "province_count": 124,
+      "seed": "x081F1F",
+      "phase_counts": [
+        31,
+        31,
+        31,
+        30
+      ],
+      "reserved": "x40C011"
+    },
+    "STATE_GUAYANA": {
+      "province_count": 78,
+      "seed": "x8E31E8",
+      "phase_counts": [
+        20,
+        19,
+        19,
+        19
+      ],
+      "reserved": "x80C050"
+    },
+    "STATE_GUERRERO": {
+      "province_count": 13,
+      "seed": "x4712FC",
+      "phase_counts": [
+        3,
+        3,
+        3,
+        3
+      ],
+      "reserved": "x8CC01A"
+    },
+    "STATE_GUINEA": {
+      "province_count": 58,
+      "seed": "x0E47FB",
+      "phase_counts": [
+        15,
+        14,
+        14,
+        14
+      ],
+      "reserved": "xF4618A"
+    },
+    "STATE_GUIZHOU": {
+      "province_count": 47,
+      "seed": "x096C00",
+      "phase_counts": [
+        12,
+        12,
+        11,
+        11
+      ],
+      "reserved": "x9F6A1B"
+    },
+    "STATE_GUJARAT": {
+      "province_count": 43,
+      "seed": "xB3D1CD",
+      "phase_counts": [
+        11,
+        11,
+        10,
+        10
+      ],
+      "reserved": "x5B6745"
+    },
+    "STATE_GUYENNE": {
+      "province_count": 12,
+      "seed": "xA2BBE9",
+      "phase_counts": [
+        3,
+        3,
+        3,
+        2
+      ],
+      "reserved": "x5020C0"
+    },
+    "STATE_HAIL": {
+      "province_count": 180,
+      "seed": "x4C5D5F",
+      "phase_counts": [
+        45,
+        45,
+        45,
+        44
+      ],
+      "reserved": "xE0D0E0"
+    },
+    "STATE_HAITI": {
+      "province_count": 7,
+      "seed": "xEA2C2D",
+      "phase_counts": [
+        2,
+        2,
+        1,
+        1
+      ],
+      "reserved": "x4FE008"
+    },
+    "STATE_HANNOVER": {
+      "province_count": 11,
+      "seed": "xF9DCA2",
+      "phase_counts": [
+        3,
+        3,
+        2,
+        2
+      ],
+      "reserved": "x694B91"
+    },
+    "STATE_HAUSALAND": {
+      "province_count": 38,
+      "seed": "xC76E76",
+      "phase_counts": [
+        10,
+        9,
+        9,
+        9
+      ],
+      "reserved": "xC06110"
+    },
+    "STATE_HAWAIIAN_ISLANDS": {
+      "province_count": 3,
+      "seed": "x492B26",
+      "phase_counts": [
+        1,
+        1,
+        0,
+        0
+      ],
+      "reserved": "xB5403E"
+    },
+    "STATE_HEDJAZ": {
+      "province_count": 105,
+      "seed": "x862801",
+      "phase_counts": [
+        26,
+        26,
+        26,
+        26
+      ],
+      "reserved": "x8DED0C"
+    },
+    "STATE_HENAN": {
+      "province_count": 33,
+      "seed": "x5C5657",
+      "phase_counts": [
+        8,
+        8,
+        8,
+        8
+      ],
+      "reserved": "x112F90"
+    },
+    "STATE_HERAT": {
+      "province_count": 32,
+      "seed": "xD74653",
+      "phase_counts": [
+        8,
+        8,
+        8,
+        7
+      ],
+      "reserved": "xEBA4E2"
+    },
+    "STATE_HEREROLAND": {
+      "province_count": 105,
+      "seed": "xB04050",
+      "phase_counts": [
+        26,
+        26,
+        26,
+        26
+      ],
+      "reserved": "x3B58C1"
+    },
+    "STATE_HESSE": {
+      "province_count": 11,
+      "seed": "x11C0A0",
+      "phase_counts": [
+        3,
+        3,
+        2,
+        2
+      ],
+      "reserved": "x2248E2"
+    },
+    "STATE_HIGHLANDS": {
+      "province_count": 19,
+      "seed": "x37518E",
+      "phase_counts": [
+        5,
+        5,
+        4,
+        4
+      ],
+      "reserved": "x80DB90"
+    },
+    "STATE_HILL_PUNJAB": {
+      "province_count": 25,
+      "seed": "xDEFFE6",
+      "phase_counts": [
+        6,
+        6,
+        6,
+        6
+      ],
+      "reserved": "xE60F80"
+    },
+    "STATE_HIMALAYAS": {
+      "province_count": 33,
+      "seed": "x1619ED",
+      "phase_counts": [
+        8,
+        8,
+        8,
+        8
+      ],
+      "reserved": "x6E233E"
+    },
+    "STATE_HINGGAN": {
+      "province_count": 187,
+      "seed": "xF700DB",
+      "phase_counts": [
+        47,
+        47,
+        46,
+        46
+      ],
+      "reserved": "xAD1C65"
+    },
+    "STATE_HOKKAIDO": {
+      "province_count": 24,
+      "seed": "xA090C0",
+      "phase_counts": [
+        6,
+        6,
+        6,
+        5
+      ],
+      "reserved": "x70C55B"
+    },
+    "STATE_HOKUSHINETSU": {
+      "province_count": 9,
+      "seed": "xE76E8F",
+      "phase_counts": [
+        2,
+        2,
+        2,
+        2
+      ],
+      "reserved": "xB0D040"
+    },
+    "STATE_HOLLAND": {
+      "province_count": 4,
+      "seed": "x80C0A0",
+      "phase_counts": [
+        1,
+        1,
+        1,
+        0
+      ],
+      "reserved": "xC04021"
+    },
+    "STATE_HOME_COUNTIES": {
+      "province_count": 9,
+      "seed": "xE060C0",
+      "phase_counts": [
+        2,
+        2,
+        2,
+        2
+      ],
+      "reserved": "x39F45B"
+    },
+    "STATE_HONDURAS": {
+      "province_count": 23,
+      "seed": "x98E7D7",
+      "phase_counts": [
+        6,
+        6,
+        5,
+        5
+      ],
+      "reserved": "x528F3B"
+    },
+    "STATE_HUDAVENDIGAR": {
+      "province_count": 11,
+      "seed": "xB0A060",
+      "phase_counts": [
+        3,
+        3,
+        2,
+        2
+      ],
+      "reserved": "xB4D60B"
+    },
+    "STATE_HUNAN": {
+      "province_count": 35,
+      "seed": "x425FDF",
+      "phase_counts": [
+        9,
+        9,
+        8,
+        8
+      ],
+      "reserved": "xF1D0A3"
+    },
+    "STATE_HYDERABAD": {
+      "province_count": 45,
+      "seed": "x4FCA8A",
+      "phase_counts": [
+        11,
+        11,
+        11,
+        11
+      ],
+      "reserved": "xACAC7B"
+    },
+    "STATE_ICA": {
+      "province_count": 57,
+      "seed": "xE5E702",
+      "phase_counts": [
+        14,
+        14,
+        14,
+        14
+      ],
+      "reserved": "x1F2F47"
+    },
+    "STATE_ICELAND": {
+      "province_count": 70,
+      "seed": "x0578F9",
+      "phase_counts": [
+        18,
+        17,
+        17,
+        17
+      ],
+      "reserved": "x8B7790"
+    },
+    "STATE_IDAHO": {
+      "province_count": 74,
+      "seed": "xFD9C12",
+      "phase_counts": [
+        19,
+        18,
+        18,
+        18
+      ],
+      "reserved": "x7B7595"
+    },
+    "STATE_ILE_DE_FRANCE": {
+      "province_count": 4,
+      "seed": "x906000",
+      "phase_counts": [
+        1,
+        1,
+        1,
+        0
+      ],
+      "reserved": "x7080DF"
+    },
+    "STATE_ILLINOIS": {
+      "province_count": 42,
+      "seed": "xF68D89",
+      "phase_counts": [
+        11,
+        10,
+        10,
+        10
+      ],
+      "reserved": "x00A080"
+    },
+    "STATE_INDIANA": {
+      "province_count": 25,
+      "seed": "x26B0DF",
+      "phase_counts": [
+        6,
+        6,
+        6,
+        6
+      ],
+      "reserved": "x708040"
+    },
+    "STATE_INDIAN_OCEAN_TERRITORY": {
+      "province_count": 3,
+      "seed": "xD0E090",
+      "phase_counts": [
+        1,
+        1,
+        0,
+        0
+      ],
+      "reserved": "xD690E0"
+    },
+    "STATE_INGRIA": {
+      "province_count": 30,
+      "seed": "xCD164E",
+      "phase_counts": [
+        8,
+        7,
+        7,
+        7
+      ],
+      "reserved": "xAD3522"
+    },
+    "STATE_INNER_MAURITANIA": {
+      "province_count": 146,
+      "seed": "x707040",
+      "phase_counts": [
+        37,
+        36,
+        36,
+        36
+      ],
+      "reserved": "x71E938"
+    },
+    "STATE_INNER_MOROCCO": {
+      "province_count": 62,
+      "seed": "xA21408",
+      "phase_counts": [
+        16,
+        15,
+        15,
+        15
+      ],
+      "reserved": "xF05E87"
+    },
+    "STATE_IONIAN_ISLANDS": {
+      "province_count": 2,
+      "seed": "x405060",
+      "phase_counts": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "reserved": "x4B79CA"
+    },
+    "STATE_IOWA": {
+      "province_count": 47,
+      "seed": "xE8429C",
+      "phase_counts": [
+        12,
+        12,
+        11,
+        11
+      ],
+      "reserved": "xB4D320"
+    },
+    "STATE_IRAKAJEMI": {
+      "province_count": 32,
+      "seed": "xC0F0A0",
+      "phase_counts": [
+        8,
+        8,
+        8,
+        7
+      ],
+      "reserved": "x2E8EE8"
+    },
+    "STATE_IRKUTSK": {
+      "province_count": 350,
+      "seed": "x53DDD0",
+      "phase_counts": [
+        88,
+        87,
+        87,
+        87
+      ],
+      "reserved": "x93D4CD"
+    },
+    "STATE_ISFAHAN": {
+      "province_count": 33,
+      "seed": "xE9B06D",
+      "phase_counts": [
+        8,
+        8,
+        8,
+        8
+      ],
+      "reserved": "x616406"
+    },
+    "STATE_ISTRIA": {
+      "province_count": 6,
+      "seed": "x36B2E3",
+      "phase_counts": [
+        2,
+        1,
+        1,
+        1
+      ],
+      "reserved": "xB061C0"
+    },
+    "STATE_IVORY_COAST": {
+      "province_count": 28,
+      "seed": "xA0BFCF",
+      "phase_counts": [
+        7,
+        7,
+        7,
+        6
+      ],
+      "reserved": "xDBCD88"
+    },
+    "STATE_JALISCO": {
+      "province_count": 35,
+      "seed": "x3F0A44",
+      "phase_counts": [
+        9,
+        9,
+        8,
+        8
+      ],
+      "reserved": "xCE2837"
+    },
+    "STATE_JAMAICA": {
+      "province_count": 3,
+      "seed": "x7070B8",
+      "phase_counts": [
+        1,
+        1,
+        0,
+        0
+      ],
+      "reserved": "x1E761E"
+    },
+    "STATE_JETISY": {
+      "province_count": 121,
+      "seed": "x3ACAE1",
+      "phase_counts": [
+        30,
+        30,
+        30,
+        30
+      ],
+      "reserved": "xD2CDDB"
+    },
+    "STATE_JIANGSU": {
+      "province_count": 15,
+      "seed": "x57F598",
+      "phase_counts": [
+        4,
+        4,
+        3,
+        3
+      ],
+      "reserved": "x51D0C0"
+    },
+    "STATE_JIANGXI": {
+      "province_count": 37,
+      "seed": "x1186AE",
+      "phase_counts": [
+        9,
+        9,
+        9,
+        9
+      ],
+      "reserved": "x7830B6"
+    },
+    "STATE_JUJUY": {
+      "province_count": 46,
+      "seed": "x5CCB77",
+      "phase_counts": [
+        12,
+        11,
+        11,
+        11
+      ],
+      "reserved": "x369CE3"
+    },
+    "STATE_JUTLAND": {
+      "province_count": 12,
+      "seed": "x8041E0",
+      "phase_counts": [
+        3,
+        3,
+        3,
+        2
+      ],
+      "reserved": "x770871"
+    },
+    "STATE_KABUL": {
+      "province_count": 28,
+      "seed": "xEF9ECA",
+      "phase_counts": [
+        7,
+        7,
+        7,
+        6
+      ],
+      "reserved": "xF7D682"
+    },
+    "STATE_KACHIN": {
+      "province_count": 41,
+      "seed": "x81E012",
+      "phase_counts": [
+        10,
+        10,
+        10,
+        10
+      ],
+      "reserved": "xD18BAA"
+    },
+    "STATE_KALMYKIA": {
+      "province_count": 25,
+      "seed": "x1D7F6C",
+      "phase_counts": [
+        6,
+        6,
+        6,
+        6
+      ],
+      "reserved": "xCAF7B3"
+    },
+    "STATE_KAMCHATKA": {
+      "province_count": 256,
+      "seed": "x7D2AB5",
+      "phase_counts": [
+        64,
+        64,
+        64,
+        63
+      ],
+      "reserved": "xA52195"
+    },
+    "STATE_KANAK": {
+      "province_count": 3,
+      "seed": "x302090",
+      "phase_counts": [
+        1,
+        1,
+        0,
+        0
+      ],
+      "reserved": "x2BEBD1"
+    },
+    "STATE_KANDAHAR": {
+      "province_count": 20,
+      "seed": "xF1FBC5",
+      "phase_counts": [
+        5,
+        5,
+        5,
+        4
+      ],
+      "reserved": "x1BC1AF"
+    },
+    "STATE_KANSAI": {
+      "province_count": 6,
+      "seed": "x70D040",
+      "phase_counts": [
+        2,
+        1,
+        1,
+        1
+      ],
+      "reserved": "x305040"
+    },
+    "STATE_KANSAS": {
+      "province_count": 55,
+      "seed": "x0364B8",
+      "phase_counts": [
+        14,
+        14,
+        13,
+        13
+      ],
+      "reserved": "x69F3E2"
+    },
+    "STATE_KANTO": {
+      "province_count": 11,
+      "seed": "x7010C0",
+      "phase_counts": [
+        3,
+        3,
+        2,
+        2
+      ],
+      "reserved": "x800111"
+    },
+    "STATE_KARS": {
+      "province_count": 7,
+      "seed": "x809001",
+      "phase_counts": [
+        2,
+        2,
+        1,
+        1
+      ],
+      "reserved": "xC09080"
+    },
+    "STATE_KASAI": {
+      "province_count": 67,
+      "seed": "xB5899D",
+      "phase_counts": [
+        17,
+        17,
+        16,
+        16
+      ],
+      "reserved": "xBB6F40"
+    },
+    "STATE_KASHMIR": {
+      "province_count": 47,
+      "seed": "x6326A6",
+      "phase_counts": [
+        12,
+        12,
+        11,
+        11
+      ],
+      "reserved": "xB637A4"
+    },
+    "STATE_KASTAMONU": {
+      "province_count": 13,
+      "seed": "x7A7E06",
+      "phase_counts": [
+        3,
+        3,
+        3,
+        3
+      ],
+      "reserved": "xF040E0"
+    },
+    "STATE_KATANGA": {
+      "province_count": 85,
+      "seed": "x1481BC",
+      "phase_counts": [
+        21,
+        21,
+        21,
+        21
+      ],
+      "reserved": "xB8CA50"
+    },
+    "STATE_KAUNAS": {
+      "province_count": 23,
+      "seed": "xBFE867",
+      "phase_counts": [
+        6,
+        6,
+        5,
+        5
+      ],
+      "reserved": "x629C46"
+    },
+    "STATE_KAZAN": {
+      "province_count": 38,
+      "seed": "x1FDAE5",
+      "phase_counts": [
+        10,
+        9,
+        9,
+        9
+      ],
+      "reserved": "x219B42"
+    },
+    "STATE_KAZEMBE": {
+      "province_count": 60,
+      "seed": "x9898C5",
+      "phase_counts": [
+        15,
+        15,
+        15,
+        14
+      ],
+      "reserved": "x8EF620"
+    },
+    "STATE_KENTUCKY": {
+      "province_count": 32,
+      "seed": "xDECE20",
+      "phase_counts": [
+        8,
+        8,
+        8,
+        7
+      ],
+      "reserved": "xC07000"
+    },
+    "STATE_KENYA": {
+      "province_count": 74,
+      "seed": "xA02190",
+      "phase_counts": [
+        19,
+        18,
+        18,
+        18
+      ],
+      "reserved": "xA2D8EF"
+    },
+    "STATE_KERMAN": {
+      "province_count": 39,
+      "seed": "x901598",
+      "phase_counts": [
+        10,
+        10,
+        9,
+        9
+      ],
+      "reserved": "x75053B"
+    },
+    "STATE_KHARKOV": {
+      "province_count": 34,
+      "seed": "xFA0D5E",
+      "phase_counts": [
+        9,
+        8,
+        8,
+        8
+      ],
+      "reserved": "x270CD8"
+    },
+    "STATE_KHIVA": {
+      "province_count": 41,
+      "seed": "xA487BA",
+      "phase_counts": [
+        10,
+        10,
+        10,
+        10
+      ],
+      "reserved": "x9CF8BD"
+    },
+    "STATE_KHORASAN": {
+      "province_count": 75,
+      "seed": "xF559AB",
+      "phase_counts": [
+        19,
+        19,
+        18,
+        18
+      ],
+      "reserved": "xC0F0E0"
+    },
+    "STATE_KHUZESTAN": {
+      "province_count": 10,
+      "seed": "xFBA38B",
+      "phase_counts": [
+        3,
+        2,
+        2,
+        2
+      ],
+      "reserved": "x80E4E1"
+    },
+    "STATE_KIEV": {
+      "province_count": 44,
+      "seed": "x8CE323",
+      "phase_counts": [
+        11,
+        11,
+        11,
+        10
+      ],
+      "reserved": "x7161A0"
+    },
+    "STATE_KIRGHIZIA": {
+      "province_count": 57,
+      "seed": "xAA16B7",
+      "phase_counts": [
+        14,
+        14,
+        14,
+        14
+      ],
+      "reserved": "x0B0E9E"
+    },
+    "STATE_KOLA": {
+      "province_count": 110,
+      "seed": "xF2B2C8",
+      "phase_counts": [
+        28,
+        27,
+        27,
+        27
+      ],
+      "reserved": "xF475D7"
+    },
+    "STATE_KOLYMA": {
+      "province_count": 1060,
+      "seed": "xE52338",
+      "phase_counts": [
+        265,
+        265,
+        265,
+        264
+      ],
+      "reserved": "xA3A805"
+    },
+    "STATE_KONYA": {
+      "province_count": 44,
+      "seed": "x04C595",
+      "phase_counts": [
+        11,
+        11,
+        11,
+        10
+      ],
+      "reserved": "x70373E"
+    },
+    "STATE_KORDOFAN": {
+      "province_count": 81,
+      "seed": "x7C620A",
+      "phase_counts": [
+        20,
+        20,
+        20,
+        20
+      ],
+      "reserved": "xB241EF"
+    },
+    "STATE_KOSOVO": {
+      "province_count": 4,
+      "seed": "x45E06A",
+      "phase_counts": [
+        1,
+        1,
+        1,
+        0
+      ],
+      "reserved": "xD02161"
+    },
+    "STATE_KRASNOYARSK": {
+      "province_count": 136,
+      "seed": "x0B5759",
+      "phase_counts": [
+        34,
+        34,
+        34,
+        33
+      ],
+      "reserved": "x90B3BE"
+    },
+    "STATE_KUBAN": {
+      "province_count": 30,
+      "seed": "x9809B7",
+      "phase_counts": [
+        8,
+        7,
+        7,
+        7
+      ],
+      "reserved": "xEB2EF5"
+    },
+    "STATE_KUOPIO": {
+      "province_count": 32,
+      "seed": "x8DCF76",
+      "phase_counts": [
+        8,
+        8,
+        8,
+        7
+      ],
+      "reserved": "xA04180"
+    },
+    "STATE_KURNOOL": {
+      "province_count": 14,
+      "seed": "x59BBE1",
+      "phase_counts": [
+        4,
+        3,
+        3,
+        3
+      ],
+      "reserved": "x063403"
+    },
+    "STATE_KURSK": {
+      "province_count": 37,
+      "seed": "x1A9007",
+      "phase_counts": [
+        9,
+        9,
+        9,
+        9
+      ],
+      "reserved": "xAE82E6"
+    },
+    "STATE_KYOTO": {
+      "province_count": 4,
+      "seed": "x879C25",
+      "phase_counts": [
+        1,
+        1,
+        1,
+        0
+      ],
+      "reserved": "x705040"
+    },
+    "STATE_KYUSHU": {
+      "province_count": 12,
+      "seed": "xAE5874",
+      "phase_counts": [
+        3,
+        3,
+        3,
+        2
+      ],
+      "reserved": "xF0D000"
+    },
+    "STATE_LANCASHIRE": {
+      "province_count": 8,
+      "seed": "x60E000",
+      "phase_counts": [
+        2,
+        2,
+        2,
+        1
+      ],
+      "reserved": "x137263"
+    },
+    "STATE_LANGUEDOC": {
+      "province_count": 13,
+      "seed": "x906080",
+      "phase_counts": [
+        3,
+        3,
+        3,
+        3
+      ],
+      "reserved": "x3784B2"
+    },
+    "STATE_LAOS": {
+      "province_count": 47,
+      "seed": "x1E6D3C",
+      "phase_counts": [
+        12,
+        12,
+        11,
+        11
+      ],
+      "reserved": "x30EFA0"
+    },
+    "STATE_LARISTAN": {
+      "province_count": 19,
+      "seed": "x350DED",
+      "phase_counts": [
+        5,
+        5,
+        4,
+        4
+      ],
+      "reserved": "x0170A0"
+    },
+    "STATE_LAZIO": {
+      "province_count": 4,
+      "seed": "xB5726E",
+      "phase_counts": [
+        1,
+        1,
+        1,
+        0
+      ],
+      "reserved": "x3040A0"
+    },
+    "STATE_LA_PAMPA": {
+      "province_count": 58,
+      "seed": "x02454E",
+      "phase_counts": [
+        15,
+        14,
+        14,
+        14
+      ],
+      "reserved": "x31058F"
+    },
+    "STATE_LA_PAZ": {
+      "province_count": 89,
+      "seed": "xDE2B7D",
+      "phase_counts": [
+        22,
+        22,
+        22,
+        22
+      ],
+      "reserved": "xDEA235"
+    },
+    "STATE_LEBANON": {
+      "province_count": 5,
+      "seed": "x6010E0",
+      "phase_counts": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "reserved": "xA050E0"
+    },
+    "STATE_LEINSTER": {
+      "province_count": 9,
+      "seed": "x60E040",
+      "phase_counts": [
+        2,
+        2,
+        2,
+        2
+      ],
+      "reserved": "xAEAF93"
+    },
+    "STATE_LEON": {
+      "province_count": 10,
+      "seed": "x38C557",
+      "phase_counts": [
+        3,
+        2,
+        2,
+        2
+      ],
+      "reserved": "xB3BC6E"
+    },
+    "STATE_LESSER_POLAND": {
+      "province_count": 12,
+      "seed": "xE0BB00",
+      "phase_counts": [
+        3,
+        3,
+        3,
+        2
+      ],
+      "reserved": "x44ACBB"
+    },
+    "STATE_LHASA": {
+      "province_count": 110,
+      "seed": "x06698A",
+      "phase_counts": [
+        28,
+        27,
+        27,
+        27
+      ],
+      "reserved": "xB5EF16"
+    },
+    "STATE_LIBERIA": {
+      "province_count": 16,
+      "seed": "x0075FC",
+      "phase_counts": [
+        4,
+        4,
+        4,
+        3
+      ],
+      "reserved": "x7E9BF6"
+    },
+    "STATE_LIBYA": {
+      "province_count": 171,
+      "seed": "xB0EEAE",
+      "phase_counts": [
+        43,
+        43,
+        42,
+        42
+      ],
+      "reserved": "xB10316"
+    },
+    "STATE_LIBYAN_DESERT": {
+      "province_count": 128,
+      "seed": "xCA4E6B",
+      "phase_counts": [
+        32,
+        32,
+        32,
+        31
+      ],
+      "reserved": "x4EF9F0"
+    },
+    "STATE_LIMA": {
+      "province_count": 56,
+      "seed": "x6BEF27",
+      "phase_counts": [
+        14,
+        14,
+        14,
+        13
+      ],
+      "reserved": "x9866F2"
+    },
+    "STATE_LINDI": {
+      "province_count": 78,
+      "seed": "x5BDBD2",
+      "phase_counts": [
+        20,
+        19,
+        19,
+        19
+      ],
+      "reserved": "xCADABE"
+    },
+    "STATE_LOMBARDY": {
+      "province_count": 8,
+      "seed": "xD04060",
+      "phase_counts": [
+        2,
+        2,
+        2,
+        1
+      ],
+      "reserved": "x50C060"
+    },
+    "STATE_LORRAINE": {
+      "province_count": 6,
+      "seed": "xB080E0",
+      "phase_counts": [
+        2,
+        1,
+        1,
+        1
+      ],
+      "reserved": "xC5F13A"
+    },
+    "STATE_LOS_RIOS": {
+      "province_count": 31,
+      "seed": "x9040D0",
+      "phase_counts": [
+        8,
+        8,
+        7,
+        7
+      ],
+      "reserved": "x29AFD4"
+    },
+    "STATE_LOUISIANA": {
+      "province_count": 28,
+      "seed": "x9A7554",
+      "phase_counts": [
+        7,
+        7,
+        7,
+        6
+      ],
+      "reserved": "xEE0FAA"
+    },
+    "STATE_LOURENCO_MARQUES": {
+      "province_count": 42,
+      "seed": "x361897",
+      "phase_counts": [
+        11,
+        10,
+        10,
+        10
+      ],
+      "reserved": "x963178"
+    },
+    "STATE_LOWER_ANDALUSIA": {
+      "province_count": 12,
+      "seed": "xB1108A",
+      "phase_counts": [
+        3,
+        3,
+        3,
+        2
+      ],
+      "reserved": "x58E3EB"
+    },
+    "STATE_LOWER_EGYPT": {
+      "province_count": 12,
+      "seed": "xA0D020",
+      "phase_counts": [
+        3,
+        3,
+        3,
+        2
+      ],
+      "reserved": "xC09060"
+    },
+    "STATE_LOWER_SILESIA": {
+      "province_count": 9,
+      "seed": "x6E617F",
+      "phase_counts": [
+        2,
+        2,
+        2,
+        2
+      ],
+      "reserved": "x614121"
+    },
+    "STATE_LOWLANDS": {
+      "province_count": 16,
+      "seed": "xA0E000",
+      "phase_counts": [
+        4,
+        4,
+        4,
+        3
+      ],
+      "reserved": "x20E080"
+    },
+    "STATE_LURISTAN": {
+      "province_count": 19,
+      "seed": "x38B60D",
+      "phase_counts": [
+        5,
+        5,
+        4,
+        4
+      ],
+      "reserved": "xFFA8FA"
+    },
+    "STATE_LUZON": {
+      "province_count": 25,
+      "seed": "xF4CD9C",
+      "phase_counts": [
+        6,
+        6,
+        6,
+        6
+      ],
+      "reserved": "xB0F0B0"
+    },
+    "STATE_MACEDONIA": {
+      "province_count": 9,
+      "seed": "xE48F39",
+      "phase_counts": [
+        2,
+        2,
+        2,
+        2
+      ],
+      "reserved": "x01D060"
+    },
+    "STATE_MADEIRA": {
+      "province_count": 2,
+      "seed": "x385719",
+      "phase_counts": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "reserved": "x4D5156"
+    },
+    "STATE_MADRAS": {
+      "province_count": 26,
+      "seed": "xABADB1",
+      "phase_counts": [
+        7,
+        6,
+        6,
+        6
+      ],
+      "reserved": "xA021D0"
+    },
+    "STATE_MAINE": {
+      "province_count": 27,
+      "seed": "x1CA7B0",
+      "phase_counts": [
+        7,
+        7,
+        6,
+        6
+      ],
+      "reserved": "x1E33E8"
+    },
+    "STATE_MAINE_ANJOU": {
+      "province_count": 9,
+      "seed": "x093DF5",
+      "phase_counts": [
+        2,
+        2,
+        2,
+        2
+      ],
+      "reserved": "xB0E080"
+    },
+    "STATE_MALAYA": {
+      "province_count": 23,
+      "seed": "xC00130",
+      "phase_counts": [
+        6,
+        6,
+        5,
+        5
+      ],
+      "reserved": "x08673B"
+    },
+    "STATE_MALTA": {
+      "province_count": 2,
+      "seed": "x015121",
+      "phase_counts": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "reserved": "x3A8B51"
+    },
+    "STATE_MALWA": {
+      "province_count": 30,
+      "seed": "xFBDCC9",
+      "phase_counts": [
+        8,
+        7,
+        7,
+        7
+      ],
+      "reserved": "x0E199B"
+    },
+    "STATE_MANDALAY": {
+      "province_count": 23,
+      "seed": "x620442",
+      "phase_counts": [
+        6,
+        6,
+        5,
+        5
+      ],
+      "reserved": "x47C5A9"
+    },
+    "STATE_MANITOBA": {
+      "province_count": 267,
+      "seed": "x92E099",
+      "phase_counts": [
+        67,
+        67,
+        66,
+        66
+      ],
+      "reserved": "x006FF6"
+    },
+    "STATE_MARANHAO": {
+      "province_count": 57,
+      "seed": "x2941C6",
+      "phase_counts": [
+        14,
+        14,
+        14,
+        14
+      ],
+      "reserved": "xA0C011"
+    },
+    "STATE_MARRAKECH": {
+      "province_count": 19,
+      "seed": "x43DA94",
+      "phase_counts": [
+        5,
+        5,
+        4,
+        4
+      ],
+      "reserved": "xDF7040"
+    },
+    "STATE_MARYLAND": {
+      "province_count": 9,
+      "seed": "x3CC08F",
+      "phase_counts": [
+        2,
+        2,
+        2,
+        2
+      ],
+      "reserved": "x888194"
+    },
+    "STATE_MASSACHUSETTS": {
+      "province_count": 6,
+      "seed": "x13444D",
+      "phase_counts": [
+        2,
+        1,
+        1,
+        1
+      ],
+      "reserved": "x8D8744"
+    },
+    "STATE_MATO_GROSSO": {
+      "province_count": 296,
+      "seed": "xB9F1FF",
+      "phase_counts": [
+        74,
+        74,
+        74,
+        73
+      ],
+      "reserved": "x8D8F6C"
+    },
+    "STATE_MATRUH": {
+      "province_count": 47,
+      "seed": "x25523D",
+      "phase_counts": [
+        12,
+        12,
+        11,
+        11
+      ],
+      "reserved": "x20D0A0"
+    },
+    "STATE_MAURITANIA": {
+      "province_count": 69,
+      "seed": "x32772F",
+      "phase_counts": [
+        17,
+        17,
+        17,
+        17
+      ],
+      "reserved": "xB0CEA1"
+    },
+    "STATE_MAZANDARAN": {
+      "province_count": 15,
+      "seed": "xE697E6",
+      "phase_counts": [
+        4,
+        4,
+        3,
+        3
+      ],
+      "reserved": "x7417A0"
+    },
+    "STATE_MAZOVIA": {
+      "province_count": 15,
+      "seed": "xE165F5",
+      "phase_counts": [
+        4,
+        4,
+        3,
+        3
+      ],
+      "reserved": "xF8C8F6"
+    },
+    "STATE_MECKLENBURG": {
+      "province_count": 7,
+      "seed": "xD8F441",
+      "phase_counts": [
+        2,
+        2,
+        1,
+        1
+      ],
+      "reserved": "xD9A469"
+    },
+    "STATE_MEKONG": {
+      "province_count": 27,
+      "seed": "xE5A4DA",
+      "phase_counts": [
+        7,
+        7,
+        6,
+        6
+      ],
+      "reserved": "x72E436"
+    },
+    "STATE_MERZ": {
+      "province_count": 43,
+      "seed": "xFAAE74",
+      "phase_counts": [
+        11,
+        11,
+        10,
+        10
+      ],
+      "reserved": "x622B3C"
+    },
+    "STATE_MEXICO": {
+      "province_count": 16,
+      "seed": "x0EBDEC",
+      "phase_counts": [
+        4,
+        4,
+        4,
+        3
+      ],
+      "reserved": "x0A1D52"
+    },
+    "STATE_MICHIGAN": {
+      "province_count": 50,
+      "seed": "x6486DD",
+      "phase_counts": [
+        13,
+        12,
+        12,
+        12
+      ],
+      "reserved": "x8BD355"
+    },
+    "STATE_MIDDLE_EGYPT": {
+      "province_count": 15,
+      "seed": "xA41CF4",
+      "phase_counts": [
+        4,
+        4,
+        3,
+        3
+      ],
+      "reserved": "x50D060"
+    },
+    "STATE_MIDLANDS": {
+      "province_count": 11,
+      "seed": "x2482B4",
+      "phase_counts": [
+        3,
+        3,
+        2,
+        2
+      ],
+      "reserved": "xA220D6"
+    },
+    "STATE_MINAS_GERAIS": {
+      "province_count": 118,
+      "seed": "xE8109E",
+      "phase_counts": [
+        30,
+        29,
+        29,
+        29
+      ],
+      "reserved": "xBB8A73"
+    },
+    "STATE_MINDANAO": {
+      "province_count": 17,
+      "seed": "xF0014A",
+      "phase_counts": [
+        4,
+        4,
+        4,
+        4
+      ],
+      "reserved": "x0180F0"
+    },
+    "STATE_MINNESOTA": {
+      "province_count": 72,
+      "seed": "x9A9297",
+      "phase_counts": [
+        18,
+        18,
+        18,
+        17
+      ],
+      "reserved": "x2F06FA"
+    },
+    "STATE_MINSK": {
+      "province_count": 26,
+      "seed": "xA16195",
+      "phase_counts": [
+        7,
+        6,
+        6,
+        6
+      ],
+      "reserved": "xF05D59"
+    },
+    "STATE_MIRANDA": {
+      "province_count": 49,
+      "seed": "x4B48A8",
+      "phase_counts": [
+        12,
+        12,
+        12,
+        12
+      ],
+      "reserved": "xA3020D"
+    },
+    "STATE_MISSISSIPPI": {
+      "province_count": 26,
+      "seed": "xE41653",
+      "phase_counts": [
+        7,
+        6,
+        6,
+        6
+      ],
+      "reserved": "x6D0DAC"
+    },
+    "STATE_MISSOURI": {
+      "province_count": 44,
+      "seed": "x971521",
+      "phase_counts": [
+        11,
+        11,
+        11,
+        10
+      ],
+      "reserved": "x7B0051"
+    },
+    "STATE_MOCAMBIQUE": {
+      "province_count": 78,
+      "seed": "x005594",
+      "phase_counts": [
+        20,
+        19,
+        19,
+        19
+      ],
+      "reserved": "x7C3CE7"
+    },
+    "STATE_MOGILEV": {
+      "province_count": 22,
+      "seed": "x7E7DA7",
+      "phase_counts": [
+        6,
+        5,
+        5,
+        5
+      ],
+      "reserved": "x79C34B"
+    },
+    "STATE_MOLDAVIA": {
+      "province_count": 14,
+      "seed": "x946A66",
+      "phase_counts": [
+        4,
+        3,
+        3,
+        3
+      ],
+      "reserved": "xF40045"
+    },
+    "STATE_MOLUCCAS": {
+      "province_count": 16,
+      "seed": "xB346EB",
+      "phase_counts": [
+        4,
+        4,
+        4,
+        3
+      ],
+      "reserved": "xF94D86"
+    },
+    "STATE_MONTANA": {
+      "province_count": 131,
+      "seed": "x5CCA79",
+      "phase_counts": [
+        33,
+        33,
+        32,
+        32
+      ],
+      "reserved": "x9C13D9"
+    },
+    "STATE_MONTENEGRO": {
+      "province_count": 5,
+      "seed": "x90A0E0",
+      "phase_counts": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "reserved": "xF5F6C2"
+    },
+    "STATE_MORAVIA": {
+      "province_count": 10,
+      "seed": "xD9A784",
+      "phase_counts": [
+        3,
+        2,
+        2,
+        2
+      ],
+      "reserved": "xF0E080"
+    },
+    "STATE_MOSCOW": {
+      "province_count": 12,
+      "seed": "x13D91C",
+      "phase_counts": [
+        3,
+        3,
+        3,
+        2
+      ],
+      "reserved": "xC05614"
+    },
+    "STATE_MOSUL": {
+      "province_count": 18,
+      "seed": "x6F55BA",
+      "phase_counts": [
+        5,
+        4,
+        4,
+        4
+      ],
+      "reserved": "x111137"
+    },
+    "STATE_MUNSTER": {
+      "province_count": 10,
+      "seed": "x02061B",
+      "phase_counts": [
+        3,
+        2,
+        2,
+        2
+      ],
+      "reserved": "x969279"
+    },
+    "STATE_MURCIA": {
+      "province_count": 8,
+      "seed": "xB03776",
+      "phase_counts": [
+        2,
+        2,
+        2,
+        1
+      ],
+      "reserved": "x6549AD"
+    },
+    "STATE_MYSORE": {
+      "province_count": 16,
+      "seed": "x189045",
+      "phase_counts": [
+        4,
+        4,
+        4,
+        3
+      ],
+      "reserved": "x8E3C9D"
+    },
+    "STATE_NAKHON_RATCHASIMA": {
+      "province_count": 39,
+      "seed": "x9030DF",
+      "phase_counts": [
+        10,
+        10,
+        9,
+        9
+      ],
+      "reserved": "xBF6988"
+    },
+    "STATE_NAMAQUALAND": {
+      "province_count": 65,
+      "seed": "x495827",
+      "phase_counts": [
+        16,
+        16,
+        16,
+        16
+      ],
+      "reserved": "xE4DABE"
+    },
+    "STATE_NANJING": {
+      "province_count": 7,
+      "seed": "x8111D0",
+      "phase_counts": [
+        2,
+        2,
+        1,
+        1
+      ],
+      "reserved": "xF14A5E"
+    },
+    "STATE_NAURU": {
+      "province_count": 2,
+      "seed": "xC041F0",
+      "phase_counts": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "reserved": "x418382"
+    },
+    "STATE_NEBRASKA": {
+      "province_count": 63,
+      "seed": "x3E62DB",
+      "phase_counts": [
+        16,
+        16,
+        15,
+        15
+      ],
+      "reserved": "x63FFC3"
+    },
+    "STATE_NEJD": {
+      "province_count": 178,
+      "seed": "x04600E",
+      "phase_counts": [
+        45,
+        44,
+        44,
+        44
+      ],
+      "reserved": "xBFB998"
+    },
+    "STATE_NENETSIA": {
+      "province_count": 382,
+      "seed": "x533140",
+      "phase_counts": [
+        96,
+        95,
+        95,
+        95
+      ],
+      "reserved": "xC7CF5F"
+    },
+    "STATE_NEVADA": {
+      "province_count": 81,
+      "seed": "x80BCA8",
+      "phase_counts": [
+        20,
+        20,
+        20,
+        20
+      ],
+      "reserved": "xCC1818"
+    },
+    "STATE_NEWFOUNDLAND": {
+      "province_count": 154,
+      "seed": "xD1D79F",
+      "phase_counts": [
+        39,
+        38,
+        38,
+        38
+      ],
+      "reserved": "x543388"
+    },
+    "STATE_NEW_BRUNSWICK": {
+      "province_count": 40,
+      "seed": "xCA0399",
+      "phase_counts": [
+        10,
+        10,
+        10,
+        9
+      ],
+      "reserved": "x70C040"
+    },
+    "STATE_NEW_CASTILE": {
+      "province_count": 18,
+      "seed": "xDCD24C",
+      "phase_counts": [
+        5,
+        4,
+        4,
+        4
+      ],
+      "reserved": "x093A56"
+    },
+    "STATE_NEW_HAMPSHIRE": {
+      "province_count": 9,
+      "seed": "x30C040",
+      "phase_counts": [
+        2,
+        2,
+        2,
+        2
+      ],
+      "reserved": "x1DC591"
+    },
+    "STATE_NEW_JERSEY": {
+      "province_count": 5,
+      "seed": "x503169",
+      "phase_counts": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "reserved": "xF00000"
+    },
+    "STATE_NEW_MEXICO": {
+      "province_count": 79,
+      "seed": "xDF1965",
+      "phase_counts": [
+        20,
+        20,
+        19,
+        19
+      ],
+      "reserved": "xC03080"
+    },
+    "STATE_NEW_SOUTH_WALES": {
+      "province_count": 196,
+      "seed": "xAEFFEB",
+      "phase_counts": [
+        49,
+        49,
+        49,
+        48
+      ],
+      "reserved": "x8ACD73"
+    },
+    "STATE_NEW_YORK": {
+      "province_count": 35,
+      "seed": "x377E55",
+      "phase_counts": [
+        9,
+        9,
+        8,
+        8
+      ],
+      "reserved": "x195B49"
+    },
+    "STATE_NGARI": {
+      "province_count": 152,
+      "seed": "xE1C6E3",
+      "phase_counts": [
+        38,
+        38,
+        38,
+        37
+      ],
+      "reserved": "x4CA3AB"
+    },
+    "STATE_NICARAGUA": {
+      "province_count": 23,
+      "seed": "xAD9EE8",
+      "phase_counts": [
+        6,
+        6,
+        5,
+        5
+      ],
+      "reserved": "x68E7F3"
+    },
+    "STATE_NIGER": {
+      "province_count": 167,
+      "seed": "x4AF4AD",
+      "phase_counts": [
+        42,
+        42,
+        41,
+        41
+      ],
+      "reserved": "xFED6E1"
+    },
+    "STATE_NIGERIA": {
+      "province_count": 39,
+      "seed": "xF8AD48",
+      "phase_counts": [
+        10,
+        10,
+        9,
+        9
+      ],
+      "reserved": "xC89CB8"
+    },
+    "STATE_NIGER_DELTA": {
+      "province_count": 16,
+      "seed": "x01A050",
+      "phase_counts": [
+        4,
+        4,
+        4,
+        3
+      ],
+      "reserved": "x90B6CB"
+    },
+    "STATE_NINGXIA": {
+      "province_count": 54,
+      "seed": "x769B1C",
+      "phase_counts": [
+        14,
+        13,
+        13,
+        13
+      ],
+      "reserved": "x8A81C7"
+    },
+    "STATE_NIZHNY_NOVGOROD": {
+      "province_count": 39,
+      "seed": "x202BAA",
+      "phase_counts": [
+        10,
+        10,
+        9,
+        9
+      ],
+      "reserved": "x02BE2C"
+    },
+    "STATE_NORMANDY": {
+      "province_count": 11,
+      "seed": "xA786BB",
+      "phase_counts": [
+        3,
+        3,
+        2,
+        2
+      ],
+      "reserved": "x0B7098"
+    },
+    "STATE_NORRLAND": {
+      "province_count": 186,
+      "seed": "xD2B7E0",
+      "phase_counts": [
+        47,
+        46,
+        46,
+        46
+      ],
+      "reserved": "x71B772"
+    },
+    "STATE_NORTHERN_ANHUI": {
+      "province_count": 23,
+      "seed": "x901159",
+      "phase_counts": [
+        6,
+        6,
+        5,
+        5
+      ],
+      "reserved": "x87DFF6"
+    },
+    "STATE_NORTHERN_BALUCHISTAN": {
+      "province_count": 21,
+      "seed": "x4DC5DC",
+      "phase_counts": [
+        5,
+        5,
+        5,
+        5
+      ],
+      "reserved": "x41F4EB"
+    },
+    "STATE_NORTHERN_CAPE": {
+      "province_count": 84,
+      "seed": "x3062F8",
+      "phase_counts": [
+        21,
+        21,
+        21,
+        20
+      ],
+      "reserved": "xDE2166"
+    },
+    "STATE_NORTHERN_MANCHURIA": {
+      "province_count": 204,
+      "seed": "x87B373",
+      "phase_counts": [
+        51,
+        51,
+        51,
+        50
+      ],
+      "reserved": "x5B3ADD"
+    },
+    "STATE_NORTHERN_NORWAY": {
+      "province_count": 133,
+      "seed": "xE5B868",
+      "phase_counts": [
+        33,
+        33,
+        33,
+        33
+      ],
+      "reserved": "xEFBAB6"
+    },
+    "STATE_NORTHERN_TERRITORY": {
+      "province_count": 292,
+      "seed": "x7ED764",
+      "phase_counts": [
+        73,
+        73,
+        73,
+        72
+      ],
+      "reserved": "xA9C0EB"
+    },
+    "STATE_NORTHERN_THRACE": {
+      "province_count": 11,
+      "seed": "x7121A0",
+      "phase_counts": [
+        3,
+        3,
+        2,
+        2
+      ],
+      "reserved": "xF0A0E0"
+    },
+    "STATE_NORTHERN_TRANSYLVANIA": {
+      "province_count": 12,
+      "seed": "xD0E0A0",
+      "phase_counts": [
+        3,
+        3,
+        3,
+        2
+      ],
+      "reserved": "xAF609F"
+    },
+    "STATE_NORTHWEST_TERRITORIES": {
+      "province_count": 923,
+      "seed": "x2A0360",
+      "phase_counts": [
+        231,
+        231,
+        230,
+        230
+      ],
+      "reserved": "xFA33DC"
+    },
+    "STATE_NORTH_ANGOLA": {
+      "province_count": 23,
+      "seed": "x6FD2F7",
+      "phase_counts": [
+        6,
+        6,
+        5,
+        5
+      ],
+      "reserved": "xC02050"
+    },
+    "STATE_NORTH_BORNEO": {
+      "province_count": 39,
+      "seed": "xC531AE",
+      "phase_counts": [
+        10,
+        10,
+        9,
+        9
+      ],
+      "reserved": "x91B40F"
+    },
+    "STATE_NORTH_CAMEROON": {
+      "province_count": 42,
+      "seed": "xCCEC29",
+      "phase_counts": [
+        11,
+        10,
+        10,
+        10
+      ],
+      "reserved": "x361F6A"
+    },
+    "STATE_NORTH_CAROLINA": {
+      "province_count": 32,
+      "seed": "x00F040",
+      "phase_counts": [
+        8,
+        8,
+        8,
+        7
+      ],
+      "reserved": "x007040"
+    },
+    "STATE_NORTH_CAUCASUS": {
+      "province_count": 18,
+      "seed": "x9A6A44",
+      "phase_counts": [
+        5,
+        4,
+        4,
+        4
+      ],
+      "reserved": "x23F98B"
+    },
+    "STATE_NORTH_DAKOTA": {
+      "province_count": 63,
+      "seed": "x17EF0F",
+      "phase_counts": [
+        16,
+        16,
+        15,
+        15
+      ],
+      "reserved": "x76F55B"
+    },
+    "STATE_NORTH_ISLAND": {
+      "province_count": 35,
+      "seed": "x0A9415",
+      "phase_counts": [
+        9,
+        9,
+        8,
+        8
+      ],
+      "reserved": "x1000F0"
+    },
+    "STATE_NORTH_MADAGASCAR": {
+      "province_count": 60,
+      "seed": "x00D7F5",
+      "phase_counts": [
+        15,
+        15,
+        15,
+        14
+      ],
+      "reserved": "xF9D98C"
+    },
+    "STATE_NORTH_SUMATRA": {
+      "province_count": 37,
+      "seed": "x8A3E15",
+      "phase_counts": [
+        9,
+        9,
+        9,
+        9
+      ],
+      "reserved": "xE0A0F0"
+    },
+    "STATE_NOVGOROD": {
+      "province_count": 70,
+      "seed": "xCDE8A8",
+      "phase_counts": [
+        18,
+        17,
+        17,
+        17
+      ],
+      "reserved": "x0BBA97"
+    },
+    "STATE_NUNAVUT": {
+      "province_count": 1085,
+      "seed": "xD79E7B",
+      "phase_counts": [
+        271,
+        271,
+        271,
+        271
+      ],
+      "reserved": "xE5F662"
+    },
+    "STATE_OAXACA": {
+      "province_count": 20,
+      "seed": "xC83AE5",
+      "phase_counts": [
+        5,
+        5,
+        5,
+        4
+      ],
+      "reserved": "xC0C070"
+    },
+    "STATE_OB": {
+      "province_count": 488,
+      "seed": "x0DD9F5",
+      "phase_counts": [
+        122,
+        122,
+        122,
+        121
+      ],
+      "reserved": "x930F69"
+    },
+    "STATE_OHIO": {
+      "province_count": 29,
+      "seed": "xC8B64B",
+      "phase_counts": [
+        7,
+        7,
+        7,
+        7
+      ],
+      "reserved": "xAD9F9F"
+    },
+    "STATE_OKHOTSK": {
+      "province_count": 336,
+      "seed": "xD77A02",
+      "phase_counts": [
+        84,
+        84,
+        84,
+        83
+      ],
+      "reserved": "xF7CE53"
+    },
+    "STATE_OKLAHOMA": {
+      "province_count": 48,
+      "seed": "xD6ADF2",
+      "phase_counts": [
+        12,
+        12,
+        12,
+        11
+      ],
+      "reserved": "x3A130C"
+    },
+    "STATE_OLD_CASTILE": {
+      "province_count": 22,
+      "seed": "xA1037C",
+      "phase_counts": [
+        6,
+        5,
+        5,
+        5
+      ],
+      "reserved": "x702000"
+    },
+    "STATE_OMAN": {
+      "province_count": 68,
+      "seed": "xBC6325",
+      "phase_counts": [
+        17,
+        17,
+        17,
+        16
+      ],
+      "reserved": "x757C65"
+    },
+    "STATE_ONTARIO": {
+      "province_count": 370,
+      "seed": "x627826",
+      "phase_counts": [
+        93,
+        92,
+        92,
+        92
+      ],
+      "reserved": "xD64816"
+    },
+    "STATE_ORAN": {
+      "province_count": 20,
+      "seed": "xB735DB",
+      "phase_counts": [
+        5,
+        5,
+        5,
+        4
+      ],
+      "reserved": "xBCA418"
+    },
+    "STATE_OREGON": {
+      "province_count": 78,
+      "seed": "x4A00D8",
+      "phase_counts": [
+        20,
+        19,
+        19,
+        19
+      ],
+      "reserved": "xF5AD68"
+    },
+    "STATE_ORISSA": {
+      "province_count": 23,
+      "seed": "xBB9552",
+      "phase_counts": [
+        6,
+        6,
+        5,
+        5
+      ],
+      "reserved": "x5031A0"
+    },
+    "STATE_ORLEANS": {
+      "province_count": 13,
+      "seed": "x47B641",
+      "phase_counts": [
+        3,
+        3,
+        3,
+        3
+      ],
+      "reserved": "xE7B296"
+    },
+    "STATE_OROMIA": {
+      "province_count": 87,
+      "seed": "xD6B588",
+      "phase_counts": [
+        22,
+        22,
+        21,
+        21
+      ],
+      "reserved": "x6E8CCA"
+    },
+    "STATE_ORYOL": {
+      "province_count": 44,
+      "seed": "x331CB3",
+      "phase_counts": [
+        11,
+        11,
+        11,
+        10
+      ],
+      "reserved": "x93157C"
+    },
+    "STATE_OSTROBOTHNIA": {
+      "province_count": 27,
+      "seed": "xFBFA4C",
+      "phase_counts": [
+        7,
+        7,
+        6,
+        6
+      ],
+      "reserved": "xED84C3"
+    },
+    "STATE_OULU": {
+      "province_count": 134,
+      "seed": "x1ADDF7",
+      "phase_counts": [
+        34,
+        33,
+        33,
+        33
+      ],
+      "reserved": "x6E6888"
+    },
+    "STATE_OUTER_HAUSALAND": {
+      "province_count": 73,
+      "seed": "x5051A0",
+      "phase_counts": [
+        18,
+        18,
+        18,
+        18
+      ],
+      "reserved": "x96E7A9"
+    },
+    "STATE_OUTER_MANCHURIA": {
+      "province_count": 106,
+      "seed": "x79F88A",
+      "phase_counts": [
+        27,
+        26,
+        26,
+        26
+      ],
+      "reserved": "x90C920"
+    },
+    "STATE_PALESTINE": {
+      "province_count": 8,
+      "seed": "x605060",
+      "phase_counts": [
+        2,
+        2,
+        2,
+        1
+      ],
+      "reserved": "xE0D060"
+    },
+    "STATE_PANAMA": {
+      "province_count": 14,
+      "seed": "xD0EF40",
+      "phase_counts": [
+        4,
+        3,
+        3,
+        3
+      ],
+      "reserved": "x47C5F8"
+    },
+    "STATE_PARA": {
+      "province_count": 257,
+      "seed": "x0EEAC1",
+      "phase_counts": [
+        64,
+        64,
+        64,
+        64
+      ],
+      "reserved": "x16E6AD"
+    },
+    "STATE_PARAIBA": {
+      "province_count": 9,
+      "seed": "xB20898",
+      "phase_counts": [
+        2,
+        2,
+        2,
+        2
+      ],
+      "reserved": "x516DE8"
+    },
+    "STATE_PARANA": {
+      "province_count": 41,
+      "seed": "x8A1D55",
+      "phase_counts": [
+        10,
+        10,
+        10,
+        10
+      ],
+      "reserved": "x1D2749"
+    },
+    "STATE_PASHTUNISTAN": {
+      "province_count": 23,
+      "seed": "x69B8C7",
+      "phase_counts": [
+        6,
+        6,
+        5,
+        5
+      ],
+      "reserved": "xA96256"
+    },
+    "STATE_PASTAZA": {
+      "province_count": 73,
+      "seed": "xDF9283",
+      "phase_counts": [
+        18,
+        18,
+        18,
+        18
+      ],
+      "reserved": "x2521E8"
+    },
+    "STATE_PEGU": {
+      "province_count": 21,
+      "seed": "xB13330",
+      "phase_counts": [
+        5,
+        5,
+        5,
+        5
+      ],
+      "reserved": "xB030A0"
+    },
+    "STATE_PELOPONNESE": {
+      "province_count": 5,
+      "seed": "xC0D060",
+      "phase_counts": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "reserved": "x43409D"
+    },
+    "STATE_PENNSYLVANIA": {
+      "province_count": 34,
+      "seed": "xB00000",
+      "phase_counts": [
+        9,
+        8,
+        8,
+        8
+      ],
+      "reserved": "xC4DED4"
+    },
+    "STATE_PERM": {
+      "province_count": 90,
+      "seed": "xFF1174",
+      "phase_counts": [
+        23,
+        22,
+        22,
+        22
+      ],
+      "reserved": "x501FAB"
+    },
+    "STATE_PERNAMBUCO": {
+      "province_count": 29,
+      "seed": "xC0A070",
+      "phase_counts": [
+        7,
+        7,
+        7,
+        7
+      ],
+      "reserved": "x3DBD72"
+    },
+    "STATE_PERSIAN_KURDISTAN": {
+      "province_count": 11,
+      "seed": "xE050A0",
+      "phase_counts": [
+        3,
+        3,
+        2,
+        2
+      ],
+      "reserved": "xB25FAE"
+    },
+    "STATE_PIAUI": {
+      "province_count": 50,
+      "seed": "xB169D2",
+      "phase_counts": [
+        13,
+        12,
+        12,
+        12
+      ],
+      "reserved": "x772A8C"
+    },
+    "STATE_PICARDY": {
+      "province_count": 6,
+      "seed": "xE0A624",
+      "phase_counts": [
+        2,
+        1,
+        1,
+        1
+      ],
+      "reserved": "x7040A0"
+    },
+    "STATE_PIEDMONT": {
+      "province_count": 12,
+      "seed": "x904061",
+      "phase_counts": [
+        3,
+        3,
+        3,
+        2
+      ],
+      "reserved": "xF00544"
+    },
+    "STATE_POITOU": {
+      "province_count": 8,
+      "seed": "xD0A040",
+      "phase_counts": [
+        2,
+        2,
+        2,
+        1
+      ],
+      "reserved": "x19234B"
+    },
+    "STATE_POMERANIA": {
+      "province_count": 18,
+      "seed": "x567452",
+      "phase_counts": [
+        5,
+        4,
+        4,
+        4
+      ],
+      "reserved": "xEF5730"
+    },
+    "STATE_POSEN": {
+      "province_count": 12,
+      "seed": "x999CEE",
+      "phase_counts": [
+        3,
+        3,
+        3,
+        2
+      ],
+      "reserved": "xFCC7B7"
+    },
+    "STATE_POTOSI": {
+      "province_count": 31,
+      "seed": "xF0A4ED",
+      "phase_counts": [
+        8,
+        8,
+        7,
+        7
+      ],
+      "reserved": "x7E2F00"
+    },
+    "STATE_PROVENCE": {
+      "province_count": 9,
+      "seed": "x3040E0",
+      "phase_counts": [
+        2,
+        2,
+        2,
+        2
+      ],
+      "reserved": "x5080E0"
+    },
+    "STATE_PSKOV": {
+      "province_count": 26,
+      "seed": "xA981B3",
+      "phase_counts": [
+        7,
+        6,
+        6,
+        6
+      ],
+      "reserved": "x4C8BB8"
+    },
+    "STATE_PUERTO_RICO": {
+      "province_count": 2,
+      "seed": "x2160B9",
+      "phase_counts": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "reserved": "xB07080"
+    },
+    "STATE_PUNJAB": {
+      "province_count": 52,
+      "seed": "xCD3E9A",
+      "phase_counts": [
+        13,
+        13,
+        13,
+        12
+      ],
+      "reserved": "xD458B6"
+    },
+    "STATE_PYONGYANG": {
+      "province_count": 19,
+      "seed": "x11044D",
+      "phase_counts": [
+        5,
+        5,
+        4,
+        4
+      ],
+      "reserved": "xA2DB51"
+    },
+    "STATE_QINGHAI": {
+      "province_count": 161,
+      "seed": "x53C731",
+      "phase_counts": [
+        40,
+        40,
+        40,
+        40
+      ],
+      "reserved": "x2599E5"
+    },
+    "STATE_QUEBEC": {
+      "province_count": 640,
+      "seed": "xD84B92",
+      "phase_counts": [
+        160,
+        160,
+        160,
+        159
+      ],
+      "reserved": "xEA49D9"
+    },
+    "STATE_QUEENSLAND": {
+      "province_count": 367,
+      "seed": "xFC6230",
+      "phase_counts": [
+        92,
+        92,
+        91,
+        91
+      ],
+      "reserved": "x702E01"
+    },
+    "STATE_QUETTA": {
+      "province_count": 14,
+      "seed": "x6F000D",
+      "phase_counts": [
+        4,
+        3,
+        3,
+        3
+      ],
+      "reserved": "x7CA0E0"
+    },
+    "STATE_RAJPUTANA": {
+      "province_count": 72,
+      "seed": "xE0F021",
+      "phase_counts": [
+        18,
+        18,
+        18,
+        17
+      ],
+      "reserved": "x77810B"
+    },
+    "STATE_RHINELAND": {
+      "province_count": 6,
+      "seed": "x904020",
+      "phase_counts": [
+        2,
+        1,
+        1,
+        1
+      ],
+      "reserved": "xC1B963"
+    },
+    "STATE_RHODE_ISLAND": {
+      "province_count": 3,
+      "seed": "x939ACE",
+      "phase_counts": [
+        1,
+        1,
+        0,
+        0
+      ],
+      "reserved": "xC5CE93"
+    },
+    "STATE_RHONE": {
+      "province_count": 11,
+      "seed": "xB04060",
+      "phase_counts": [
+        3,
+        3,
+        2,
+        2
+      ],
+      "reserved": "x30C060"
+    },
+    "STATE_RIFT_VALLEY": {
+      "province_count": 33,
+      "seed": "xAE1D62",
+      "phase_counts": [
+        8,
+        8,
+        8,
+        8
+      ],
+      "reserved": "x5C88B8"
+    },
+    "STATE_RIGA": {
+      "province_count": 18,
+      "seed": "x00A0A0",
+      "phase_counts": [
+        5,
+        4,
+        4,
+        4
+      ],
+      "reserved": "xE4E3DB"
+    },
+    "STATE_RIO_DE_JANEIRO": {
+      "province_count": 16,
+      "seed": "xE0E888",
+      "phase_counts": [
+        4,
+        4,
+        4,
+        3
+      ],
+      "reserved": "x1FCD89"
+    },
+    "STATE_RIO_GRANDE": {
+      "province_count": 66,
+      "seed": "xE96480",
+      "phase_counts": [
+        17,
+        16,
+        16,
+        16
+      ],
+      "reserved": "x4EE20D"
+    },
+    "STATE_RIO_GRANDE_DO_NORTE": {
+      "province_count": 9,
+      "seed": "x5DCFF3",
+      "phase_counts": [
+        2,
+        2,
+        2,
+        2
+      ],
+      "reserved": "xED0C0B"
+    },
+    "STATE_RIO_GRANDE_DO_SUL": {
+      "province_count": 60,
+      "seed": "x52B247",
+      "phase_counts": [
+        15,
+        15,
+        15,
+        14
+      ],
+      "reserved": "x783434"
+    },
+    "STATE_RIO_NEGRO": {
+      "province_count": 84,
+      "seed": "x78901C",
+      "phase_counts": [
+        21,
+        21,
+        21,
+        20
+      ],
+      "reserved": "xF00110"
+    },
+    "STATE_ROMAGNA": {
+      "province_count": 4,
+      "seed": "x708020",
+      "phase_counts": [
+        1,
+        1,
+        1,
+        0
+      ],
+      "reserved": "xF000A0"
+    },
+    "STATE_ROSTOV": {
+      "province_count": 53,
+      "seed": "x805180",
+      "phase_counts": [
+        13,
+        13,
+        13,
+        13
+      ],
+      "reserved": "x045D1F"
+    },
+    "STATE_RUHR": {
+      "province_count": 3,
+      "seed": "x2101E0",
+      "phase_counts": [
+        1,
+        1,
+        0,
+        0
+      ],
+      "reserved": "x5101A0"
+    },
+    "STATE_RUTHENIA": {
+      "province_count": 5,
+      "seed": "xA0531B",
+      "phase_counts": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "reserved": "xD0E061"
+    },
+    "STATE_RYAZAN": {
+      "province_count": 24,
+      "seed": "x14830F",
+      "phase_counts": [
+        6,
+        6,
+        6,
+        5
+      ],
+      "reserved": "x5EA87F"
+    },
+    "STATE_RYUKYU_ISLANDS": {
+      "province_count": 3,
+      "seed": "xF0D080",
+      "phase_counts": [
+        1,
+        1,
+        0,
+        0
+      ],
+      "reserved": "xF0F061"
+    },
+    "STATE_SAHARA": {
+      "province_count": 182,
+      "seed": "x09EC6F",
+      "phase_counts": [
+        46,
+        45,
+        45,
+        45
+      ],
+      "reserved": "xED2BE3"
+    },
+    "STATE_SAKHALIN": {
+      "province_count": 31,
+      "seed": "x2492AA",
+      "phase_counts": [
+        8,
+        8,
+        7,
+        7
+      ],
+      "reserved": "xA060DF"
+    },
+    "STATE_SAMARA": {
+      "province_count": 76,
+      "seed": "xBF7060",
+      "phase_counts": [
+        19,
+        19,
+        19,
+        18
+      ],
+      "reserved": "xE44235"
+    },
+    "STATE_SANTA_CATARINA": {
+      "province_count": 20,
+      "seed": "x02483B",
+      "phase_counts": [
+        5,
+        5,
+        5,
+        4
+      ],
+      "reserved": "xF6A625"
+    },
+    "STATE_SANTA_FE": {
+      "province_count": 55,
+      "seed": "x704010",
+      "phase_counts": [
+        14,
+        14,
+        13,
+        13
+      ],
+      "reserved": "x694D91"
+    },
+    "STATE_SANTIAGO": {
+      "province_count": 39,
+      "seed": "x5DED27",
+      "phase_counts": [
+        10,
+        10,
+        9,
+        9
+      ],
+      "reserved": "x423A89"
+    },
+    "STATE_SANTO_DOMINGO": {
+      "province_count": 8,
+      "seed": "x317080",
+      "phase_counts": [
+        2,
+        2,
+        2,
+        1
+      ],
+      "reserved": "x877F90"
+    },
+    "STATE_SAN_SALVADOR": {
+      "province_count": 4,
+      "seed": "xB0D0C7",
+      "phase_counts": [
+        1,
+        1,
+        1,
+        0
+      ],
+      "reserved": "xCC1FCA"
+    },
+    "STATE_SAO_PAULO": {
+      "province_count": 56,
+      "seed": "x9D3688",
+      "phase_counts": [
+        14,
+        14,
+        14,
+        13
+      ],
+      "reserved": "xB57BC4"
+    },
+    "STATE_SARDINIA": {
+      "province_count": 8,
+      "seed": "x0D6170",
+      "phase_counts": [
+        2,
+        2,
+        2,
+        1
+      ],
+      "reserved": "xD8550D"
+    },
+    "STATE_SARIWON": {
+      "province_count": 14,
+      "seed": "x21D080",
+      "phase_counts": [
+        4,
+        3,
+        3,
+        3
+      ],
+      "reserved": "x92D8ED"
+    },
+    "STATE_SASKATCHEWAN": {
+      "province_count": 266,
+      "seed": "xD1F86F",
+      "phase_counts": [
+        67,
+        66,
+        66,
+        66
+      ],
+      "reserved": "xC09F00"
+    },
+    "STATE_SAVOY": {
+      "province_count": 4,
+      "seed": "x56B04B",
+      "phase_counts": [
+        1,
+        1,
+        1,
+        0
+      ],
+      "reserved": "xDDDD3B"
+    },
+    "STATE_SAXONY": {
+      "province_count": 11,
+      "seed": "x169073",
+      "phase_counts": [
+        3,
+        3,
+        2,
+        2
+      ],
+      "reserved": "xD0C021"
+    },
+    "STATE_SCANIA": {
+      "province_count": 10,
+      "seed": "xC04161",
+      "phase_counts": [
+        3,
+        2,
+        2,
+        2
+      ],
+      "reserved": "xBE3D27"
+    },
+    "STATE_SCHLESWIG_HOLSTEIN": {
+      "province_count": 8,
+      "seed": "x60809F",
+      "phase_counts": [
+        2,
+        2,
+        2,
+        1
+      ],
+      "reserved": "xE3C876"
+    },
+    "STATE_SEMIRECHE": {
+      "province_count": 144,
+      "seed": "x2477C7",
+      "phase_counts": [
+        36,
+        36,
+        36,
+        35
+      ],
+      "reserved": "x919A76"
+    },
+    "STATE_SEMNAN": {
+      "province_count": 28,
+      "seed": "x807020",
+      "phase_counts": [
+        7,
+        7,
+        7,
+        6
+      ],
+      "reserved": "x8EC8D6"
+    },
+    "STATE_SENEGAL": {
+      "province_count": 40,
+      "seed": "xBCFFB5",
+      "phase_counts": [
+        10,
+        10,
+        10,
+        9
+      ],
+      "reserved": "xD6E38D"
+    },
+    "STATE_SEOUL": {
+      "province_count": 12,
+      "seed": "xB05000",
+      "phase_counts": [
+        3,
+        3,
+        3,
+        2
+      ],
+      "reserved": "x03EAAF"
+    },
+    "STATE_SHANDONG": {
+      "province_count": 40,
+      "seed": "xAC24A6",
+      "phase_counts": [
+        10,
+        10,
+        10,
+        9
+      ],
+      "reserved": "xE19708"
+    },
+    "STATE_SHANXI": {
+      "province_count": 41,
+      "seed": "xF87F8F",
+      "phase_counts": [
+        10,
+        10,
+        10,
+        10
+      ],
+      "reserved": "x703060"
+    },
+    "STATE_SHAN_STATES": {
+      "province_count": 36,
+      "seed": "xD04A7B",
+      "phase_counts": [
+        9,
+        9,
+        9,
+        8
+      ],
+      "reserved": "xC20B31"
+    },
+    "STATE_SHAOZHOU": {
+      "province_count": 23,
+      "seed": "xB03161",
+      "phase_counts": [
+        6,
+        6,
+        5,
+        5
+      ],
+      "reserved": "x242A48"
+    },
+    "STATE_SHENGJING": {
+      "province_count": 32,
+      "seed": "x709001",
+      "phase_counts": [
+        8,
+        8,
+        8,
+        7
+      ],
+      "reserved": "xE9E896"
+    },
+    "STATE_SHIKOKU": {
+      "province_count": 5,
+      "seed": "xEFD040",
+      "phase_counts": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "reserved": "x7C9BEB"
+    },
+    "STATE_SICHUAN": {
+      "province_count": 104,
+      "seed": "x60E0D5",
+      "phase_counts": [
+        26,
+        26,
+        26,
+        25
+      ],
+      "reserved": "x143D50"
+    },
+    "STATE_SICILY": {
+      "province_count": 7,
+      "seed": "x805120",
+      "phase_counts": [
+        2,
+        2,
+        1,
+        1
+      ],
+      "reserved": "x8A0548"
+    },
+    "STATE_SIERRA_LEONE": {
+      "province_count": 12,
+      "seed": "xBBF47C",
+      "phase_counts": [
+        3,
+        3,
+        3,
+        2
+      ],
+      "reserved": "x36A605"
+    },
+    "STATE_SINAI": {
+      "province_count": 13,
+      "seed": "xC01060",
+      "phase_counts": [
+        3,
+        3,
+        3,
+        3
+      ],
+      "reserved": "xAF35C9"
+    },
+    "STATE_SINALOA": {
+      "province_count": 9,
+      "seed": "xDFD0C0",
+      "phase_counts": [
+        2,
+        2,
+        2,
+        2
+      ],
+      "reserved": "xC0B080"
+    },
+    "STATE_SINDH": {
+      "province_count": 32,
+      "seed": "x6E9D54",
+      "phase_counts": [
+        8,
+        8,
+        8,
+        7
+      ],
+      "reserved": "x16F3F6"
+    },
+    "STATE_SISTAN": {
+      "province_count": 45,
+      "seed": "x945FA2",
+      "phase_counts": [
+        11,
+        11,
+        11,
+        11
+      ],
+      "reserved": "x3FE8A6"
+    },
+    "STATE_SKOPIA": {
+      "province_count": 7,
+      "seed": "x7CF777",
+      "phase_counts": [
+        2,
+        2,
+        1,
+        1
+      ],
+      "reserved": "x800FE7"
+    },
+    "STATE_SLAVONIA": {
+      "province_count": 7,
+      "seed": "x80CF00",
+      "phase_counts": [
+        2,
+        2,
+        1,
+        1
+      ],
+      "reserved": "x51A021"
+    },
+    "STATE_SLOVAKIA": {
+      "province_count": 18,
+      "seed": "xCA932B",
+      "phase_counts": [
+        5,
+        4,
+        4,
+        4
+      ],
+      "reserved": "xB23DA0"
+    },
+    "STATE_SLOVENIA": {
+      "province_count": 4,
+      "seed": "x44F127",
+      "phase_counts": [
+        1,
+        1,
+        1,
+        0
+      ],
+      "reserved": "xB0E040"
+    },
+    "STATE_SMOLENSK": {
+      "province_count": 25,
+      "seed": "xECBC4D",
+      "phase_counts": [
+        6,
+        6,
+        6,
+        6
+      ],
+      "reserved": "x8D6462"
+    },
+    "STATE_SOLOMON_ISLANDS": {
+      "province_count": 7,
+      "seed": "x898945",
+      "phase_counts": [
+        2,
+        2,
+        1,
+        1
+      ],
+      "reserved": "xF5F405"
+    },
+    "STATE_SOMALILAND": {
+      "province_count": 123,
+      "seed": "x524E91",
+      "phase_counts": [
+        31,
+        31,
+        30,
+        30
+      ],
+      "reserved": "x46250C"
+    },
+    "STATE_SONORA": {
+      "province_count": 34,
+      "seed": "xC699E3",
+      "phase_counts": [
+        9,
+        8,
+        8,
+        8
+      ],
+      "reserved": "x8646F0"
+    },
+    "STATE_SOUTHERN_ANHUI": {
+      "province_count": 17,
+      "seed": "x36029B",
+      "phase_counts": [
+        4,
+        4,
+        4,
+        4
+      ],
+      "reserved": "x61A7A8"
+    },
+    "STATE_SOUTHERN_MANCHURIA": {
+      "province_count": 106,
+      "seed": "x09233D",
+      "phase_counts": [
+        27,
+        26,
+        26,
+        26
+      ],
+      "reserved": "xEBCD20"
+    },
+    "STATE_SOUTHERN_TRANSYLVANIA": {
+      "province_count": 9,
+      "seed": "xC17759",
+      "phase_counts": [
+        2,
+        2,
+        2,
+        2
+      ],
+      "reserved": "x457B5F"
+    },
+    "STATE_SOUTH_ANGOLA": {
+      "province_count": 60,
+      "seed": "x1B547C",
+      "phase_counts": [
+        15,
+        15,
+        15,
+        14
+      ],
+      "reserved": "x2DAC68"
+    },
+    "STATE_SOUTH_ATLANTIC_ISLANDS": {
+      "province_count": 7,
+      "seed": "x9EF337",
+      "phase_counts": [
+        2,
+        2,
+        1,
+        1
+      ],
+      "reserved": "xB5760C"
+    },
+    "STATE_SOUTH_CAMEROON": {
+      "province_count": 37,
+      "seed": "xC6087A",
+      "phase_counts": [
+        9,
+        9,
+        9,
+        9
+      ],
+      "reserved": "x902089"
+    },
+    "STATE_SOUTH_CAROLINA": {
+      "province_count": 19,
+      "seed": "xAF8C38",
+      "phase_counts": [
+        5,
+        5,
+        4,
+        4
+      ],
+      "reserved": "xF83D99"
+    },
+    "STATE_SOUTH_DAKOTA": {
+      "province_count": 58,
+      "seed": "x176E1A",
+      "phase_counts": [
+        15,
+        14,
+        14,
+        14
+      ],
+      "reserved": "x026750"
+    },
+    "STATE_SOUTH_ISLAND": {
+      "province_count": 47,
+      "seed": "xC5AD14",
+      "phase_counts": [
+        12,
+        12,
+        11,
+        11
+      ],
+      "reserved": "xA1C4D2"
+    },
+    "STATE_SOUTH_MADAGASCAR": {
+      "province_count": 62,
+      "seed": "x52ED6A",
+      "phase_counts": [
+        16,
+        15,
+        15,
+        15
+      ],
+      "reserved": "x606CE0"
+    },
+    "STATE_SOUTH_SUMATRA": {
+      "province_count": 30,
+      "seed": "xA97585",
+      "phase_counts": [
+        8,
+        7,
+        7,
+        7
+      ],
+      "reserved": "x7A4DC8"
+    },
+    "STATE_SOUTH_TYROL": {
+      "province_count": 4,
+      "seed": "xD0BF60",
+      "phase_counts": [
+        1,
+        1,
+        1,
+        0
+      ],
+      "reserved": "xD040E0"
+    },
+    "STATE_STAVROPOL": {
+      "province_count": 25,
+      "seed": "xE0E16A",
+      "phase_counts": [
+        6,
+        6,
+        6,
+        6
+      ],
+      "reserved": "xF88EA3"
+    },
+    "STATE_STYRIA": {
+      "province_count": 8,
+      "seed": "xB06141",
+      "phase_counts": [
+        2,
+        2,
+        2,
+        1
+      ],
+      "reserved": "xB4D292"
+    },
+    "STATE_SUNDA_ISLANDS": {
+      "province_count": 16,
+      "seed": "x5ABA94",
+      "phase_counts": [
+        4,
+        4,
+        4,
+        3
+      ],
+      "reserved": "xE90740"
+    },
+    "STATE_SURGUT": {
+      "province_count": 312,
+      "seed": "xBA1DC9",
+      "phase_counts": [
+        78,
+        78,
+        78,
+        77
+      ],
+      "reserved": "x7BB468"
+    },
+    "STATE_SUZHOU": {
+      "province_count": 7,
+      "seed": "x301000",
+      "phase_counts": [
+        2,
+        2,
+        1,
+        1
+      ],
+      "reserved": "x86FF7E"
+    },
+    "STATE_SVEALAND": {
+      "province_count": 58,
+      "seed": "x93C3BC",
+      "phase_counts": [
+        15,
+        14,
+        14,
+        14
+      ],
+      "reserved": "xA08021"
+    },
+    "STATE_SYRDARYA": {
+      "province_count": 212,
+      "seed": "x46CEC2",
+      "phase_counts": [
+        53,
+        53,
+        53,
+        52
+      ],
+      "reserved": "xD7E661"
+    },
+    "STATE_SYRIA": {
+      "province_count": 18,
+      "seed": "x186A43",
+      "phase_counts": [
+        5,
+        4,
+        4,
+        4
+      ],
+      "reserved": "xE2C7D1"
+    },
+    "STATE_TABRIZ": {
+      "province_count": 27,
+      "seed": "x2B1395",
+      "phase_counts": [
+        7,
+        7,
+        6,
+        6
+      ],
+      "reserved": "x41B0E0"
+    },
+    "STATE_TAHITI": {
+      "province_count": 23,
+      "seed": "xA000B0",
+      "phase_counts": [
+        6,
+        6,
+        5,
+        5
+      ],
+      "reserved": "xF1DBF3"
+    },
+    "STATE_TAJIKISTAN": {
+      "province_count": 35,
+      "seed": "x6DA038",
+      "phase_counts": [
+        9,
+        9,
+        8,
+        8
+      ],
+      "reserved": "x68146B"
+    },
+    "STATE_TALINN": {
+      "province_count": 12,
+      "seed": "xD29762",
+      "phase_counts": [
+        3,
+        3,
+        3,
+        2
+      ],
+      "reserved": "xE87B15"
+    },
+    "STATE_TAMBOV": {
+      "province_count": 41,
+      "seed": "x41D846",
+      "phase_counts": [
+        10,
+        10,
+        10,
+        10
+      ],
+      "reserved": "x0434D7"
+    },
+    "STATE_TANGANYIKA": {
+      "province_count": 82,
+      "seed": "x34EFF0",
+      "phase_counts": [
+        21,
+        20,
+        20,
+        20
+      ],
+      "reserved": "xDFA030"
+    },
+    "STATE_TARAPACA": {
+      "province_count": 13,
+      "seed": "xA00070",
+      "phase_counts": [
+        3,
+        3,
+        3,
+        3
+      ],
+      "reserved": "xD46425"
+    },
+    "STATE_TARTARIA": {
+      "province_count": 46,
+      "seed": "xFAB9A8",
+      "phase_counts": [
+        12,
+        11,
+        11,
+        11
+      ],
+      "reserved": "xCD3A7F"
+    },
+    "STATE_TARTU": {
+      "province_count": 10,
+      "seed": "x8487D5",
+      "phase_counts": [
+        3,
+        2,
+        2,
+        2
+      ],
+      "reserved": "x6D20F8"
+    },
+    "STATE_TASMANIA": {
+      "province_count": 21,
+      "seed": "x9088C7",
+      "phase_counts": [
+        5,
+        5,
+        5,
+        5
+      ],
+      "reserved": "x97975E"
+    },
+    "STATE_TAURIDA": {
+      "province_count": 26,
+      "seed": "xF0E061",
+      "phase_counts": [
+        7,
+        6,
+        6,
+        6
+      ],
+      "reserved": "x8A09FD"
+    },
+    "STATE_TENASSERIM": {
+      "province_count": 29,
+      "seed": "xB36203",
+      "phase_counts": [
+        7,
+        7,
+        7,
+        7
+      ],
+      "reserved": "x958E99"
+    },
+    "STATE_TENNESSEE": {
+      "province_count": 30,
+      "seed": "x454965",
+      "phase_counts": [
+        8,
+        7,
+        7,
+        7
+      ],
+      "reserved": "x0DA56A"
+    },
+    "STATE_TEXAS": {
+      "province_count": 159,
+      "seed": "x803040",
+      "phase_counts": [
+        40,
+        40,
+        39,
+        39
+      ],
+      "reserved": "xDB68A7"
+    },
+    "STATE_THESSALIA": {
+      "province_count": 6,
+      "seed": "xACFFA7",
+      "phase_counts": [
+        2,
+        1,
+        1,
+        1
+      ],
+      "reserved": "x8050E0"
+    },
+    "STATE_TIANSHAN": {
+      "province_count": 236,
+      "seed": "x5EC106",
+      "phase_counts": [
+        59,
+        59,
+        59,
+        58
+      ],
+      "reserved": "x261B25"
+    },
+    "STATE_TIMBUKTU": {
+      "province_count": 165,
+      "seed": "x052B92",
+      "phase_counts": [
+        41,
+        41,
+        41,
+        41
+      ],
+      "reserved": "xFDD16E"
+    },
+    "STATE_TOBOLSK": {
+      "province_count": 155,
+      "seed": "x0C4124",
+      "phase_counts": [
+        39,
+        39,
+        38,
+        38
+      ],
+      "reserved": "xC47E7C"
+    },
+    "STATE_TOGO": {
+      "province_count": 15,
+      "seed": "xD4B5FF",
+      "phase_counts": [
+        4,
+        4,
+        3,
+        3
+      ],
+      "reserved": "xEDF00C"
+    },
+    "STATE_TOHOKU": {
+      "province_count": 20,
+      "seed": "xE0D080",
+      "phase_counts": [
+        5,
+        5,
+        5,
+        4
+      ],
+      "reserved": "xAC762F"
+    },
+    "STATE_TOKAI": {
+      "province_count": 10,
+      "seed": "x31D0C0",
+      "phase_counts": [
+        3,
+        2,
+        2,
+        2
+      ],
+      "reserved": "xCCB03E"
+    },
+    "STATE_TOMSK": {
+      "province_count": 301,
+      "seed": "x875B76",
+      "phase_counts": [
+        75,
+        75,
+        75,
+        75
+      ],
+      "reserved": "x52290B"
+    },
+    "STATE_TONGA": {
+      "province_count": 4,
+      "seed": "xA7F8A1",
+      "phase_counts": [
+        1,
+        1,
+        1,
+        0
+      ],
+      "reserved": "xD98CDA"
+    },
+    "STATE_TONKIN": {
+      "province_count": 23,
+      "seed": "x4BB178",
+      "phase_counts": [
+        6,
+        6,
+        5,
+        5
+      ],
+      "reserved": "xCD0D1D"
+    },
+    "STATE_TRABZON": {
+      "province_count": 10,
+      "seed": "x9655BD",
+      "phase_counts": [
+        3,
+        2,
+        2,
+        2
+      ],
+      "reserved": "x288BCD"
+    },
+    "STATE_TRANSDANUBIA": {
+      "province_count": 17,
+      "seed": "xCFDFDF",
+      "phase_counts": [
+        4,
+        4,
+        4,
+        4
+      ],
+      "reserved": "xA709B7"
+    },
+    "STATE_TRANSJORDAN": {
+      "province_count": 10,
+      "seed": "xE050E0",
+      "phase_counts": [
+        3,
+        2,
+        2,
+        2
+      ],
+      "reserved": "xC2B483"
+    },
+    "STATE_TRANSVAAL": {
+      "province_count": 67,
+      "seed": "x04FA29",
+      "phase_counts": [
+        17,
+        17,
+        16,
+        16
+      ],
+      "reserved": "xD0A010"
+    },
+    "STATE_TRANS_BAIKAL": {
+      "province_count": 202,
+      "seed": "x15176F",
+      "phase_counts": [
+        51,
+        50,
+        50,
+        50
+      ],
+      "reserved": "x4583AE"
+    },
+    "STATE_TRAVANCORE": {
+      "province_count": 9,
+      "seed": "xE4EB67",
+      "phase_counts": [
+        2,
+        2,
+        2,
+        2
+      ],
+      "reserved": "xB0934C"
+    },
+    "STATE_TRIPOLI": {
+      "province_count": 68,
+      "seed": "x505BF8",
+      "phase_counts": [
+        17,
+        17,
+        17,
+        16
+      ],
+      "reserved": "xD7CBD9"
+    },
+    "STATE_TUCUMAN": {
+      "province_count": 69,
+      "seed": "x832F57",
+      "phase_counts": [
+        17,
+        17,
+        17,
+        17
+      ],
+      "reserved": "x1000D0"
+    },
+    "STATE_TUNISIA": {
+      "province_count": 39,
+      "seed": "xC05020",
+      "phase_counts": [
+        10,
+        10,
+        9,
+        9
+      ],
+      "reserved": "xBFD021"
+    },
+    "STATE_TURKMENIA": {
+      "province_count": 91,
+      "seed": "x3AE9D8",
+      "phase_counts": [
+        23,
+        23,
+        22,
+        22
+      ],
+      "reserved": "x07D17B"
+    },
+    "STATE_TUSCANY": {
+      "province_count": 6,
+      "seed": "x6A7662",
+      "phase_counts": [
+        2,
+        1,
+        1,
+        1
+      ],
+      "reserved": "x32BA1A"
+    },
+    "STATE_TUVA": {
+      "province_count": 68,
+      "seed": "x587F78",
+      "phase_counts": [
+        17,
+        17,
+        17,
+        16
+      ],
+      "reserved": "xDB59D8"
+    },
+    "STATE_TVER": {
+      "province_count": 31,
+      "seed": "x9AA8A6",
+      "phase_counts": [
+        8,
+        8,
+        7,
+        7
+      ],
+      "reserved": "xD4F88C"
+    },
+    "STATE_TYROL": {
+      "province_count": 9,
+      "seed": "x51C0E0",
+      "phase_counts": [
+        2,
+        2,
+        2,
+        2
+      ],
+      "reserved": "xF0E0C0"
+    },
+    "STATE_UBANGI_SHARI": {
+      "province_count": 113,
+      "seed": "x964C06",
+      "phase_counts": [
+        28,
+        28,
+        28,
+        28
+      ],
+      "reserved": "x5D1033"
+    },
+    "STATE_UFA": {
+      "province_count": 55,
+      "seed": "xF413F5",
+      "phase_counts": [
+        14,
+        14,
+        13,
+        13
+      ],
+      "reserved": "x756FF5"
+    },
+    "STATE_UGANDA": {
+      "province_count": 40,
+      "seed": "xA9859E",
+      "phase_counts": [
+        10,
+        10,
+        10,
+        9
+      ],
+      "reserved": "x6530A0"
+    },
+    "STATE_ULIASTAI": {
+      "province_count": 273,
+      "seed": "x59D6A8",
+      "phase_counts": [
+        68,
+        68,
+        68,
+        68
+      ],
+      "reserved": "x84829A"
+    },
+    "STATE_ULSTER": {
+      "province_count": 7,
+      "seed": "x2BE1C8",
+      "phase_counts": [
+        2,
+        2,
+        1,
+        1
+      ],
+      "reserved": "x20E040"
+    },
+    "STATE_UMBRIA": {
+      "province_count": 6,
+      "seed": "xD3A384",
+      "phase_counts": [
+        2,
+        1,
+        1,
+        1
+      ],
+      "reserved": "xD8F07B"
+    },
+    "STATE_UPPER_ANDALUSIA": {
+      "province_count": 13,
+      "seed": "xBC6ED3",
+      "phase_counts": [
+        3,
+        3,
+        3,
+        3
+      ],
+      "reserved": "xEE7F54"
+    },
+    "STATE_UPPER_EGYPT": {
+      "province_count": 33,
+      "seed": "x0E8E92",
+      "phase_counts": [
+        8,
+        8,
+        8,
+        8
+      ],
+      "reserved": "x709020"
+    },
+    "STATE_UPPER_SILESIA": {
+      "province_count": 6,
+      "seed": "x90B12B",
+      "phase_counts": [
+        2,
+        1,
+        1,
+        1
+      ],
+      "reserved": "xAF9F20"
+    },
+    "STATE_UPPER_YENISEYSK": {
+      "province_count": 1559,
+      "seed": "x337D99",
+      "phase_counts": [
+        390,
+        390,
+        389,
+        389
+      ],
+      "reserved": "x3C54DA"
+    },
+    "STATE_URAL": {
+      "province_count": 123,
+      "seed": "x79430B",
+      "phase_counts": [
+        31,
+        31,
+        30,
+        30
+      ],
+      "reserved": "x7EC271"
+    },
+    "STATE_URALSK": {
+      "province_count": 153,
+      "seed": "x0A5203",
+      "phase_counts": [
+        38,
+        38,
+        38,
+        38
+      ],
+      "reserved": "xBF10BF"
+    },
+    "STATE_URGA": {
+      "province_count": 261,
+      "seed": "x441F74",
+      "phase_counts": [
+        65,
+        65,
+        65,
+        65
+      ],
+      "reserved": "x0486FD"
+    },
+    "STATE_URMIA": {
+      "province_count": 8,
+      "seed": "xADF8DB",
+      "phase_counts": [
+        2,
+        2,
+        2,
+        1
+      ],
+      "reserved": "x7F1958"
+    },
+    "STATE_URUGUAY": {
+      "province_count": 44,
+      "seed": "xA46ED2",
+      "phase_counts": [
+        11,
+        11,
+        11,
+        10
+      ],
+      "reserved": "xC2A28B"
+    },
+    "STATE_UTAH": {
+      "province_count": 64,
+      "seed": "xF3B4BA",
+      "phase_counts": [
+        16,
+        16,
+        16,
+        15
+      ],
+      "reserved": "xD08080"
+    },
+    "STATE_UUSIMAA": {
+      "province_count": 30,
+      "seed": "xD2FDBF",
+      "phase_counts": [
+        8,
+        7,
+        7,
+        7
+      ],
+      "reserved": "x4A6463"
+    },
+    "STATE_UZBEKIA": {
+      "province_count": 66,
+      "seed": "xD056DC",
+      "phase_counts": [
+        17,
+        16,
+        16,
+        16
+      ],
+      "reserved": "xDFE90C"
+    },
+    "STATE_VALENCIA": {
+      "province_count": 7,
+      "seed": "x25DD5C",
+      "phase_counts": [
+        2,
+        2,
+        1,
+        1
+      ],
+      "reserved": "xD06040"
+    },
+    "STATE_VANUATU": {
+      "province_count": 3,
+      "seed": "x504090",
+      "phase_counts": [
+        1,
+        1,
+        0,
+        0
+      ],
+      "reserved": "x75A377"
+    },
+    "STATE_VENETIA": {
+      "province_count": 10,
+      "seed": "xB001A0",
+      "phase_counts": [
+        3,
+        2,
+        2,
+        2
+      ],
+      "reserved": "x3083C8"
+    },
+    "STATE_VERACRUZ": {
+      "province_count": 18,
+      "seed": "x9030C0",
+      "phase_counts": [
+        5,
+        4,
+        4,
+        4
+      ],
+      "reserved": "xECF9FC"
+    },
+    "STATE_VERMONT": {
+      "province_count": 6,
+      "seed": "x34FFC4",
+      "phase_counts": [
+        2,
+        1,
+        1,
+        1
+      ],
+      "reserved": "xB0C040"
+    },
+    "STATE_VICTORIA": {
+      "province_count": 62,
+      "seed": "x11C030",
+      "phase_counts": [
+        16,
+        15,
+        15,
+        15
+      ],
+      "reserved": "xB6C06E"
+    },
+    "STATE_VILNIUS": {
+      "province_count": 3,
+      "seed": "xF2CB3D",
+      "phase_counts": [
+        1,
+        1,
+        0,
+        0
+      ],
+      "reserved": "x41E061"
+    },
+    "STATE_VIRGINIA": {
+      "province_count": 28,
+      "seed": "x40B0C0",
+      "phase_counts": [
+        7,
+        7,
+        7,
+        6
+      ],
+      "reserved": "x355247"
+    },
+    "STATE_VISAYAS": {
+      "province_count": 15,
+      "seed": "x90F80A",
+      "phase_counts": [
+        4,
+        4,
+        3,
+        3
+      ],
+      "reserved": "xF001E2"
+    },
+    "STATE_VITEBSK": {
+      "province_count": 16,
+      "seed": "x061F7B",
+      "phase_counts": [
+        4,
+        4,
+        4,
+        3
+      ],
+      "reserved": "x9126B4"
+    },
+    "STATE_VOLHYNIA": {
+      "province_count": 12,
+      "seed": "x5A26AE",
+      "phase_counts": [
+        3,
+        3,
+        3,
+        2
+      ],
+      "reserved": "x364496"
+    },
+    "STATE_VOLTA": {
+      "province_count": 52,
+      "seed": "xC58317",
+      "phase_counts": [
+        13,
+        13,
+        13,
+        12
+      ],
+      "reserved": "xE591D8"
+    },
+    "STATE_VRYSTAAT": {
+      "province_count": 30,
+      "seed": "x7BA736",
+      "phase_counts": [
+        8,
+        7,
+        7,
+        7
+      ],
+      "reserved": "xED7851"
+    },
+    "STATE_VYATKA": {
+      "province_count": 59,
+      "seed": "x8BAC4A",
+      "phase_counts": [
+        15,
+        15,
+        14,
+        14
+      ],
+      "reserved": "xB7D465"
+    },
+    "STATE_WADDAI": {
+      "province_count": 81,
+      "seed": "x9B7EB0",
+      "phase_counts": [
+        20,
+        20,
+        20,
+        20
+      ],
+      "reserved": "x12A660"
+    },
+    "STATE_WALES": {
+      "province_count": 9,
+      "seed": "xA2308A",
+      "phase_counts": [
+        2,
+        2,
+        2,
+        2
+      ],
+      "reserved": "xA0A040"
+    },
+    "STATE_WALLACHIA": {
+      "province_count": 24,
+      "seed": "xD11E19",
+      "phase_counts": [
+        6,
+        6,
+        6,
+        5
+      ],
+      "reserved": "xF6E6E3"
+    },
+    "STATE_WALLONIA": {
+      "province_count": 8,
+      "seed": "x5180A0",
+      "phase_counts": [
+        2,
+        2,
+        2,
+        1
+      ],
+      "reserved": "x8080A0"
+    },
+    "STATE_WASHINGTON": {
+      "province_count": 60,
+      "seed": "xCF4646",
+      "phase_counts": [
+        15,
+        15,
+        15,
+        14
+      ],
+      "reserved": "x3CB52E"
+    },
+    "STATE_WESTERN_AUSTRALIA": {
+      "province_count": 549,
+      "seed": "x79C4FB",
+      "phase_counts": [
+        137,
+        137,
+        137,
+        137
+      ],
+      "reserved": "xC36A88"
+    },
+    "STATE_WESTERN_CUBA": {
+      "province_count": 6,
+      "seed": "x61FC10",
+      "phase_counts": [
+        2,
+        1,
+        1,
+        1
+      ],
+      "reserved": "xF3F2C9"
+    },
+    "STATE_WESTERN_HUBEI": {
+      "province_count": 29,
+      "seed": "x696991",
+      "phase_counts": [
+        7,
+        7,
+        7,
+        7
+      ],
+      "reserved": "x5010C0"
+    },
+    "STATE_WESTERN_MALI": {
+      "province_count": 42,
+      "seed": "x10FA1F",
+      "phase_counts": [
+        11,
+        10,
+        10,
+        10
+      ],
+      "reserved": "x39453E"
+    },
+    "STATE_WESTERN_NEW_GUINEA": {
+      "province_count": 75,
+      "seed": "x39DD3B",
+      "phase_counts": [
+        19,
+        19,
+        18,
+        18
+      ],
+      "reserved": "xD3B54D"
+    },
+    "STATE_WESTERN_NORWAY": {
+      "province_count": 51,
+      "seed": "x68D9BA",
+      "phase_counts": [
+        13,
+        13,
+        12,
+        12
+      ],
+      "reserved": "x1AE434"
+    },
+    "STATE_WESTERN_SERBIA": {
+      "province_count": 8,
+      "seed": "xF9E78E",
+      "phase_counts": [
+        2,
+        2,
+        2,
+        1
+      ],
+      "reserved": "x9DFFAF"
+    },
+    "STATE_WESTERN_THRACE": {
+      "province_count": 7,
+      "seed": "xF02020",
+      "phase_counts": [
+        2,
+        2,
+        1,
+        1
+      ],
+      "reserved": "x702020"
+    },
+    "STATE_WESTPHALIA": {
+      "province_count": 8,
+      "seed": "xA08061",
+      "phase_counts": [
+        2,
+        2,
+        2,
+        1
+      ],
+      "reserved": "x9F0060"
+    },
+    "STATE_WEST_AEGEAN_ISLANDS": {
+      "province_count": 2,
+      "seed": "x6960A0",
+      "phase_counts": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "reserved": "x6090A0"
+    },
+    "STATE_WEST_BENGAL": {
+      "province_count": 17,
+      "seed": "x13A493",
+      "phase_counts": [
+        4,
+        4,
+        4,
+        4
+      ],
+      "reserved": "x89D769"
+    },
+    "STATE_WEST_BORNEO": {
+      "province_count": 38,
+      "seed": "x4DD36E",
+      "phase_counts": [
+        10,
+        9,
+        9,
+        9
+      ],
+      "reserved": "xCF4105"
+    },
+    "STATE_WEST_COUNTRY": {
+      "province_count": 11,
+      "seed": "x63EF7E",
+      "phase_counts": [
+        3,
+        3,
+        2,
+        2
+      ],
+      "reserved": "xB78E54"
+    },
+    "STATE_WEST_GALICIA": {
+      "province_count": 13,
+      "seed": "x906060",
+      "phase_counts": [
+        3,
+        3,
+        3,
+        3
+      ],
+      "reserved": "x56599F"
+    },
+    "STATE_WEST_INDIES": {
+      "province_count": 18,
+      "seed": "xB03080",
+      "phase_counts": [
+        5,
+        4,
+        4,
+        4
+      ],
+      "reserved": "xF0F001"
+    },
+    "STATE_WEST_JAVA": {
+      "province_count": 8,
+      "seed": "xD70117",
+      "phase_counts": [
+        2,
+        2,
+        2,
+        1
+      ],
+      "reserved": "x6345B2"
+    },
+    "STATE_WEST_KARELIA": {
+      "province_count": 19,
+      "seed": "x3EFDA0",
+      "phase_counts": [
+        5,
+        5,
+        4,
+        4
+      ],
+      "reserved": "x65EF3B"
+    },
+    "STATE_WEST_MICRONESIA": {
+      "province_count": 5,
+      "seed": "xA7F7E3",
+      "phase_counts": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "reserved": "xEF50C0"
+    },
+    "STATE_WEST_PRUSSIA": {
+      "province_count": 9,
+      "seed": "x611F2F",
+      "phase_counts": [
+        2,
+        2,
+        2,
+        2
+      ],
+      "reserved": "x374AC3"
+    },
+    "STATE_WEST_SAHARA": {
+      "province_count": 54,
+      "seed": "xF23EA5",
+      "phase_counts": [
+        14,
+        13,
+        13,
+        13
+      ],
+      "reserved": "x362DCE"
+    },
+    "STATE_WEST_SWITZERLAND": {
+      "province_count": 10,
+      "seed": "xED07F7",
+      "phase_counts": [
+        3,
+        2,
+        2,
+        2
+      ],
+      "reserved": "x7ACC0B"
+    },
+    "STATE_WEST_VIRGINIA": {
+      "province_count": 19,
+      "seed": "x999738",
+      "phase_counts": [
+        5,
+        5,
+        4,
+        4
+      ],
+      "reserved": "x7755AD"
+    },
+    "STATE_WINDWARD_COAST": {
+      "province_count": 34,
+      "seed": "xB75AF3",
+      "phase_counts": [
+        9,
+        8,
+        8,
+        8
+      ],
+      "reserved": "x24BC7F"
+    },
+    "STATE_WISCONSIN": {
+      "province_count": 47,
+      "seed": "xD0C040",
+      "phase_counts": [
+        12,
+        12,
+        11,
+        11
+      ],
+      "reserved": "xD5A704"
+    },
+    "STATE_WURTTEMBERG": {
+      "province_count": 6,
+      "seed": "x118060",
+      "phase_counts": [
+        2,
+        1,
+        1,
+        1
+      ],
+      "reserved": "xDBB84C"
+    },
+    "STATE_WYOMING": {
+      "province_count": 71,
+      "seed": "xE9F52A",
+      "phase_counts": [
+        18,
+        18,
+        17,
+        17
+      ],
+      "reserved": "x81DB36"
+    },
+    "STATE_XIAN": {
+      "province_count": 46,
+      "seed": "xA64E0F",
+      "phase_counts": [
+        12,
+        11,
+        11,
+        11
+      ],
+      "reserved": "xCBACD2"
+    },
+    "STATE_YAKUTSK": {
+      "province_count": 1207,
+      "seed": "xE77F10",
+      "phase_counts": [
+        302,
+        302,
+        301,
+        301
+      ],
+      "reserved": "x96CA5C"
+    },
+    "STATE_YANGHO": {
+      "province_count": 11,
+      "seed": "x8ACAAA",
+      "phase_counts": [
+        3,
+        3,
+        2,
+        2
+      ],
+      "reserved": "xB0D080"
+    },
+    "STATE_YAROSLAVL": {
+      "province_count": 51,
+      "seed": "x74EDD1",
+      "phase_counts": [
+        13,
+        13,
+        12,
+        12
+      ],
+      "reserved": "xF39D33"
+    },
+    "STATE_YEMEN": {
+      "province_count": 87,
+      "seed": "x9EDF3C",
+      "phase_counts": [
+        22,
+        22,
+        21,
+        21
+      ],
+      "reserved": "x37058F"
+    },
+    "STATE_YORKSHIRE": {
+      "province_count": 9,
+      "seed": "x606000",
+      "phase_counts": [
+        2,
+        2,
+        2,
+        2
+      ],
+      "reserved": "x5544D0"
+    },
+    "STATE_YORUBA_STATES": {
+      "province_count": 12,
+      "seed": "x01E011",
+      "phase_counts": [
+        3,
+        3,
+        3,
+        2
+      ],
+      "reserved": "xCECEAA"
+    },
+    "STATE_YUCATAN": {
+      "province_count": 28,
+      "seed": "xA59F7B",
+      "phase_counts": [
+        7,
+        7,
+        7,
+        6
+      ],
+      "reserved": "x4F7405"
+    },
+    "STATE_YUKON_TERRITORY": {
+      "province_count": 384,
+      "seed": "x354974",
+      "phase_counts": [
+        96,
+        96,
+        96,
+        95
+      ],
+      "reserved": "xE6C75B"
+    },
+    "STATE_YUNNAN": {
+      "province_count": 83,
+      "seed": "x78DC66",
+      "phase_counts": [
+        21,
+        21,
+        20,
+        20
+      ],
+      "reserved": "xFDF8D0"
+    },
+    "STATE_ZACATECAS": {
+      "province_count": 19,
+      "seed": "x9B8923",
+      "phase_counts": [
+        5,
+        5,
+        4,
+        4
+      ],
+      "reserved": "x06468D"
+    },
+    "STATE_ZAMBEZI": {
+      "province_count": 80,
+      "seed": "x2A4E0D",
+      "phase_counts": [
+        20,
+        20,
+        20,
+        19
+      ],
+      "reserved": "x2121F7"
+    },
+    "STATE_ZAMBEZIA": {
+      "province_count": 44,
+      "seed": "x65E3CE",
+      "phase_counts": [
+        11,
+        11,
+        11,
+        10
+      ],
+      "reserved": "xEA6076"
+    },
+    "STATE_ZAMBIA": {
+      "province_count": 95,
+      "seed": "x28ECB2",
+      "phase_counts": [
+        24,
+        24,
+        23,
+        23
+      ],
+      "reserved": "x81481F"
+    },
+    "STATE_ZANZIBAR": {
+      "province_count": 15,
+      "seed": "xA50F53",
+      "phase_counts": [
+        4,
+        4,
+        3,
+        3
+      ],
+      "reserved": "xE020B0"
+    },
+    "STATE_ZEALAND": {
+      "province_count": 5,
+      "seed": "xED2792",
+      "phase_counts": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "reserved": "xC16C09"
+    },
+    "STATE_ZHEJIANG": {
+      "province_count": 27,
+      "seed": "x301080",
+      "phase_counts": [
+        7,
+        7,
+        6,
+        6
+      ],
+      "reserved": "xAB5BE9"
+    },
+    "STATE_ZHILI": {
+      "province_count": 28,
+      "seed": "xD8F037",
+      "phase_counts": [
+        7,
+        7,
+        7,
+        6
+      ],
+      "reserved": "x905101"
+    },
+    "STATE_ZULIA": {
+      "province_count": 23,
+      "seed": "x9EB190",
+      "phase_counts": [
+        6,
+        6,
+        5,
+        5
+      ],
+      "reserved": "x507041"
+    },
+    "STATE_ZULULAND": {
+      "province_count": 29,
+      "seed": "x279045",
+      "phase_counts": [
+        7,
+        7,
+        7,
+        7
+      ],
+      "reserved": "xF06050"
+    }
+  }
+}

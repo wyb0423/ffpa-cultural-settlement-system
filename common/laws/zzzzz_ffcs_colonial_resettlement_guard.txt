@@ -1,0 +1,10 @@
+# Colonial Resettlement retains the Colonial Affairs institution and its level,
+# but FFCS is its only settlement path. The engine rejects Establish Colony
+# before creating a seed province when the country produces no colonial growth.
+# -100 is a deliberate hard-off sentinel that dominates all creation-factor
+# bonuses present in the supported final database.
+INJECT:law_colonial_resettlement = {
+	modifier = {
+		state_colony_growth_creation_factor = -100
+	}
+}

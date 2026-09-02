@@ -1,0 +1,41 @@
+on_monthly_pulse_country = {
+	on_actions = {
+		ffcs_monthly_country_pulse_v1
+	}
+}
+
+ffcs_monthly_country_pulse_v1 = {
+	effect = {
+		if = {
+			limit = { has_variable = ffcs_inbound_settlement_count_v1 }
+			if = {
+				limit = { has_global_variable = ffcs_debug_enabled_v1 }
+				debug_log = "FFCS|SCHEDULER_REACHED|DATE=[TimeKeeper.GetCurrentDate.GetString]|COUNTRY=[THIS.GetCountry.GetNameNoFormatting]"
+			}
+			ffcs_initialize_country_schema_v1 = yes
+			every_scope_state = {
+				limit = { has_variable = ffcs_settlement_sponsor_v1 }
+				ffcs_advance_settlement_project_v1 = yes
+			}
+		}
+	}
+}
+
+# Root = state. A conquest must not strand counters on the old target owner.
+on_state_owner_change = {
+	on_actions = {
+		ffcs_cancel_project_on_owner_change_v1
+	}
+}
+
+ffcs_cancel_project_on_owner_change_v1 = {
+	trigger = {
+		has_variable = ffcs_settlement_sponsor_v1
+		has_variable = ffcs_settlement_original_owner_v1
+		NOT = { has_variable = ffcs_internal_transfer_guard_v1 }
+		NOT = { var:ffcs_settlement_original_owner_v1 ?= owner }
+	}
+	effect = {
+		ffcs_cancel_settlement_project_v1 = yes
+	}
+}

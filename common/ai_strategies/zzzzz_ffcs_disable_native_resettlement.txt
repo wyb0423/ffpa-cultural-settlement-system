@@ -1,0 +1,381 @@
+# Preserve the final Core Balance strategic-region score table.
+# Colonial Resettlement has no native colonial growth, so this gate also keeps AI
+# from spending strategic-region evaluation on an engine command it cannot use.
+INJECT:ai_strategy_default = {
+	strategic_region_stance_type_scores = {
+		stance_conquer_region = {
+			value = 0
+
+			if = {
+				limit = {
+					scope:target_region = {
+						any_scope_country = {
+							NOR = {
+								this = root
+								is_subject_of = root
+							}
+						}
+					}
+				}
+
+				add = {
+					desc = "AI_REGION_STANCE_BASE_VALUE"
+					value = 100
+				}
+
+				add = {
+					desc = "AI_REGION_STANCE_NUMBER_OF_CLAIMS"
+					scope:target_region = {
+						every_scope_state = {
+							limit = {
+								owner = {
+									NOT = { is_country_type = decentralized }
+								}
+								has_claim_by = root
+							}
+							add = 100
+						}
+					}
+				}
+
+				if = {
+					limit = {
+						is_country_type = unrecognized
+						scope:target_region = {
+							this = root.capital.region
+						}
+					}
+					add = {
+						desc = "AI_REGION_STANCE_CAPITAL_REGION"
+						value = 150
+					}
+				}
+
+				if = {
+					limit = {
+						scope:target_region = {
+							this = sr:region_northeast_asia
+						}
+					}
+
+					if = {
+						limit = {
+							country_rank = rank_value:great_power
+							navy_size >= 25
+							has_technology_researched = nationalism
+							c:JAP ?= {
+								has_law_or_variant = law_type:law_isolationism
+							}
+						}
+						add = {
+							desc = "AI_REGION_STANCE_WANTS_TO_OPEN_UP_JAPAN"
+							value = 5000
+						}
+					}
+				}
+
+				if = {
+					limit = {
+						scope:target_region = {
+							this = sr:region_western_europe
+						}
+					}
+
+					if = {
+						limit = {
+							has_strategy = ai_strategy_restore_natural_borders
+						}
+						add = {
+							desc = "ai_strategy_restore_natural_borders"
+							add = 1000
+						}
+					}
+				}
+
+				if = {
+					limit = {
+						has_strategy = ai_strategy_territorial_expansion
+					}
+					multiply = {
+						desc = "ai_strategy_territorial_expansion"
+						value = 3
+					}
+				}
+
+				if = {
+					limit = {
+						is_subject = yes
+						liberty_desire <= 25
+					}
+					multiply = {
+						desc = "AI_REGION_STANCE_IS_LOYAL_SUBJECT"
+						value = 0.5
+					}
+				}
+			}
+
+			if = {
+				limit = {
+					country_rank <= rank_value:minor_power
+					scope:target_region != capital.region
+				}
+				multiply = {
+					desc = "AI_REGION_STANCE_SMALL_COUNTRY"
+					value = 0
+				}
+			}
+		}
+
+		stance_protect_region = {
+			value = 0
+
+			if = {
+				limit = {
+					scope:target_region = {
+						any_scope_country = {
+							NOT = {
+								this = root
+							}
+						}
+					}
+				}
+				add = {
+					desc = "AI_REGION_STANCE_BASE_VALUE"
+					value = 100
+				}
+
+				if = {
+					limit = {
+						scope:target_region = {
+							this = root.capital.region
+						}
+					}
+					add = {
+						desc = "AI_REGION_STANCE_CAPITAL_REGION"
+						value = 100
+					}
+				}
+			}
+
+			if = {
+				limit = {
+					has_journal_entry = je_aberdeen_act
+					scope:target_region = {
+						is_in_geographic_region = geographic_region_americas
+					}
+				}
+
+				add = {
+					desc = "je_aberdeen_act"
+					value = 200
+
+					if = {
+						limit = {
+							scope:target_region = sr:region_brazil
+						}
+
+						add = 300
+					}
+				}
+			}
+
+			if = {
+				limit = {
+					country_rank <= rank_value:minor_power
+					scope:target_region != capital.region
+				}
+				multiply = {
+					desc = "AI_REGION_STANCE_SMALL_COUNTRY"
+					value = 0
+				}
+			}
+		}
+
+		stance_colonize_region = {
+			value = 0
+
+			if = {
+				limit = {
+					has_technology_researched = colonization
+					NOT = { has_law_or_variant = law_type:law_colonial_resettlement }
+					NOR = {
+						has_law_or_variant = law_type:law_no_colonial_affairs
+						is_country_type = unrecognized
+					}
+					OR = {
+						any_neighbouring_state = {
+							region = scope:target_region
+						}
+						navy_size >= 50
+					}
+					scope:target_region = {
+						any_scope_state = {
+							owner = {
+								OR = {
+									is_country_type = unrecognized
+									is_country_type = decentralized
+								}
+							}
+						}
+					}
+				}
+
+				add = {
+					desc = "AI_REGION_STANCE_BASE_VALUE"
+					value = 100
+				}
+
+				if = {
+					limit = {
+						country_is_colonial_or_company = yes
+					}
+					add =  {
+						desc = "AI_REGION_STANCE_COLONIAL_COUNTRY"
+						value = 200
+					}
+				}
+
+				scope:target_region = {
+					every_scope_state = {
+						limit = {
+							owner = {
+								OR = {
+									is_country_type = unrecognized
+									is_country_type = decentralized
+								}
+							}
+						}
+						add = {
+							desc = "AI_REGION_STANCE_FREE_REAL_ESTATE"
+							value = 200
+						}
+					}
+				}
+
+				if = {
+					limit = {
+						has_strategy = ai_strategy_colonial_expansion
+					}
+					multiply = {
+						desc = "ai_strategy_colonial_expansion"
+						value = 3
+					}
+				}
+
+				if = {
+					limit = {
+						has_technology_researched = civilizing_mission
+					}
+					multiply = {
+						desc = "AI_REGION_STANCE_CIVILIZING_MISSION_RESEARCHED"
+						value = 5
+					}
+				}
+				else_if = {
+					limit = {
+						has_technology_researched = quinine
+					}
+					multiply = {
+						desc = "AI_REGION_STANCE_QUININE_RESEARCHED"
+						value = 2.5
+					}
+				}
+
+				if = {
+					limit = {
+						has_journal_entry = je_scramble_for_africa
+						scope:target_region = {
+							OR = {
+								this = sr:region_nile_basin
+								this = sr:region_north_africa
+								this = sr:region_west_africa
+								this = sr:region_equatorial_africa
+								this = sr:region_southern_africa
+								this = sr:region_east_africa
+							}
+						}
+					}
+					multiply = {
+						desc = "je_scramble_for_africa"
+						value = 10
+					}
+				}
+				# Prefer a coherent sphere of expansion. Remote naval colonization
+				# remains possible, but receives only 3% of its normal score.
+				if = {
+					limit = {
+						scope:target_region = {
+							this = root.capital.region
+						}
+					}
+					multiply = { value = 4 }
+				}
+				else_if = {
+					limit = {
+						scope:target_region = {
+							any_scope_state = {
+								is_under_colonization = yes
+								owner = {
+									OR = {
+										this = root
+										is_subject_of = root
+									}
+								}
+							}
+						}
+					}
+					multiply = { value = 6 }
+				}
+				else_if = {
+					limit = {
+						scope:target_region = {
+							any_scope_state = {
+								owner = {
+									OR = {
+										this = root
+										is_subject_of = root
+									}
+								}
+							}
+						}
+					}
+					multiply = { value = 4 }
+				}
+				else_if = {
+					limit = {
+						any_neighbouring_state = {
+							region = scope:target_region
+						}
+					}
+					multiply = { value = 1 }
+				}
+				else = {
+					multiply = { value = 0.03 }
+				}
+
+			}
+
+			if = {
+				limit = {
+					country_rank <= rank_value:minor_power
+					scope:target_region != capital.region
+				}
+				multiply = {
+					desc = "AI_REGION_STANCE_SMALL_COUNTRY"
+					value = 0
+				}
+			}
+		}
+
+		stance_none = {
+			value = 0
+
+			add = {
+				desc = "AI_REGION_STANCE_BASE_VALUE"
+				value = 100
+				subtract = scope:region_score
+				min = 1
+			}
+		}
+	}
+}

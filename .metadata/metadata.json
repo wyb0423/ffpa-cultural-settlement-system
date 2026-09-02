@@ -1,0 +1,38 @@
+{
+  "name": "FFPA — Cultural Settlement System",
+  "id": "com.wyb.ffpa-cultural-settlement-system",
+  "version": "0.2.0",
+  "supported_game_version": "1.13.*",
+  "short_description": "A complete culture-locked replacement for Colonial Resettlement, with state-level AI targeting and phased territorial growth.",
+  "tags": [
+    "Gameplay",
+    "Balance",
+    "Utilities"
+  ],
+  "relationships": [
+    {
+      "rel_type": "dependency",
+      "id": "alter_time_2050_fire_falls",
+      "display_name": "2050: The Fire Falls",
+      "resource_type": "mod",
+      "version": "0.1.*"
+    },
+    {
+      "rel_type": "dependency",
+      "id": "tech.res",
+      "display_name": "[1.13] Tech & Res",
+      "resource_type": "mod",
+      "version": "1.*"
+    },
+    {
+      "rel_type": "dependency",
+      "id": "com.wyb.2050-firefall-core-balance",
+      "display_name": "2050 Firefall — Core Balance Adapter",
+      "resource_type": "mod",
+      "version": "1.*"
+    }
+  ],
+  "game_custom_data": {
+    "multiplayer_synchronized": true
+  }
+}
