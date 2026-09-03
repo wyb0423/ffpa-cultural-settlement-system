@@ -26,8 +26,8 @@ Company colonization charters are a separate engine-native seed-colony entry poi
 A project may start only when all of the following are true:
 
 - actor uses `law_colonial_resettlement`;
-- actor is recognized and not decentralized;
-- target is decentralized or unrecognized and is not a recognized overlord's subject;
+- actor is recognized or unrecognized, but not decentralized;
+- target is decentralized;
 - selected state is a primary-culture homeland of the actor;
 - actor has a land-adjacent route or a coastal state plus a port;
 - actor has the required strategic-region interest tier;
@@ -35,7 +35,7 @@ A project may start only when all of the following are true:
 - actor is below its custom project cap of two projects per Colonial Affairs level;
 - actor and target are not at war with each other.
 
-The same trigger is repeated defensively when the monthly project executes. Culture changes therefore cancel an invalid project instead of allowing it to finish.
+The monthly project defensively rechecks sponsor validity, target type and ownership, culture, hostility and access. Strategic-region interest is a start-only requirement and does not cancel an active project if it is later lost.
 
 ## State machine
 
@@ -70,7 +70,7 @@ Monthly progress is calculated in integer points:
 - active projects divide the final total, with a floor of 1;
 - severe resistance can impose a temporary penalty.
 
-Thresholds are 25, 50, 75 and 100. Each threshold transfers the next generated province phase. At 100 the remaining target state is transferred and set unincorporated.
+Province-phase thresholds are 25, 50, 75 and 95. At 100 the remaining target state is transferred and set unincorporated.
 
 The institution is read through proven 1–5 trigger tiers because Victoria 3 1.13 exposes an investment-level comparison trigger but no proven numeric getter. The same explicit tiers set the concurrent-project limits to 2/4/6/8/10. Lowering institution investment does not cancel projects already in progress, but it prevents starting another project until the active count falls below the new cap.
 

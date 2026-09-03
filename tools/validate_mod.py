@@ -369,6 +369,50 @@ def main() -> int:
             "settlement cap must be 2/4/6/8/10 by Colonial Affairs level"
         )
 
+    diplomatic_action = (
+        root / "common" / "diplomatic_actions" / "ffcs_cultural_settlement.txt"
+    ).read_text(encoding="utf-8-sig")
+    diplomatic_action_tokens = script_tokens(diplomatic_action)
+    sponsor_type_gate = script_tokens(
+        "OR = { is_country_type = recognized is_country_type = unrecognized }"
+    )
+    if not find_token_sequence(diplomatic_action_tokens, sponsor_type_gate):
+        errors.append("settlement sponsors must be recognized or unrecognized countries")
+    if not find_token_sequence(
+        diplomatic_action_tokens,
+        script_tokens("scope:target_country = { is_country_type = decentralized }"),
+    ):
+        errors.append("cultural settlements must target only decentralized countries")
+
+    trigger_tokens = script_tokens(cap_trigger)
+    if len(
+        find_token_sequence(
+            trigger_tokens,
+            script_tokens("owner = { is_country_type = decentralized"),
+        )
+    ) < 2:
+        errors.append("settlement entry and monthly validity must require a decentralized target")
+    for required in (
+        "var:ffcs_settlement_sponsor_v1 ?= { is_adjacent_to_state = root }",
+        "var:ffcs_settlement_sponsor_v1 ?= { has_port_country = yes }",
+    ):
+        if not find_token_sequence(trigger_tokens, script_tokens(required)):
+            errors.append(f"monthly settlement validity missing route check: {required}")
+    if not find_token_sequence(trigger_tokens, sponsor_type_gate):
+        errors.append("monthly settlement validity must enforce the sponsor country types")
+    if cap_trigger.count("has_strategic_region_interest_tier") != 1:
+        errors.append("strategic-region interest must be checked only when a project starts")
+
+    settlement_effects = (
+        root / "common" / "scripted_effects" / "ffcs_settlement_effects.txt"
+    ).read_text(encoding="utf-8-sig")
+    if not re.search(
+        r"ffcs_settlement_progress_v1\s*>=\s*95.*?ffcs_apply_generated_phase_4",
+        settlement_effects,
+        re.DOTALL,
+    ):
+        errors.append("generated province phase 4 must be applied at 95 progress")
+
     native_guard = (
         root / "common" / "laws" / "zzzzz_ffcs_colonial_resettlement_guard.txt"
     ).read_text(encoding="utf-8-sig")
@@ -415,8 +459,11 @@ def main() -> int:
         and path.suffix.lower() in {".txt", ".yml", ".md", ".py", ".json"}
     ]
     for path in text_files:
+        data = path.read_bytes()
+        if b"\x00" in data:
+            errors.append(f"{path.relative_to(root)}: contains NUL bytes")
         for line_number, line in enumerate(
-            path.read_text(encoding="utf-8-sig").splitlines(), start=1
+            data.decode("utf-8-sig").splitlines(), start=1
         ):
             if line.rstrip(" \t") != line:
                 errors.append(f"{path.relative_to(root)}:{line_number}: trailing whitespace")

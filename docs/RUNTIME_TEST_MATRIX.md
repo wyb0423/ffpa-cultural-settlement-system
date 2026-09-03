@@ -85,10 +85,12 @@ Repeat with Colonial Exploitation or Frontier Colonization. Establish Colony mus
 
 For the same sponsor, prepare two otherwise equivalent target states:
 
-- positive: homeland of at least one sponsor primary culture;
-- negative: not a homeland of any sponsor primary culture.
+- positive: a decentralized-country state that is a homeland of at least one sponsor primary culture;
+- negative: a decentralized-country state that is not a homeland of any sponsor primary culture.
 
 The custom diplomatic action must list/select only the positive state. Repeat once for a player and once for AI. A negative state receiving a project is a release blocker even if it later cancels.
+
+As a separate negative control, prepare an otherwise eligible homeland state owned by an unrecognized country. It must not be listed or selected by either the player or AI.
 
 ## Lifecycle and cleanup
 

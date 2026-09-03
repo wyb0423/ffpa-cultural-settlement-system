@@ -8,33 +8,23 @@ da_ffcs_establish_cultural_settlement = {
 	second_state_list = second_country
 
 	selectable = {
-		NOT = { is_country_type = decentralized }
+		OR = {
+			is_country_type = recognized
+			is_country_type = unrecognized
+		}
 		has_law_or_variant = law_type:law_colonial_resettlement
 		has_technology_researched = colonization
 	}
 
 	potential = {
 		NOT = { scope:target_country = root }
-		scope:target_country = {
-			OR = {
-				is_country_type = decentralized
-				is_country_type = unrecognized
-			}
-		}
+		scope:target_country = { is_country_type = decentralized }
 	}
 
 	possible = {
 		is_at_war = no
 		in_default = no
 		ffcs_below_settlement_cap = yes
-		scope:target_country = {
-			OR = {
-				is_subject = no
-				this.overlord ?= {
-					NOT = { is_country_type = recognized }
-				}
-			}
-		}
 	}
 
 	second_state_trigger = {
