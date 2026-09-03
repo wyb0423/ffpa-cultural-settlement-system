@@ -29,7 +29,7 @@ A project may start only when all of the following are true:
 - actor is recognized or unrecognized, but not decentralized;
 - target is decentralized;
 - selected state is a primary-culture homeland of the actor;
-- actor has a land-adjacent route or a coastal state plus a port;
+- actor has an actual province border with the target, or an overseas route to a target-controlled port province;
 - actor has the required strategic-region interest tier;
 - selected state has no active `ffcs` project;
 - actor is below its custom project cap of two projects per Colonial Affairs level;
@@ -47,7 +47,7 @@ available state
     -> phase 2 / contiguous expansion
     -> phase 3 / contiguous expansion
     -> phase 4 / contiguous expansion
-    -> completion / remaining state transferred and set unincorporated
+    -> completion / final reachable province transferred
 
 At any monthly tick:
     invalid sponsor, law, culture or ownership -> cancel and clean counters
@@ -70,30 +70,25 @@ Monthly progress is calculated in integer points:
 - active projects divide the final total, with a floor of 1;
 - severe resistance can impose a temporary penalty.
 
-Province-phase thresholds are 25, 50, 75 and 95. At 100 the remaining target state is transferred and set unincorporated.
+Province-phase thresholds are 25, 50, 75 and 95. At 100 only a final province still connected to this project's frontier is transferred; disconnected territory remains with the original owner.
 
 The institution is read through proven 1–5 trigger tiers because Victoria 3 1.13 exposes an investment-level comparison trigger but no proven numeric getter. The same explicit tiers set the concurrent-project limits to 2/4/6/8/10. Lowering institution investment does not cancel projects already in progress, but it prevents starting another project until the active count falls below the new cap.
 
 ## Province phases
 
-The generator reads the final Firefall state-region files and province map. For each land state region it:
+The generator reads the final Firefall state-region files and province map, builds four-neighbour pixel adjacency with horizontal map wrapping, and emits literal dispatchers. A land seed must be owned by the target and touch a sponsor-owned province. An overseas seed is the state region's target-owned port province. Each later candidate must be owned by the original target and touch a province recorded in this project's `ffcs_settlement_provinces_v2` list that is still sponsor-owned.
 
-1. chooses the port, otherwise city, otherwise first province as the seed;
-2. builds an in-region adjacency graph from four-neighbour pixel contact;
-3. orders provinces with breadth-first expansion from the seed;
-4. divides that order into four approximately equal contiguous phases;
-5. writes literal `set_owner_of_provinces` lists inside a generated state-region dispatch effect.
-
-The final phase leaves at least one province with the original owner; completion uses `set_state_owner` for the remainder. A state with too few provinces falls back to fewer meaningful phases.
+At 25/50/75/95 progress the remaining state is divided across 4/3/2/1 phases with ceiling rounding. Scans stop at the phase budget, a missing frontier, or one residual province. Completion claims that last province only if it remains on the same project frontier. Overseas projects charge `100000` when accepted and create a level 1 port only after the port province is actually transferred.
 
 ## Native feature parity
 
 | Native behavior | Result | Notes |
 |---|---|---|
 | exact target eligibility | reproduced | hard state trigger for both player and AI |
-| coastal/adjacent access | reproduced | same style of route gate as native claim action |
-| initial foothold | reproduced | generated seed phase |
-| province-by-province visual growth | approximated | four contiguous chunks, not engine-selected individual provinces |
+| coastal/adjacent access | reproduced | actual province border or target-controlled port province |
+| initial foothold | reproduced | land-border seed or port seed |
+| province-by-province visual growth | approximated | contiguous project-frontier chunks at four thresholds |
+| overseas port cost and provision | reproduced | £100,000 at acceptance; level 1 port after foothold |
 | growth divided among colonies | reproduced in intent | custom active-project divisor |
 | institution/technology scaling | approximated | explicit tiered progress model |
 | malaria/terrain delay | approximated | scripted resistance/progress modifiers |
@@ -108,6 +103,6 @@ The final phase leaves at least one province with the original owner; completion
 
 The final AI score table is copied from `2050 Firefall — Core Balance Adapter` and changes only the `stance_colonize_region` eligibility for Colonial Resettlement. The law hard-off relies on the final sum of `state_colony_growth_creation_factor`, and the company-charter gate relies on the final `colonization_charter` definition. All three are intentionally load-order-sensitive and must be compared whenever an upstream law, institution, AI strategy or charter definition changes.
 
-Old saves may already contain engine-native colonies or active company charters created before version 0.2. FFCS does not destructively transfer or delete that territory. Such colonies receive no new growth while their owner keeps Colonial Resettlement; only new settlement projects use FFCS.
+Old saves may already contain engine-native colonies or active company charters created before version 0.2. FFCS does not destructively transfer or delete that territory. Active FFCS projects created before version 0.3 lack a provable route/frontier record and cancel on their next monthly check without returning land or money. Only new projects use the v2 route and province-list interfaces.
 
 No machine-specific game or Workshop path is stored in runtime files. Tool scripts accept paths as command-line arguments.

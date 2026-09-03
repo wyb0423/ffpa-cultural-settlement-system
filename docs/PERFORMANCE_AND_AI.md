@@ -7,17 +7,17 @@ The hot path is the country monthly pulse:
 1. one cheap `has_variable` gate per country;
 2. only countries with inbound projects iterate their owned state scopes;
 3. only marked states execute progress logic;
-4. province transfer occurs at most four times per project lifetime.
+4. generated province scans occur only at the four phase thresholds and completion.
 
 If `C` is the number of countries, `T` the number of target countries with projects, `S_t` their owned states and `P` active projects, monthly work is approximately:
 
 `O(C + sum(S_t) + P)`
 
-It is not `O(C * world_states)` and does not scan pops, buildings or provinces monthly. The generated dispatch file is large on disk, but only one state-region branch is selected when a phase fires.
+It is not `O(C * world_states)` and does not scan pops, buildings or provinces monthly. Route validity uses generated literal ownership checks, while frontier scans run only when a phase fires.
 
 In the inspected Firefall start data there are roughly 801 referenced country tags and 670 province-bearing state regions. An inactive country performs only a variable-presence gate each month; schema variables are created only for countries that actually enter the system. With 20 active projects spread over small target countries, the extra monthly traversal should normally remain in the low hundreds of state checks, not hundreds of thousands.
 
-Expected practical impact is low for ordinary project counts. Raising the per-country ceiling from 5 to 10 can at most double one sponsor's simultaneous marked states and phase-transfer bursts, but it does not change scheduler frequency or add a world scan. The generated four-phase script is about 0.76 MB for this map and the offline deterministic generation pass takes about 3 seconds on the development machine. The main runtime spike is not the dispatcher: it is ownership/market recalculation on the four transfer days per project.
+Expected monthly impact remains low for ordinary project counts. Raising the per-country ceiling from 5 to 10 can at most double one sponsor's simultaneous marked states and phase-transfer bursts, but it does not add a monthly world scan. The generated effect and trigger files total about 59 MiB for this map and the offline deterministic generation pass takes about 2 seconds on the development machine. A frontier sweep is linear in state size per pass and can become quadratic for an unfavourable province-ID order; runtime profiling must cover both initial loading and large-state phase ticks.
 
 ## AI feasibility
 
@@ -40,7 +40,8 @@ AI safety rules:
 
 - diplomatic-action AI may evaluate state combinations less often than expected;
 - transferring province chunks can invalidate or recreate state scopes differently from static inspection;
-- a target state reduced to its final province may be destroyed during completion before cleanup if effect ordering is wrong;
+- province scopes stored in a variable list require explicit save/reload evidence on 1.13;
+- saved sponsor and state-region scopes may not survive the final whole-state ownership merge as expected;
 - later-loaded AI mods can restore native colonization scores;
 - later-loaded law or institution mods can overcome/remove the colonial-growth hard-off;
 - later-loaded company-charter definitions can remove the law gate;

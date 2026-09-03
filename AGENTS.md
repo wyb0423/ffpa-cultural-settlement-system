@@ -16,7 +16,7 @@ The identity and dependency contract in `.metadata/metadata.json` is authoritati
 This mod owns only:
 
 - the `ffcs_*` diplomatic action, triggers, values, effects, modifiers, events, notifications and save variables;
-- generated `ffcs_*` state-region phase effects;
+- generated `ffcs_*` province-route triggers and state-region phase effects;
 - the `INJECT:law_colonial_resettlement` native colonial-growth-generation hard-off guard;
 - the `INJECT:colonization_charter` availability guard for Colonial Resettlement owners;
 - the final `INJECT:ai_strategy_default` copy needed to disable native AI colonization for `law_colonial_resettlement`.
@@ -35,10 +35,12 @@ Do not rename or change the meaning of these without a versioned migration:
 - `ffcs_settlement_phase_v1`
 - `ffcs_settlement_resistance_v1`
 - `ffcs_settlement_schema_v1`
+- `ffcs_settlement_route_v2`
+- `ffcs_settlement_provinces_v2`
 
 ## Generated data
 
-`common/scripted_effects/generated/ffcs_generated_province_phases.txt` is generated from the Firefall state-region database and `provinces.png`. Modify the generator, not the generated file. Generated effects must use literal province IDs because Victoria 3 1.13 has no proven dynamic province-list effect input.
+`common/scripted_effects/generated/ffcs_generated_province_phases.txt` and `common/scripted_triggers/generated/ffcs_generated_province_routes.txt` are generated from the Firefall state-region database and `provinces.png`. Modify the generator, not the generated files. Generated effects must use literal province IDs because Victoria 3 1.13 has no proven dynamic province-list effect input.
 
 ## Required checks
 

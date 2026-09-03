@@ -1,9 +1,9 @@
 {
   "name": "FFPA — Cultural Settlement System",
   "id": "com.wyb.ffpa-cultural-settlement-system",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "supported_game_version": "1.13.*",
-  "short_description": "A complete culture-locked replacement for Colonial Resettlement, with state-level AI targeting and phased territorial growth.",
+  "short_description": "A culture-locked Colonial Resettlement replacement with contiguous province growth and port-first overseas settlements.",
   "tags": [
     "Gameplay",
     "Balance",

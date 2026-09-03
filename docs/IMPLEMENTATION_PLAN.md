@@ -14,11 +14,11 @@ Acceptance: the action appears, invalid states cannot be selected, an AI proposa
 
 - parse Firefall's final state-region database;
 - read province adjacency from `provinces.png`;
-- generate deterministic contiguous four-phase province lists;
-- dispatch the correct generated state-region effect at each threshold;
-- retain whole-state completion as the safety fallback.
+- generate deterministic literal land-seed, port-seed and project-frontier dispatchers;
+- transfer only provinces adjacent to the sponsor or to this project's acquired province list;
+- retain disconnected components for a separate project.
 
-Acceptance: every generated province belongs to its state region, appears in exactly one phase, no phase contains the reserved final province, and running the generator twice produces identical bytes.
+Acceptance: every transfer branch checks live ownership and a real map edge, the port seed belongs to its state region, disconnected components are not crossed, and running the generator twice produces identical bytes.
 
 ## Milestone 3 — Friction and feedback
 

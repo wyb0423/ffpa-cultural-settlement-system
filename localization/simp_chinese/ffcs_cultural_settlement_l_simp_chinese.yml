@@ -1,10 +1,11 @@
 ﻿l_simp_chinese:
  da_ffcs_establish_cultural_settlement: "建立文化安置点"
- da_ffcs_establish_cultural_settlement_desc: "在我国某一主流文化的故土州内建立逐步扩张的安置点。殖民事务制度每级可支持两个并行项目。采用殖民安置法律时，本行动将完全取代原版殖民。"
+ da_ffcs_establish_cultural_settlement_desc: "在我国某一主流文化的故土州内建立连续扩张的安置点。陆路安置从实际接壤的地块开始；海路安置从港口地块开始，花费£100,000，并在取得据点时建立1级港口。殖民事务制度每级可支持两个并行项目。"
  da_ffcs_establish_cultural_settlement_action_notification_name: "[INITIATOR_COUNTRY.GetName]开始安置[TARGET_STATE.GetStateRegion.GetName]"
  da_ffcs_establish_cultural_settlement_action_notification_desc: "[INITIATOR_COUNTRY.GetName]已在[TARGET_STATE.GetStateRegion.GetName]启动文化安置项目。"
  FFCS_SELECT_TARGET_STATE_TT: "选择一个符合条件的主流文化故土州"
  FFCS_CULTURAL_HOMELAND_ONLY_TT: "该州必须是行动国至少一种主流文化的故土"
+ FFCS_VALID_SETTLEMENT_ROUTE_TT: "陆路需要实际接壤的地块边界；否则海路要求目标所有者控制港口地块，且行动国拥有港口"
  FFCS_NATIVE_COLONIZATION_DISABLED_TT: "采用殖民安置法律的国家必须通过文化安置系统建立殖民地"
  ffcs_cultural_settlement_project: "文化安置项目"
  ffcs_cultural_settlement_project_desc: "一个外国安置项目正在该州逐步建立领土控制。"

@@ -44,11 +44,19 @@ da_ffcs_establish_cultural_settlement = {
 				name = ffcs_active_settlement_count_v1
 				add = 1
 			}
-			add_treasury = -5000
 			scope:target_country = { ffcs_initialize_country_schema_v1 = yes }
 
 			scope:second_state = {
 				add_modifier = { name = ffcs_cultural_settlement_project }
+				if = {
+					limit = {
+						ffcs_generated_has_land_seed_v2 = { COUNTRY = root }
+					}
+					set_variable = { name = ffcs_settlement_route_v2 value = 1 }
+				}
+				else = {
+					set_variable = { name = ffcs_settlement_route_v2 value = 2 }
+				}
 				set_variable = {
 					name = ffcs_settlement_sponsor_v1
 					value = root
@@ -88,6 +96,12 @@ da_ffcs_establish_cultural_settlement = {
 					}
 					debug_log = "FFCS|CANDIDATE_CREATED|DATE=[TimeKeeper.GetCurrentDate.GetString]|SPONSOR=[SCOPE.sCountry('ffcs_debug_sponsor').GetNameNoFormatting]|STATE=[SCOPE.sState('ffcs_debug_state').GetNameNoFormatting]"
 				}
+			}
+			if = {
+				limit = {
+					scope:second_state = { var:ffcs_settlement_route_v2 = 2 }
+				}
+				add_treasury = -100000
 			}
 
 			create_incident = {

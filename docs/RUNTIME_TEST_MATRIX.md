@@ -31,6 +31,7 @@ py -3 tools\validate_mod.py `
 
 The final-stack result must report:
 
+- native colony port provision `yes`, cost `100000` and level `1`;
 - a negative colonial-growth remainder after the conservative positive-source bound;
 - exact Core Balance AI token parity plus one Colonial Resettlement law gate;
 - the expected final upstream law and company-charter providers.
@@ -57,6 +58,7 @@ Expected lifecycle markers:
 FFCS|CANDIDATE_CREATED
 FFCS|SCHEDULER_REACHED
 FFCS|EVALUATION_PASSED / FFCS|EVALUATION_FAILED
+FFCS|SEED_TRANSFERRED
 FFCS|EFFECT_APPLIED / FFCS|CANCELLED
 ```
 
@@ -99,16 +101,21 @@ For one valid project, confirm in order:
 1. `CANDIDATE_CREATED` appears once;
 2. the target owner emits `SCHEDULER_REACHED` on the monthly pulse;
 3. the state emits `EVALUATION_PASSED` and advances;
-4. province ownership changes at the four phase thresholds;
-5. completion emits `EFFECT_APPLIED` and leaves an unincorporated state;
-6. sponsor active and target inbound counters return to zero.
+4. the first transferred land province touches sponsor territory, while an overseas project transfers the port province first;
+5. every later transfer touches a province already recorded by this project and still sponsor-owned;
+6. completion emits `EFFECT_APPLIED`, leaves sponsor territory unincorporated unless already incorporated, and does not claim disconnected islands or enclaves;
+7. an overseas project deducts exactly `100000`, creates exactly a level 1 port after the foothold, and gives no refund on cancellation;
+8. sponsor active and target inbound counters return to zero.
 
 Run separate cancellation cases for:
 
 - sponsor changes away from Colonial Resettlement;
 - target ceases to be a primary-culture homeland;
 - target owner changes externally;
-- sponsor becomes invalid or hostile to the current target owner.
+- sponsor becomes invalid or hostile to the current target owner;
+- the active land or overseas route is lost.
+
+Losing only strategic-region interest must not cancel an active project. Also load a pre-0.3 active project without `ffcs_settlement_route_v2`; its next monthly check must cancel it, preserve transferred territory and recover both counters.
 
 Each case must emit `EVALUATION_FAILED` or reach the owner-change cleanup, then emit `CANCELLED`. No project marker or versioned state variable may remain.
 

@@ -1,9 +1,5 @@
 #!/usr/bin/env python3
-"""Generate deterministic contiguous settlement phases from final map data.
-
-Requires Pillow and NumPy. Paths are supplied explicitly so no machine-specific
-installation path is persisted in the mod.
-"""
+"""Generate literal province-route dispatchers from the final map database."""
 
 from __future__ import annotations
 
@@ -20,7 +16,7 @@ from PIL import Image
 
 
 PROVINCE = re.compile(r'"x([0-9A-Fa-f]{6})"')
-FIELD = re.compile(r'^\s*(port|city|farm|mine|wood)\s*=\s*"x([0-9A-Fa-f]{6})"', re.MULTILINE)
+PORT = re.compile(r'^\s*port\s*=\s*"x([0-9A-Fa-f]{6})"', re.MULTILINE)
 BLOCK_START = re.compile(r'^\s*(STATE_[A-Za-z0-9_]+)\s*=\s*\{', re.MULTILINE)
 
 
@@ -28,7 +24,7 @@ BLOCK_START = re.compile(r'^\s*(STATE_[A-Za-z0-9_]+)\s*=\s*\{', re.MULTILINE)
 class StateRegion:
     name: str
     provinces: tuple[int, ...]
-    seed: int
+    port: int | None
 
 
 def extract_blocks(text: str) -> list[tuple[str, str]]:
@@ -66,55 +62,52 @@ def extract_blocks(text: str) -> list[tuple[str, str]]:
 
 def parse_state_regions(directory: Path) -> tuple[list[StateRegion], dict[int, list[str]]]:
     regions: list[StateRegion] = []
-    seen_names: set[str] = set()
-    province_occurrences: dict[int, list[str]] = {}
+    names: set[str] = set()
+    occurrences: dict[int, list[str]] = {}
     for path in sorted(directory.glob("*.txt")):
         text = path.read_text(encoding="utf-8-sig")
         for name, body in extract_blocks(text):
-            if name in seen_names:
+            if name in names:
                 raise ValueError(f"Duplicate state region {name}")
-            provinces_match = re.search(r"\bprovinces\s*=\s*\{([^}]*)\}", body, re.DOTALL)
-            if not provinces_match:
+            match = re.search(r"\bprovinces\s*=\s*\{([^}]*)\}", body, re.DOTALL)
+            if not match:
                 continue
             provinces = tuple(
-                sorted({int(value, 16) for value in PROVINCE.findall(provinces_match.group(1))})
+                sorted({int(value, 16) for value in PROVINCE.findall(match.group(1))})
             )
             if not provinces:
                 continue
-            fields = {key: int(value, 16) for key, value in FIELD.findall(body)}
-            seed = next(
-                (fields[key] for key in ("port", "city", "farm", "mine", "wood") if fields.get(key) in provinces),
-                provinces[0],
-            )
-            for province in provinces:
-                province_occurrences.setdefault(province, []).append(name)
-            seen_names.add(name)
-            regions.append(StateRegion(name=name, provinces=provinces, seed=seed))
+            port_match = PORT.search(body)
+            port = int(port_match.group(1), 16) if port_match else None
+            if port not in provinces:
+                port = None
+            for province_id in provinces:
+                occurrences.setdefault(province_id, []).append(name)
+            names.add(name)
+            regions.append(StateRegion(name, provinces, port))
     duplicates = {
-        province: names
-        for province, names in province_occurrences.items()
-        if len(names) > 1
+        province_id: owners
+        for province_id, owners in occurrences.items()
+        if len(owners) > 1
     }
     return sorted(regions, key=lambda region: region.name), duplicates
 
 
 def build_adjacency(image_path: Path, provinces: set[int]) -> dict[int, set[int]]:
-    adjacency = {province: set() for province in provinces}
+    adjacency = {province_id: set() for province_id in provinces}
     image = np.asarray(Image.open(image_path).convert("RGB"), dtype=np.uint32)
-    province_ids = (image[:, :, 0] << 16) | (image[:, :, 1] << 8) | image[:, :, 2]
-
-    boundary_sets = [
-        (province_ids[:, :-1], province_ids[:, 1:]),
-        (province_ids[:-1, :], province_ids[1:, :]),
-        (province_ids[:, -1:], province_ids[:, :1]),
-    ]
-    for left, right in boundary_sets:
+    ids = (image[:, :, 0] << 16) | (image[:, :, 1] << 8) | image[:, :, 2]
+    boundaries = (
+        (ids[:, :-1], ids[:, 1:]),
+        (ids[:-1, :], ids[1:, :]),
+        (ids[:, -1:], ids[:, :1]),
+    )
+    for left, right in boundaries:
         mask = left != right
         for first, second in zip(left[mask].tolist(), right[mask].tolist()):
-            if first not in adjacency or second not in adjacency:
-                continue
-            adjacency[first].add(second)
-            adjacency[second].add(first)
+            if first in adjacency and second in adjacency:
+                adjacency[first].add(second)
+                adjacency[second].add(first)
     return adjacency
 
 
@@ -123,60 +116,54 @@ def resolve_duplicate_provinces(
     duplicates: dict[int, list[str]],
     adjacency: dict[int, set[int]],
 ) -> tuple[list[StateRegion], dict[str, str]]:
-    candidates = {
-        province: set(names) for province, names in duplicates.items()
-    }
+    duplicate_ids = set(duplicates)
     unique_owner = {
-        province: region.name
+        province_id: region.name
         for region in regions
-        for province in region.provinces
-        if province not in candidates
+        for province_id in region.provinces
+        if province_id not in duplicate_ids
     }
     resolutions: dict[int, str] = {}
-    for province, names in sorted(candidates.items()):
+    for province_id, owners in sorted(duplicates.items()):
         scores = {
-            name: sum(
-                1 for neighbour in adjacency[province] if unique_owner.get(neighbour) == name
+            owner: sum(
+                unique_owner.get(neighbour) == owner
+                for neighbour in adjacency[province_id]
             )
-            for name in names
+            for owner in owners
         }
-        resolutions[province] = sorted(names, key=lambda name: (-scores[name], name))[0]
+        resolutions[province_id] = min(owners, key=lambda owner: (-scores[owner], owner))
 
-    resolved_regions: list[StateRegion] = []
+    resolved: list[StateRegion] = []
     for region in regions:
         provinces = tuple(
-            province
-            for province in region.provinces
-            if province not in resolutions or resolutions[province] == region.name
+            province_id
+            for province_id in region.provinces
+            if resolutions.get(province_id, region.name) == region.name
         )
-        if not provinces:
-            continue
-        seed = region.seed if region.seed in provinces else provinces[0]
-        resolved_regions.append(StateRegion(region.name, provinces, seed))
-    return resolved_regions, {
-        f"x{province:06X}": resolutions[province] for province in sorted(resolutions)
+        if provinces:
+            resolved.append(
+                StateRegion(
+                    region.name,
+                    provinces,
+                    region.port if region.port in provinces else None,
+                )
+            )
+    return resolved, {
+        f"x{province_id:06X}": owner
+        for province_id, owner in sorted(resolutions.items())
     }
 
 
-def breadth_first_order(region: StateRegion, adjacency: dict[int, set[int]]) -> list[int]:
-    remaining = set(region.provinces)
-    ordered: list[int] = []
-    component_seed = region.seed
-    while remaining:
-        if component_seed not in remaining:
-            component_seed = min(remaining)
-        queue = deque([component_seed])
-        remaining.remove(component_seed)
-        while queue:
-            current = queue.popleft()
-            ordered.append(current)
-            for neighbour in sorted(adjacency[current]):
-                if neighbour in remaining:
-                    remaining.remove(neighbour)
-                    queue.append(neighbour)
-        if remaining:
-            component_seed = min(remaining)
-    return ordered
+def validate_adjacency(adjacency: dict[int, set[int]]) -> None:
+    for province_id, neighbours in adjacency.items():
+        if province_id in neighbours:
+            raise ValueError(f"Province x{province_id:06X} is adjacent to itself")
+        for neighbour in neighbours:
+            if province_id not in adjacency[neighbour]:
+                raise ValueError(
+                    f"Asymmetric edge x{province_id:06X}-x{neighbour:06X}"
+                )
 
 
 def component_count(region: StateRegion, adjacency: dict[int, set[int]]) -> int:
@@ -184,7 +171,7 @@ def component_count(region: StateRegion, adjacency: dict[int, set[int]]) -> int:
     count = 0
     while remaining:
         count += 1
-        queue = deque([next(iter(remaining))])
+        queue = deque([min(remaining)])
         remaining.remove(queue[0])
         while queue:
             current = queue.popleft()
@@ -195,64 +182,243 @@ def component_count(region: StateRegion, adjacency: dict[int, set[int]]) -> int:
     return count
 
 
-def split_phases(order: list[int]) -> tuple[tuple[int, ...], ...]:
-    transferable = order[:-1]
-    quotient, remainder = divmod(len(transferable), 4)
-    phases: list[tuple[int, ...]] = []
-    start = 0
-    for phase in range(4):
-        size = quotient + (1 if phase < remainder else 0)
-        phases.append(tuple(transferable[start : start + size]))
-        start += size
-    return tuple(phases)
+def p(province_id: int) -> str:
+    return f"p:x{province_id:06X}"
 
 
-def render_dispatchers(assignments: dict[str, tuple[tuple[int, ...], ...]]) -> str:
-    lines = [
+def owner_neighbours(neighbours: tuple[int, ...], owner: str) -> str:
+    tests = " ".join(f"{p(neighbour)}.state.owner = {owner}" for neighbour in neighbours)
+    return f"OR = {{ {tests} }}"
+
+
+def project_neighbours(neighbours: tuple[int, ...]) -> str:
+    identities = " ".join(f"this = {p(neighbour)}" for neighbour in neighbours)
+    return (
+        "any_in_list = { variable = ffcs_settlement_provinces_v2 "
+        f"state.owner = $COUNTRY$ OR = {{ {identities} }} }}"
+    )
+
+
+def grouped_trigger(
+    name: str,
+    regions: list[StateRegion],
+    candidates: dict[str, list[tuple[int, tuple[int, ...]]]],
+    candidate_owner: str,
+    neighbour_test,
+    comment: str,
+) -> list[str]:
+    lines = [comment, f"{name} = {{", "\tOR = {"]
+    for region in regions:
+        entries = candidates[region.name]
+        if not entries:
+            continue
+        lines.extend(["\t\tAND = {", f"\t\t\tstate_region = s:{region.name}", "\t\t\tOR = {"])
+        for candidate, neighbours in entries:
+            lines.append(
+                f"\t\t\t\tAND = {{ {p(candidate)}.state.owner = {candidate_owner} "
+                f"{neighbour_test(neighbours)} }}"
+            )
+        lines.extend(["\t\t\t}", "\t\t}"])
+    lines.extend(["\t}", "}", ""])
+    return lines
+
+
+def transfer(candidate: int) -> str:
+    return (
+        "add_to_variable_list = { "
+        f"name = ffcs_settlement_provinces_v2 target = {p(candidate)} "
+        "} "
+        "state_region = { set_owner_of_provinces = { "
+        f'country = $COUNTRY$ provinces = {{ "x{candidate:06X}" }} '
+        "} } "
+        "change_variable = { name = ffcs_transfer_budget_v2 add = -1 }"
+    )
+
+
+def grouped_effect(
+    name: str,
+    regions: list[StateRegion],
+    candidates: dict[str, list[tuple[int, tuple[int, ...]]]],
+    neighbour_test,
+    *,
+    one_only: bool,
+    comment: str,
+) -> list[str]:
+    lines = [comment, f"{name} = {{"]
+    outer_branch = 0
+    for region in regions:
+        entries = candidates[region.name]
+        if not entries:
+            continue
+        keyword = "if" if outer_branch == 0 else "else_if"
+        lines.extend(
+            [
+                f"\t{keyword} = {{",
+                f"\t\tlimit = {{ state_region = s:{region.name} }}",
+            ]
+        )
+        inner_branch = 0
+        for candidate, neighbours in entries:
+            inner_keyword = (
+                "if" if not one_only or inner_branch == 0 else "else_if"
+            )
+            lines.append(
+                f"\t\t{inner_keyword} = {{ limit = {{ "
+                "var:ffcs_transfer_budget_v2 > 0 num_provinces > 1 "
+                f"{p(candidate)}.state.owner = $TARGET$ "
+                f"{neighbour_test(neighbours)} }} {transfer(candidate)} }}"
+            )
+            inner_branch += 1
+        lines.append("\t}")
+        outer_branch += 1
+    lines.extend(["}", ""])
+    return lines
+
+
+def render_outputs(
+    regions: list[StateRegion], adjacency: dict[int, set[int]]
+) -> tuple[str, str, dict[str, int]]:
+    land: dict[str, list[tuple[int, tuple[int, ...]]]] = {}
+    frontier: dict[str, list[tuple[int, tuple[int, ...]]]] = {}
+    for region in regions:
+        region_ids = set(region.provinces)
+        land[region.name] = [
+            (province_id, tuple(sorted(adjacency[province_id])))
+            for province_id in region.provinces
+            if adjacency[province_id]
+        ]
+        frontier[region.name] = [
+            (
+                province_id,
+                tuple(sorted(adjacency[province_id].intersection(region_ids))),
+            )
+            for province_id in region.provinces
+            if adjacency[province_id].intersection(region_ids)
+        ]
+
+    trigger_lines = [
         "# AUTO-GENERATED by tools/generate_province_phases.py; do not edit.",
-        "# Each state region retains one province for final set_state_owner cleanup.",
+        "# Literal province topology for route and frontier checks.",
         "",
     ]
-    for phase_index in range(4):
-        lines.append(f"ffcs_apply_generated_phase_{phase_index + 1} = {{")
-        branch = 0
-        for state_name in sorted(assignments):
-            provinces = assignments[state_name][phase_index]
-            if not provinces:
-                continue
-            keyword = "if" if branch == 0 else "else_if"
-            lines.extend(
-                [
-                    f"\t{keyword} = {{",
-                    f"\t\tlimit = {{ this = s:{state_name} }}",
-                    "\t\tset_owner_of_provinces = {",
-                    "\t\t\tcountry = $COUNTRY$",
-                    "\t\t\tprovinces = {",
-                ]
+    trigger_lines += grouped_trigger(
+        "ffcs_generated_has_land_seed_v2",
+        regions,
+        land,
+        "root.owner",
+        lambda neighbours: owner_neighbours(neighbours, "$COUNTRY$"),
+        "# Root = target state; COUNTRY = sponsor",
+    )
+    trigger_lines.extend(
+        [
+            "# Root = target state",
+            "ffcs_generated_has_port_seed_v2 = {",
+            "\tOR = {",
+        ]
+    )
+    for region in regions:
+        if region.port is not None:
+            trigger_lines.append(
+                f"\t\tAND = {{ state_region = s:{region.name} "
+                f"{p(region.port)}.state.owner = root.owner }}"
             )
-            for offset in range(0, len(provinces), 10):
-                values = " ".join(
-                    f'"x{province:06X}"' for province in provinces[offset : offset + 10]
-                )
-                lines.append(f"\t\t\t\t{values}")
-            lines.extend(["\t\t\t}", "\t\t}", "\t}"])
-            branch += 1
-        lines.extend(["}", ""])
-    return "\n".join(lines)
+    trigger_lines.extend(["\t}", "}", ""])
+    trigger_lines.extend(
+        [
+            "# Root = target state; COUNTRY = country to test",
+            "ffcs_generated_country_owns_port_v2 = {",
+            "\tOR = {",
+        ]
+    )
+    for region in regions:
+        if region.port is not None:
+            trigger_lines.append(
+                f"\t\tAND = {{ state_region = s:{region.name} "
+                f"{p(region.port)}.state.owner = $COUNTRY$ }}"
+            )
+    trigger_lines.extend(["\t}", "}", ""])
+    trigger_lines += grouped_trigger(
+        "ffcs_generated_has_frontier_v2",
+        regions,
+        frontier,
+        "$TARGET$",
+        project_neighbours,
+        "# Root = target state; COUNTRY = sponsor; TARGET = original owner",
+    )
+
+    effect_lines = [
+        "# AUTO-GENERATED by tools/generate_province_phases.py; do not edit.",
+        "# ponytail: repeated scan is O(n^2) only at phase thresholds;",
+        "# replace only if runtime profiling shows a material phase-tick cost.",
+        "",
+    ]
+    effect_lines += grouped_effect(
+        "ffcs_generated_take_land_seed_v2",
+        regions,
+        land,
+        lambda neighbours: owner_neighbours(neighbours, "$COUNTRY$"),
+        one_only=True,
+        comment="# Root = target state; COUNTRY = sponsor; TARGET = original owner",
+    )
+
+    effect_lines.extend(
+        [
+            "# Root = target state; COUNTRY = sponsor; TARGET = original owner",
+            "ffcs_generated_take_port_seed_v2 = {",
+        ]
+    )
+    branch = 0
+    for region in regions:
+        if region.port is None:
+            continue
+        keyword = "if" if branch == 0 else "else_if"
+        effect_lines.append(
+            f"\t{keyword} = {{ limit = {{ state_region = s:{region.name} "
+            "var:ffcs_transfer_budget_v2 > 0 num_provinces > 1 "
+            f"{p(region.port)}.state.owner = $TARGET$ }} "
+            f"{transfer(region.port)} }}"
+        )
+        branch += 1
+    effect_lines.extend(["}", ""])
+    effect_lines += grouped_effect(
+        "ffcs_generated_transfer_frontier_sweep_v2",
+        regions,
+        frontier,
+        project_neighbours,
+        one_only=False,
+        comment="# Root = target state; COUNTRY = sponsor; TARGET = original owner",
+    )
+
+    counts = {
+        "land_seed_candidate_count": sum(map(len, land.values())),
+        "frontier_candidate_count": sum(map(len, frontier.values())),
+        "port_seed_count": sum(region.port is not None for region in regions),
+    }
+    return "\n".join(trigger_lines), "\n".join(effect_lines), counts
 
 
 def main() -> None:
+    root = Path(__file__).resolve().parents[1]
     parser = argparse.ArgumentParser()
     parser.add_argument("--state-regions", required=True, type=Path)
     parser.add_argument("--provinces-image", required=True, type=Path)
     parser.add_argument(
-        "--output",
+        "--effects-output",
         type=Path,
-        default=Path(__file__).resolve().parents[1]
+        default=root
         / "common"
         / "scripted_effects"
         / "generated"
         / "ffcs_generated_province_phases.txt",
+    )
+    parser.add_argument(
+        "--triggers-output",
+        type=Path,
+        default=root
+        / "common"
+        / "scripted_triggers"
+        / "generated"
+        / "ffcs_generated_province_routes.txt",
     )
     parser.add_argument(
         "--manifest",
@@ -262,38 +428,56 @@ def main() -> None:
     args = parser.parse_args()
 
     regions, duplicates = parse_state_regions(args.state_regions)
-    all_provinces = {province for region in regions for province in region.provinces}
+    all_provinces = {province_id for region in regions for province_id in region.provinces}
     adjacency = build_adjacency(args.provinces_image, all_provinces)
+    validate_adjacency(adjacency)
     regions, duplicate_resolutions = resolve_duplicate_provinces(
         regions, duplicates, adjacency
     )
-    assignments = {
-        region.name: split_phases(breadth_first_order(region, adjacency))
-        for region in regions
+    resolved = {province_id for region in regions for province_id in region.provinces}
+    adjacency = {
+        province_id: neighbours.intersection(resolved)
+        for province_id, neighbours in adjacency.items()
+        if province_id in resolved
     }
-    rendered = render_dispatchers(assignments)
-    args.output.parent.mkdir(parents=True, exist_ok=True)
-    args.output.write_text(rendered, encoding="utf-8", newline="\n")
+    validate_adjacency(adjacency)
+
+    triggers, effects, counts = render_outputs(regions, adjacency)
+    for path, text in (
+        (args.triggers_output, triggers),
+        (args.effects_output, effects),
+    ):
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(text, encoding="utf-8", newline="\n")
 
     manifest = {
-        "generator_schema": 1,
+        "generator_schema": 2,
         "state_region_count": len(regions),
-        "province_count": sum(len(region.provinces) for region in regions),
-        "transferred_province_count": sum(
-            len(phase) for phases in assignments.values() for phase in phases
+        "province_count": len(resolved),
+        "adjacency_edge_count": sum(map(len, adjacency.values())) // 2,
+        "internal_adjacency_edge_count": sum(
+            len(adjacency[province_id].intersection(region.provinces))
+            for region in regions
+            for province_id in region.provinces
+        )
+        // 2,
+        **counts,
+        "transfer_branch_count": (
+            counts["land_seed_candidate_count"]
+            + counts["frontier_candidate_count"]
+            + counts["port_seed_count"]
         ),
-        "reserved_province_count": len(regions),
         "disconnected_state_region_count": sum(
-            1 for region in regions if component_count(region, adjacency) > 1
+            component_count(region, adjacency) > 1 for region in regions
         ),
         "duplicate_province_resolutions": duplicate_resolutions,
-        "output_sha256": hashlib.sha256(rendered.encode("utf-8")).hexdigest(),
+        "trigger_output_sha256": hashlib.sha256(triggers.encode()).hexdigest(),
+        "effect_output_sha256": hashlib.sha256(effects.encode()).hexdigest(),
         "states": {
             region.name: {
                 "province_count": len(region.provinces),
-                "seed": f"x{region.seed:06X}",
-                "phase_counts": [len(phase) for phase in assignments[region.name]],
-                "reserved": f"x{breadth_first_order(region, adjacency)[-1]:06X}",
+                "port": f"x{region.port:06X}" if region.port is not None else None,
+                "component_count": component_count(region, adjacency),
             }
             for region in regions
         },
@@ -304,10 +488,8 @@ def main() -> None:
         newline="\n",
     )
     print(
-        f"Generated {len(regions)} state regions, "
-        f"{manifest['province_count']} provinces, "
-        f"{len(duplicate_resolutions)} duplicate resolution(s), "
-        f"sha256={manifest['output_sha256']}"
+        f"Generated {len(regions)} state regions, {len(resolved)} provinces, "
+        f"{manifest['adjacency_edge_count']} edges"
     )
 
 

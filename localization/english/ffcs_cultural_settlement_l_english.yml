@@ -1,10 +1,11 @@
 ﻿l_english:
  da_ffcs_establish_cultural_settlement: "Establish Cultural Settlement"
- da_ffcs_establish_cultural_settlement_desc: "Establish a gradually expanding settlement in a state that is a homeland of one of our primary cultures. Each Colonial Affairs institution level supports two concurrent projects. This action fully replaces native colonization under Colonial Resettlement."
+ da_ffcs_establish_cultural_settlement_desc: "Establish a contiguous settlement in a state that is a homeland of one of our primary cultures. Land settlements grow from an actual shared province border. Overseas settlements begin at the port province, cost £100,000, and provide a level 1 port when the foothold is secured. Each Colonial Affairs institution level supports two concurrent projects."
  da_ffcs_establish_cultural_settlement_action_notification_name: "[INITIATOR_COUNTRY.GetName] begins settling [TARGET_STATE.GetStateRegion.GetName]"
  da_ffcs_establish_cultural_settlement_action_notification_desc: "[INITIATOR_COUNTRY.GetName] has begun a cultural settlement project in [TARGET_STATE.GetStateRegion.GetName]."
  FFCS_SELECT_TARGET_STATE_TT: "Choose an eligible primary-culture homeland state"
  FFCS_CULTURAL_HOMELAND_ONLY_TT: "The state must be a homeland of one of the acting country's primary cultures"
+ FFCS_VALID_SETTLEMENT_ROUTE_TT: "A land route requires an actual shared province border; otherwise an overseas route requires the target owner to control the port province and the acting country to have a port"
  FFCS_NATIVE_COLONIZATION_DISABLED_TT: "Countries using Colonial Resettlement must establish colonies through Cultural Settlements"
  ffcs_cultural_settlement_project: "Cultural Settlement Project"
  ffcs_cultural_settlement_project_desc: "A foreign settlement project is gradually establishing territorial control in this state."

@@ -43,6 +43,23 @@ ffcs_clear_project_variables_v1 = {
 	remove_variable = ffcs_settlement_progress_v1
 	remove_variable = ffcs_settlement_phase_v1
 	remove_variable = ffcs_settlement_resistance_v1
+	remove_variable = ffcs_settlement_route_v2
+	remove_variable = ffcs_transfer_budget_v2
+	clear_variable_list = ffcs_settlement_provinces_v2
+}
+
+# Root = state region; ffcs_settlement_sponsor temporary scope must exist
+ffcs_ensure_overseas_port_v2 = {
+	every_scope_state = {
+		limit = { owner = scope:ffcs_settlement_sponsor }
+		if = {
+			limit = { NOT = { has_building = building_port } }
+			create_building = {
+				building = building_port
+				level = 1
+			}
+		}
+	}
 }
 
 # Root = target state carrying a project
@@ -65,23 +82,165 @@ ffcs_cancel_settlement_project_v1 = {
 	}
 }
 
+# Root = target state; DIVISOR = remaining phase count
+ffcs_apply_settlement_phase_v2 = {
+	set_variable = {
+		name = ffcs_transfer_budget_v2
+		value = {
+			value = num_provinces
+			subtract = 1
+			divide = $DIVISOR$
+			ceiling = yes
+			min = 0
+		}
+	}
+
+	if = {
+		limit = { NOT = { has_variable_list = ffcs_settlement_provinces_v2 } }
+		if = {
+			limit = { var:ffcs_settlement_route_v2 = 1 }
+			ffcs_generated_take_land_seed_v2 = {
+				COUNTRY = scope:ffcs_settlement_sponsor
+				TARGET = scope:ffcs_settlement_original_owner
+			}
+		}
+		else_if = {
+			limit = { var:ffcs_settlement_route_v2 = 2 }
+			ffcs_generated_take_port_seed_v2 = {
+				COUNTRY = scope:ffcs_settlement_sponsor
+				TARGET = scope:ffcs_settlement_original_owner
+			}
+		}
+
+		if = {
+			limit = { has_variable_list = ffcs_settlement_provinces_v2 }
+			if = {
+				limit = { var:ffcs_settlement_route_v2 = 2 }
+				state_region = { ffcs_ensure_overseas_port_v2 = yes }
+			}
+			if = {
+				limit = { has_global_variable = ffcs_debug_enabled_v1 }
+				debug_log = "FFCS|SEED_TRANSFERRED|DATE=[TimeKeeper.GetCurrentDate.GetString]|SPONSOR=[SCOPE.sCountry('ffcs_settlement_sponsor').GetNameNoFormatting]|STATE=[THIS.GetState.GetNameNoFormatting]"
+			}
+			save_temporary_scope_as = ffcs_settlement_state
+			scope:ffcs_settlement_sponsor = {
+				post_notification = ffcs_settlement_foothold
+			}
+		}
+	}
+
+	while = {
+		limit = {
+			var:ffcs_transfer_budget_v2 > 0
+			num_provinces > 1
+			has_variable_list = ffcs_settlement_provinces_v2
+			ffcs_generated_has_frontier_v2 = {
+				COUNTRY = scope:ffcs_settlement_sponsor
+				TARGET = scope:ffcs_settlement_original_owner
+			}
+		}
+		ffcs_generated_transfer_frontier_sweep_v2 = {
+			COUNTRY = scope:ffcs_settlement_sponsor
+			TARGET = scope:ffcs_settlement_original_owner
+		}
+	}
+	remove_variable = ffcs_transfer_budget_v2
+}
+
 # Root = target state carrying a project
 ffcs_complete_settlement_project_v1 = {
 	save_temporary_scope_as = ffcs_settlement_state
 	state_region = { save_temporary_scope_as = ffcs_settlement_state_region }
 	var:ffcs_settlement_sponsor_v1 ?= {
 		save_temporary_scope_as = ffcs_settlement_sponsor
-		ffcs_decrement_active_settlement_count_v1 = yes
 	}
 	var:ffcs_settlement_original_owner_v1 ?= {
+		save_temporary_scope_as = ffcs_settlement_original_owner
+	}
+	set_local_variable = {
+		name = ffcs_completion_route_v2
+		value = var:ffcs_settlement_route_v2
+	}
+	set_variable = {
+		name = ffcs_transfer_budget_v2
+		value = num_provinces
+	}
+	set_variable = ffcs_internal_transfer_guard_v1
+	while = {
+		limit = {
+			var:ffcs_transfer_budget_v2 > 0
+			num_provinces > 1
+			has_variable_list = ffcs_settlement_provinces_v2
+			ffcs_generated_has_frontier_v2 = {
+				COUNTRY = scope:ffcs_settlement_sponsor
+				TARGET = scope:ffcs_settlement_original_owner
+			}
+		}
+		ffcs_generated_transfer_frontier_sweep_v2 = {
+			COUNTRY = scope:ffcs_settlement_sponsor
+			TARGET = scope:ffcs_settlement_original_owner
+		}
+	}
+	remove_variable = ffcs_transfer_budget_v2
+
+	set_local_variable = { name = ffcs_claim_final_state_v2 value = 0 }
+	if = {
+		limit = {
+			num_provinces = 1
+			OR = {
+				AND = {
+					has_variable_list = ffcs_settlement_provinces_v2
+					ffcs_generated_has_frontier_v2 = {
+						COUNTRY = scope:ffcs_settlement_sponsor
+						TARGET = scope:ffcs_settlement_original_owner
+					}
+				}
+				AND = {
+					NOT = { has_variable_list = ffcs_settlement_provinces_v2 }
+					var:ffcs_settlement_route_v2 = 1
+					ffcs_generated_has_land_seed_v2 = {
+						COUNTRY = scope:ffcs_settlement_sponsor
+					}
+				}
+				AND = {
+					NOT = { has_variable_list = ffcs_settlement_provinces_v2 }
+					var:ffcs_settlement_route_v2 = 2
+					is_coastal = yes
+					ffcs_generated_has_port_seed_v2 = yes
+				}
+			}
+		}
+		set_local_variable = { name = ffcs_claim_final_state_v2 value = 1 }
+	}
+
+	scope:ffcs_settlement_sponsor = {
+		ffcs_decrement_active_settlement_count_v1 = yes
+	}
+	scope:ffcs_settlement_original_owner = {
 		ffcs_decrement_inbound_settlement_count_v1 = yes
 	}
 	ffcs_clear_project_variables_v1 = yes
-	set_state_owner = scope:ffcs_settlement_sponsor
-	set_state_type = unincorporated
+
+	if = {
+		limit = { local_var:ffcs_claim_final_state_v2 = 1 }
+		set_state_owner = scope:ffcs_settlement_sponsor
+	}
+	scope:ffcs_settlement_state_region = {
+		every_scope_state = {
+			limit = {
+				owner = scope:ffcs_settlement_sponsor
+				is_incorporated = no
+			}
+			set_state_type = unincorporated
+		}
+		if = {
+			limit = { local_var:ffcs_completion_route_v2 = 2 }
+			ffcs_ensure_overseas_port_v2 = yes
+		}
+	}
 	if = {
 		limit = { has_global_variable = ffcs_debug_enabled_v1 }
-		debug_log = "FFCS|EFFECT_APPLIED|DATE=[TimeKeeper.GetCurrentDate.GetString]|SPONSOR=[SCOPE.sCountry('ffcs_settlement_sponsor').GetNameNoFormatting]|STATE=[SCOPE.sState('ffcs_settlement_state').GetNameNoFormatting]|RESULT=COMPLETED_UNINCORPORATED"
+		debug_log = "FFCS|EFFECT_APPLIED|DATE=[TimeKeeper.GetCurrentDate.GetString]|SPONSOR=[SCOPE.sCountry('ffcs_settlement_sponsor').GetNameNoFormatting]|REGION=[SCOPE.sStateRegion('ffcs_settlement_state_region').GetNameNoFormatting]|RESULT=COMPLETED_CONTIGUOUS"
 	}
 	scope:ffcs_settlement_sponsor = {
 		post_notification = ffcs_settlement_completed
@@ -90,7 +249,12 @@ ffcs_complete_settlement_project_v1 = {
 
 # Root = target state carrying a project
 ffcs_apply_monthly_settlement_progress_v1 = {
-	var:ffcs_settlement_sponsor_v1 ?= { save_temporary_scope_as = ffcs_settlement_sponsor }
+	var:ffcs_settlement_sponsor_v1 ?= {
+		save_temporary_scope_as = ffcs_settlement_sponsor
+	}
+	var:ffcs_settlement_original_owner_v1 ?= {
+		save_temporary_scope_as = ffcs_settlement_original_owner
+	}
 
 	set_local_variable = {
 		name = ffcs_monthly_progress_points
@@ -154,15 +318,27 @@ ffcs_apply_monthly_settlement_progress_v1 = {
 			}
 
 			if = {
-				limit = { scope:ffcs_settlement_sponsor = { has_technology_researched = quinine } }
+				limit = {
+					scope:ffcs_settlement_sponsor = {
+						has_technology_researched = quinine
+					}
+				}
 				add = 2
 			}
 			if = {
-				limit = { scope:ffcs_settlement_sponsor = { has_technology_researched = civilizing_mission } }
+				limit = {
+					scope:ffcs_settlement_sponsor = {
+						has_technology_researched = civilizing_mission
+					}
+				}
 				add = 3
 			}
 			if = {
-				limit = { scope:ffcs_settlement_sponsor = { is_adjacent_to_state = root } }
+				limit = {
+					scope:ffcs_settlement_sponsor = {
+						is_adjacent_to_state = root
+					}
+				}
 				add = 3
 			}
 			if = {
@@ -222,13 +398,9 @@ ffcs_apply_monthly_settlement_progress_v1 = {
 			var:ffcs_settlement_phase_v1 < 1
 		}
 		set_variable = ffcs_internal_transfer_guard_v1
-		state_region = {
-			ffcs_apply_generated_phase_1 = { COUNTRY = scope:ffcs_settlement_sponsor }
-		}
+		ffcs_apply_settlement_phase_v2 = { DIVISOR = 4 }
 		remove_variable = ffcs_internal_transfer_guard_v1
 		set_variable = { name = ffcs_settlement_phase_v1 value = 1 }
-		save_temporary_scope_as = ffcs_settlement_state
-		scope:ffcs_settlement_sponsor = { post_notification = ffcs_settlement_foothold }
 	}
 	if = {
 		limit = {
@@ -236,9 +408,7 @@ ffcs_apply_monthly_settlement_progress_v1 = {
 			var:ffcs_settlement_phase_v1 < 2
 		}
 		set_variable = ffcs_internal_transfer_guard_v1
-		state_region = {
-			ffcs_apply_generated_phase_2 = { COUNTRY = scope:ffcs_settlement_sponsor }
-		}
+		ffcs_apply_settlement_phase_v2 = { DIVISOR = 3 }
 		remove_variable = ffcs_internal_transfer_guard_v1
 		set_variable = { name = ffcs_settlement_phase_v1 value = 2 }
 	}
@@ -248,9 +418,7 @@ ffcs_apply_monthly_settlement_progress_v1 = {
 			var:ffcs_settlement_phase_v1 < 3
 		}
 		set_variable = ffcs_internal_transfer_guard_v1
-		state_region = {
-			ffcs_apply_generated_phase_3 = { COUNTRY = scope:ffcs_settlement_sponsor }
-		}
+		ffcs_apply_settlement_phase_v2 = { DIVISOR = 2 }
 		remove_variable = ffcs_internal_transfer_guard_v1
 		set_variable = { name = ffcs_settlement_phase_v1 value = 3 }
 	}
@@ -260,9 +428,7 @@ ffcs_apply_monthly_settlement_progress_v1 = {
 			var:ffcs_settlement_phase_v1 < 4
 		}
 		set_variable = ffcs_internal_transfer_guard_v1
-		state_region = {
-			ffcs_apply_generated_phase_4 = { COUNTRY = scope:ffcs_settlement_sponsor }
-		}
+		ffcs_apply_settlement_phase_v2 = { DIVISOR = 1 }
 		remove_variable = ffcs_internal_transfer_guard_v1
 		set_variable = { name = ffcs_settlement_phase_v1 value = 4 }
 	}

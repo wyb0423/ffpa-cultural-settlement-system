@@ -19,6 +19,11 @@ COLONY_CREATION_FACTOR = re.compile(
     r"\bstate_colony_growth_creation_factor\s*=\s*"
     r"([-+]?\d+(?:\.\d+)?)\b"
 )
+COLONY_PORT_DEFINES = {
+    "ESTABLISH_COLONY_PROVIDE_PORT": "yes",
+    "ESTABLISH_COLONY_PORT_COST": "100000",
+    "ESTABLISH_COLONY_PORT_LEVEL": "1",
+}
 
 
 @dataclass(frozen=True)
@@ -214,6 +219,28 @@ def validate_final_stack(
     if errors:
         return errors, report
 
+    for define, expected in COLONY_PORT_DEFINES.items():
+        matches: list[tuple[str, Path, str]] = []
+        pattern = re.compile(rf"^\s*{define}\s*=\s*([^\s#]+)", re.MULTILINE)
+        for stack_root in stack_roots:
+            directory = stack_root.path / "common" / "defines"
+            if not directory.is_dir():
+                continue
+            for path in sorted(directory.rglob("*.txt")):
+                for match in pattern.finditer(path.read_text(encoding="utf-8-sig")):
+                    matches.append((stack_root.label, path, match.group(1)))
+        if not matches:
+            errors.append(f"final stack does not define {define}")
+            continue
+        label, path, actual = matches[-1]
+        if actual != expected:
+            errors.append(
+                f"{define} must remain {expected}, final value is {actual} from "
+                f"{label}:{path.relative_to(stack_roots[[r.label for r in stack_roots].index(label)].path)}"
+            )
+        else:
+            report.append(f"{define}: {actual}")
+
     # This deliberately overestimates the supported stack: duplicate definitions
     # from earlier layers are still counted, and every institution modifier is
     # multiplied by the maximum supported investment level of five.
@@ -351,6 +378,8 @@ def main() -> int:
             errors.append("metadata id is not the stable mod id")
         if parsed.get("supported_game_version") != "1.13.*":
             errors.append("supported game version is not 1.13.*")
+        if parsed.get("version") != "0.3.0":
+            errors.append("metadata version must be 0.3.0")
     except (OSError, json.JSONDecodeError) as exc:
         errors.append(f"metadata parse failed: {exc}")
 
@@ -383,6 +412,18 @@ def main() -> int:
         script_tokens("scope:target_country = { is_country_type = decentralized }"),
     ):
         errors.append("cultural settlements must target only decentralized countries")
+    if diplomatic_action.count("add_treasury = -100000") != 1:
+        errors.append("overseas settlement must charge exactly 100000 once")
+    if "add_treasury = -5000" in diplomatic_action:
+        errors.append("land settlements must not retain the old 5000 charge")
+    for required in (
+        "ffcs_generated_has_land_seed_v2 = { COUNTRY = root }",
+        "set_variable = { name = ffcs_settlement_route_v2 value = 1 }",
+        "set_variable = { name = ffcs_settlement_route_v2 value = 2 }",
+        "scope:second_state = { var:ffcs_settlement_route_v2 = 2 }",
+    ):
+        if not find_token_sequence(diplomatic_action_tokens, script_tokens(required)):
+            errors.append(f"route selection or overseas charge missing: {required}")
 
     trigger_tokens = script_tokens(cap_trigger)
     if len(
@@ -393,7 +434,14 @@ def main() -> int:
     ) < 2:
         errors.append("settlement entry and monthly validity must require a decentralized target")
     for required in (
-        "var:ffcs_settlement_sponsor_v1 ?= { is_adjacent_to_state = root }",
+        "has_variable = ffcs_settlement_route_v2",
+        "var:ffcs_settlement_route_v2 = 1",
+        "var:ffcs_settlement_route_v2 = 2",
+        "ffcs_generated_has_land_seed_v2 = {",
+        "ffcs_generated_has_port_seed_v2 = yes",
+        "ffcs_generated_country_owns_port_v2 = {",
+        "has_variable_list = ffcs_settlement_provinces_v2",
+        "has_building = building_port",
         "var:ffcs_settlement_sponsor_v1 ?= { has_port_country = yes }",
     ):
         if not find_token_sequence(trigger_tokens, script_tokens(required)):
@@ -406,12 +454,25 @@ def main() -> int:
     settlement_effects = (
         root / "common" / "scripted_effects" / "ffcs_settlement_effects.txt"
     ).read_text(encoding="utf-8-sig")
+    settlement_effect_tokens = script_tokens(settlement_effects)
+    for required in (
+        "ffcs_apply_settlement_phase_v2 = { DIVISOR = 4 }",
+        "ffcs_apply_settlement_phase_v2 = { DIVISOR = 3 }",
+        "ffcs_apply_settlement_phase_v2 = { DIVISOR = 2 }",
+        "ffcs_apply_settlement_phase_v2 = { DIVISOR = 1 }",
+        "clear_variable_list = ffcs_settlement_provinces_v2",
+        "remove_variable = ffcs_settlement_route_v2",
+        "create_building = { building = building_port level = 1 }",
+    ):
+        if not find_token_sequence(settlement_effect_tokens, script_tokens(required)):
+            errors.append(f"settlement phase state machine missing: {required}")
     if not re.search(
-        r"ffcs_settlement_progress_v1\s*>=\s*95.*?ffcs_apply_generated_phase_4",
+        r"ffcs_settlement_progress_v1\s*>=\s*95.*?"
+        r"ffcs_apply_settlement_phase_v2\s*=\s*\{\s*DIVISOR\s*=\s*1",
         settlement_effects,
         re.DOTALL,
     ):
-        errors.append("generated province phase 4 must be applied at 95 progress")
+        errors.append("contiguous phase 4 must be applied at 95 progress")
 
     native_guard = (
         root / "common" / "laws" / "zzzzz_ffcs_colonial_resettlement_guard.txt"
@@ -509,35 +570,65 @@ def main() -> int:
         if duplicates:
             errors.append(f"{language} duplicate localization keys: {duplicates}")
 
-    generated = root / "common" / "scripted_effects" / "generated" / "ffcs_generated_province_phases.txt"
-    generated_text = generated.read_text(encoding="utf-8-sig")
-    for phase in range(1, 5):
-        if f"ffcs_apply_generated_phase_{phase}" not in generated_text:
-            errors.append(f"generated dispatcher missing phase {phase}")
+    generated_effects = root / "common" / "scripted_effects" / "generated" / "ffcs_generated_province_phases.txt"
+    generated_triggers = root / "common" / "scripted_triggers" / "generated" / "ffcs_generated_province_routes.txt"
+    generated_effect_text = generated_effects.read_text(encoding="utf-8-sig")
+    generated_trigger_text = generated_triggers.read_text(encoding="utf-8-sig")
+    for dispatcher in (
+        "ffcs_generated_take_land_seed_v2",
+        "ffcs_generated_take_port_seed_v2",
+        "ffcs_generated_transfer_frontier_sweep_v2",
+    ):
+        if dispatcher not in generated_effect_text:
+            errors.append(f"generated effect dispatcher missing: {dispatcher}")
+    for dispatcher in (
+        "ffcs_generated_has_land_seed_v2",
+        "ffcs_generated_has_port_seed_v2",
+        "ffcs_generated_country_owns_port_v2",
+        "ffcs_generated_has_frontier_v2",
+    ):
+        if dispatcher not in generated_trigger_text:
+            errors.append(f"generated trigger dispatcher missing: {dispatcher}")
+    for required in (
+        "state.owner = $TARGET$",
+        "state.owner = $COUNTRY$",
+        "any_in_list = { variable = ffcs_settlement_provinces_v2",
+    ):
+        if required not in generated_effect_text:
+            errors.append(f"generated frontier ownership check missing: {required}")
 
     manifest_path = root / "tools" / "generated_phase_manifest.json"
     if manifest_path.exists():
         manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
-        actual_hash = hashlib.sha256(generated.read_bytes()).hexdigest()
-        if manifest.get("output_sha256") != actual_hash:
-            errors.append("generated phase output does not match manifest hash")
-        if manifest.get("province_count", 0) != (
-            manifest.get("transferred_province_count", 0)
-            + manifest.get("reserved_province_count", 0)
-        ):
-            errors.append("generated province accounting is incomplete")
-        generated_provinces = re.findall(r'"x([0-9A-Fa-f]{6})"', generated_text)
-        duplicate_generated = [
-            province
-            for province, count in Counter(generated_provinces).items()
-            if count > 1
-        ]
-        if duplicate_generated:
-            errors.append(
-                f"generated provinces appear in multiple phases: {duplicate_generated[:10]}"
-            )
-        if len(generated_provinces) != manifest.get("transferred_province_count"):
-            errors.append("generated province list count does not match manifest")
+        if manifest.get("generator_schema") != 2:
+            errors.append("generated manifest schema must be 2")
+        hashes = (
+            (
+                "effect_output_sha256",
+                hashlib.sha256(generated_effects.read_bytes()).hexdigest(),
+            ),
+            (
+                "trigger_output_sha256",
+                hashlib.sha256(generated_triggers.read_bytes()).hexdigest(),
+            ),
+        )
+        for key, actual in hashes:
+            if manifest.get(key) != actual:
+                errors.append(f"generated output does not match manifest: {key}")
+        transfer_blocks = re.findall(
+            r"set_owner_of_provinces\s*=\s*\{.*?"
+            r"provinces\s*=\s*\{\s*\"x([0-9A-Fa-f]{6})\"\s*\}",
+            generated_effect_text,
+            re.DOTALL,
+        )
+        if len(transfer_blocks) != manifest.get("transfer_branch_count"):
+            errors.append("generated transfer branch count does not match manifest")
+        state_total = sum(
+            state.get("province_count", 0)
+            for state in manifest.get("states", {}).values()
+        )
+        if state_total != manifest.get("province_count"):
+            errors.append("generated state-region province accounting is incomplete")
 
     stack_arguments = (
         args.game_root,

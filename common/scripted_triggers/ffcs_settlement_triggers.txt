@@ -45,11 +45,15 @@ ffcs_state_is_eligible_for_settlement = {
 		is_country_type = decentralized
 		NOT = { is_diplomatic_play_enemy_of = $COUNTRY$ }
 	}
-	OR = {
-		$COUNTRY$ = { is_adjacent_to_state = root }
-		AND = {
-			is_coastal = yes
-			$COUNTRY$ = { has_port_country = yes }
+	custom_tooltip = {
+		text = FFCS_VALID_SETTLEMENT_ROUTE_TT
+		OR = {
+			ffcs_generated_has_land_seed_v2 = { COUNTRY = $COUNTRY$ }
+			AND = {
+				is_coastal = yes
+				$COUNTRY$ = { has_port_country = yes }
+				ffcs_generated_has_port_seed_v2 = yes
+			}
 		}
 	}
 	OR = {
@@ -68,14 +72,55 @@ ffcs_state_is_eligible_for_settlement = {
 ffcs_settlement_project_remains_valid = {
 	has_variable = ffcs_settlement_sponsor_v1
 	has_variable = ffcs_settlement_original_owner_v1
+	has_variable = ffcs_settlement_route_v2
 	var:ffcs_settlement_original_owner_v1 ?= owner
 	owner = { is_country_type = decentralized }
 	is_homeland_of_country_cultures = var:ffcs_settlement_sponsor_v1
 	OR = {
-		var:ffcs_settlement_sponsor_v1 ?= { is_adjacent_to_state = root }
 		AND = {
-			is_coastal = yes
+			var:ffcs_settlement_route_v2 = 1
+			OR = {
+				AND = {
+					NOT = { has_variable_list = ffcs_settlement_provinces_v2 }
+					ffcs_generated_has_land_seed_v2 = {
+						COUNTRY = var:ffcs_settlement_sponsor_v1
+					}
+				}
+				AND = {
+					has_variable_list = ffcs_settlement_provinces_v2
+					any_in_list = {
+						variable = ffcs_settlement_provinces_v2
+						root.var:ffcs_settlement_sponsor_v1 ?= state.owner
+					}
+				}
+			}
+		}
+		AND = {
+			var:ffcs_settlement_route_v2 = 2
 			var:ffcs_settlement_sponsor_v1 ?= { has_port_country = yes }
+			OR = {
+				AND = {
+					NOT = { has_variable_list = ffcs_settlement_provinces_v2 }
+					is_coastal = yes
+					ffcs_generated_has_port_seed_v2 = yes
+				}
+				AND = {
+					has_variable_list = ffcs_settlement_provinces_v2
+					ffcs_generated_country_owns_port_v2 = {
+						COUNTRY = var:ffcs_settlement_sponsor_v1
+					}
+					any_in_list = {
+						variable = ffcs_settlement_provinces_v2
+						root.var:ffcs_settlement_sponsor_v1 ?= state.owner
+					}
+					state_region = {
+						any_scope_state = {
+							root.var:ffcs_settlement_sponsor_v1 ?= owner
+							has_building = building_port
+						}
+					}
+				}
+			}
 		}
 	}
 	var:ffcs_settlement_sponsor_v1 ?= {
