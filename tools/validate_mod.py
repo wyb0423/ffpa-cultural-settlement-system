@@ -489,6 +489,17 @@ def main() -> int:
         errors.append("overseas settlement must charge exactly 100000 once")
     if "add_treasury = -5000" in diplomatic_action:
         errors.append("land settlements must not retain the old 5000 charge")
+    if not find_token_sequence(
+        diplomatic_action_tokens,
+        script_tokens(
+            "evaluation_chance = { value = 0 if = { limit = { "
+            "ffcs_uses_cultural_settlement_law = yes "
+            "has_technology_researched = colonization in_default = no "
+            "is_at_war = no ffcs_below_settlement_cap = yes } add = 0.05 "
+            "if = { limit = { country_rank = rank_value:great_power } add = 0.05 }"
+        ),
+    ):
+        errors.append("eligible minor AI countries must receive a nonzero settlement evaluation chance")
     for required in (
         "show_effect_in_tooltip = no",
         "ffcs_generated_has_land_seed_v2 = { COUNTRY = scope:ffcs_settlement_sponsor TARGET = scope:ffcs_settlement_original_owner }",
@@ -546,11 +557,13 @@ def main() -> int:
         "var:ffcs_settlement_route_v2 = 2",
         "ffcs_generated_has_land_seed_v2 = {",
         "ffcs_generated_has_port_seed_v2 = {",
-        "TARGET = var:ffcs_settlement_original_owner_v1",
+        "COUNTRY = $COUNTRY$",
+        "TARGET = $TARGET$",
         "ffcs_generated_country_owns_port_v2 = {",
         "has_variable_list = ffcs_settlement_provinces_v2",
         "has_building = building_port",
-        "var:ffcs_settlement_sponsor_v1 ?= { has_port_country = yes }",
+        "$COUNTRY$ = { has_port_country = yes }",
+        "is_homeland_of_country_cultures = $COUNTRY$",
     ):
         if not find_token_sequence(trigger_tokens, script_tokens(required)):
             errors.append(f"monthly settlement validity missing route check: {required}")
@@ -592,6 +605,11 @@ def main() -> int:
         root / "common" / "scripted_effects" / "ffcs_settlement_effects.txt"
     ).read_text(encoding="utf-8-sig")
     settlement_effect_tokens = script_tokens(settlement_effects)
+    if re.search(
+        r"(?:COUNTRY|TARGET)\s*=\s*var:ffcs_settlement_",
+        cap_trigger + settlement_effects,
+    ):
+        errors.append("nested settlement checks must use restored country scopes, not local var links")
     for required in (
         "ffcs_apply_settlement_phase_v2 = { DIVISOR = 4 }",
         "ffcs_apply_settlement_phase_v2 = { DIVISOR = 3 }",
@@ -608,7 +626,7 @@ def main() -> int:
         "save_temporary_scope_as = ffcs_settlement_project",
         "save_temporary_scope_as = ffcs_settlement_target_state",
         "state.owner = scope:ffcs_settlement_sponsor",
-        "ffcs_settlement_project_remains_valid = { COUNTRY = var:ffcs_settlement_sponsor_v1 TARGET = var:ffcs_settlement_original_owner_v1 }",
+        "ffcs_settlement_project_remains_valid = { COUNTRY = scope:ffcs_settlement_sponsor TARGET = scope:ffcs_settlement_original_owner }",
         "scope:ffcs_settlement_target_state = { ffcs_apply_monthly_settlement_progress_v1 = yes }",
         "var:ffcs_settlement_phase_v1 >= 1 OR = { NOT = { has_variable_list = ffcs_settlement_provinces_v2 }",
         "clear_variable_list = ffcs_settlement_provinces_v2 set_variable = { name = ffcs_settlement_phase_v1 value = 0 }",
@@ -649,7 +667,8 @@ def main() -> int:
     settlement_value_tokens = script_tokens(settlement_values)
     for required in (
         "ffcs_monthly_settlement_progress_value = { save_temporary_scope_as = ffcs_value_state",
-        "add = 5",
+        "add = 0.5",
+        "value = scope:ffcs_value_sponsor.gdp divide = 100000000 max = 2",
         "institution = institution_colonial_affairs value >= 5",
         "has_technology_researched = quinine",
         "has_technology_researched = civilizing_mission",
@@ -657,7 +676,7 @@ def main() -> int:
         "turmoil >= 0.25",
         "has_state_trait = state_trait_severe_malaria",
         "value = scope:ffcs_value_sponsor.var:ffcs_active_settlement_count_v1",
-        "min = 1",
+        "min = 0.25",
         "ffcs_settlement_progress_fraction = {",
         "ffcs_settlement_phase_value = {",
         "ffcs_settlement_resistance_value = {",

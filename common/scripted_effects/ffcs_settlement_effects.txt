@@ -503,8 +503,8 @@ ffcs_advance_settlement_project_v1 = {
 		limit = {
 			exists = scope:ffcs_settlement_target_state
 			ffcs_settlement_project_remains_valid = {
-				COUNTRY = var:ffcs_settlement_sponsor_v1
-				TARGET = var:ffcs_settlement_original_owner_v1
+				COUNTRY = scope:ffcs_settlement_sponsor
+				TARGET = scope:ffcs_settlement_original_owner
 			}
 		}
 		debug_log = "FFCS|EVALUATION_PASSED|DATE=[TimeKeeper.GetCurrentDate.GetString]|SPONSOR=[SCOPE.sCountry('ffcs_settlement_sponsor').GetNameNoFormatting]|REGION=[SCOPE.sStateRegion('ffcs_settlement_state_region').GetNameNoFormatting]|TARGET=[SCOPE.sState('ffcs_settlement_target_state').GetNameNoFormatting]"

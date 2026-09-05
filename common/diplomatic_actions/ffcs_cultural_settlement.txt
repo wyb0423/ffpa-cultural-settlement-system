@@ -187,12 +187,11 @@ da_ffcs_establish_cultural_settlement = {
 					is_at_war = no
 					ffcs_below_settlement_cap = yes
 				}
+				# Firefall starts with many minor polities; give every otherwise eligible
+				# country the native major-power consideration chance.
+				add = 0.05
 				if = {
 					limit = { country_rank = rank_value:great_power }
-					add = 0.10
-				}
-				else_if = {
-					limit = { country_rank = rank_value:major_power }
 					add = 0.05
 				}
 				if = {
