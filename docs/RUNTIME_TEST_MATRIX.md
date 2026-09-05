@@ -127,6 +127,15 @@ Losing only strategic-region interest must not cancel an active project. Also lo
 
 Each case must emit `EVALUATION_FAILED` or reach the owner-change cleanup, then emit `CANCELLED`. No project marker or versioned state variable may remain.
 
+## Journal overview
+
+1. Start one land project and one overseas project. Confirm a single **Cultural Settlements** Journal Entry appears with two rows.
+2. Confirm each row shows the correct state, route, phase, progress, monthly growth and resistance; clicking a row must open that state.
+3. Advance one monthly pulse and compare the displayed growth with the actual progress change before any random setback.
+4. Cross 50 and 75 progress and confirm the row phase and corresponding notification update once each. At 95, expect the milestone notification unless the same pulse reaches 100 and posts completion instead.
+5. Complete or cancel one project and confirm only its row disappears. End the last project and confirm the Journal Entry silently invalidates.
+6. Load an old save with active projects but no `ffcs_active_settlement_states_v1` list. After one monthly pulse, confirm the list and Journal Entry rebuild without resetting project progress.
+
 ## Final-state evidence
 
 An effect log proves only immediate execution. After completion or cancellation:
