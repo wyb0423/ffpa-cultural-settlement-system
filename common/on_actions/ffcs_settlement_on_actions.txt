@@ -9,10 +9,7 @@ ffcs_monthly_country_pulse_v1 = {
 		if = {
 			limit = { has_variable = ffcs_active_settlement_count_v1 }
 			save_temporary_scope_as = ffcs_monthly_sponsor
-			if = {
-				limit = { has_global_variable = ffcs_debug_enabled_v1 }
-				debug_log = "FFCS|SCHEDULER_REACHED|DATE=[TimeKeeper.GetCurrentDate.GetString]|COUNTRY=[THIS.GetCountry.GetNameNoFormatting]"
-			}
+			debug_log = "FFCS|SCHEDULER_REACHED|DATE=[TimeKeeper.GetCurrentDate.GetString]|COUNTRY=[THIS.GetCountry.GetNameNoFormatting]"
 			ffcs_initialize_country_schema_v1 = yes
 			set_variable = { name = ffcs_active_settlement_count_v1 value = 0 }
 			clear_variable_list = ffcs_active_settlement_states_v1
@@ -26,6 +23,12 @@ ffcs_monthly_country_pulse_v1 = {
 					add_to_variable_list = {
 						name = ffcs_active_settlement_states_v1
 						target = prev
+					}
+				}
+				state_region = {
+					set_variable = {
+						name = ffcs_settlement_sponsor_v1
+						value = scope:ffcs_monthly_sponsor
 					}
 				}
 			}

@@ -50,7 +50,10 @@ ffcs_state_is_eligible_for_settlement = {
 	}
 	NOT = {
 		state_region = {
-			any_scope_state = { has_variable = ffcs_settlement_sponsor_v1 }
+			OR = {
+				has_variable = ffcs_settlement_sponsor_v1
+				any_scope_state = { has_variable = ffcs_settlement_sponsor_v1 }
+			}
 		}
 	}
 	owner = {

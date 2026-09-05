@@ -3,7 +3,7 @@ da_ffcs_establish_cultural_settlement = {
 
 	requires_approval = no
 	should_notify_third_parties = yes
-	show_effect_in_tooltip = yes
+	show_effect_in_tooltip = no
 	state_selection = second_required
 	second_state_list = second_country
 
@@ -42,6 +42,7 @@ da_ffcs_establish_cultural_settlement = {
 	accept_effect = {
 		if = {
 			limit = { exists = scope:second_state }
+			save_temporary_scope_as = ffcs_settlement_sponsor
 
 			ffcs_initialize_country_schema_v1 = yes
 			if = {
@@ -52,16 +53,26 @@ da_ffcs_establish_cultural_settlement = {
 				name = ffcs_active_settlement_count_v1
 				add = 1
 			}
-			scope:target_country = { ffcs_initialize_country_schema_v1 = yes }
+			scope:target_country = {
+				save_temporary_scope_as = ffcs_settlement_original_owner
+				ffcs_initialize_country_schema_v1 = yes
+			}
 
 			scope:second_state = {
 				save_temporary_scope_as = ffcs_settlement_project
+				state_region = {
+					save_temporary_scope_as = ffcs_settlement_state_region
+					set_variable = {
+						name = ffcs_settlement_sponsor_v1
+						value = scope:ffcs_settlement_sponsor
+					}
+				}
 				add_modifier = { name = ffcs_cultural_settlement_project }
 				if = {
 					limit = {
 						ffcs_generated_has_land_seed_v2 = {
-							COUNTRY = root
-							TARGET = scope:target_country
+							COUNTRY = scope:ffcs_settlement_sponsor
+							TARGET = scope:ffcs_settlement_original_owner
 						}
 					}
 					set_variable = { name = ffcs_settlement_route_v2 value = 1 }
@@ -69,18 +80,18 @@ da_ffcs_establish_cultural_settlement = {
 				else_if = {
 					limit = {
 						ffcs_generated_has_port_seed_v2 = {
-							TARGET = scope:target_country
+							TARGET = scope:ffcs_settlement_original_owner
 						}
 					}
 					set_variable = { name = ffcs_settlement_route_v2 value = 2 }
 				}
 				set_variable = {
 					name = ffcs_settlement_sponsor_v1
-					value = root
+					value = scope:ffcs_settlement_sponsor
 				}
 				set_variable = {
 					name = ffcs_settlement_original_owner_v1
-					value = owner
+					value = scope:ffcs_settlement_original_owner
 				}
 				set_variable = { name = ffcs_settlement_progress_v1 value = 0 }
 				set_variable = { name = ffcs_settlement_phase_v1 value = 0 }
@@ -105,12 +116,6 @@ da_ffcs_establish_cultural_settlement = {
 						add = 1
 					}
 				}
-				var:ffcs_settlement_sponsor_v1 ?= {
-					save_temporary_scope_as = ffcs_settlement_sponsor
-				}
-				var:ffcs_settlement_original_owner_v1 ?= {
-					save_temporary_scope_as = ffcs_settlement_original_owner
-				}
 				scope:ffcs_settlement_sponsor = {
 					add_to_variable_list = {
 						name = ffcs_active_settlement_states_v1
@@ -127,14 +132,7 @@ da_ffcs_establish_cultural_settlement = {
 						}
 					}
 				}
-				if = {
-					limit = { has_global_variable = ffcs_debug_enabled_v1 }
-					save_temporary_scope_as = ffcs_debug_state
-					var:ffcs_settlement_sponsor_v1 ?= {
-						save_temporary_scope_as = ffcs_debug_sponsor
-					}
-					debug_log = "FFCS|CANDIDATE_CREATED|DATE=[TimeKeeper.GetCurrentDate.GetString]|SPONSOR=[SCOPE.sCountry('ffcs_debug_sponsor').GetNameNoFormatting]|STATE=[SCOPE.sState('ffcs_debug_state').GetNameNoFormatting]"
-				}
+				debug_log = "FFCS|PROJECT_CREATED|DATE=[TimeKeeper.GetCurrentDate.GetString]|SPONSOR=[SCOPE.sCountry('ffcs_settlement_sponsor').GetNameNoFormatting]|REGION=[SCOPE.sStateRegion('ffcs_settlement_state_region').GetNameNoFormatting]|PROJECT=[SCOPE.sState('ffcs_settlement_project').GetNameNoFormatting]|LOCK=SET"
 				if = {
 					limit = { var:ffcs_settlement_route_v2 = 2 }
 					scope:ffcs_settlement_sponsor = { add_treasury = -100000 }

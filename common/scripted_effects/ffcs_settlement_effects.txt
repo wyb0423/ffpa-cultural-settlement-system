@@ -37,6 +37,7 @@ ffcs_decrement_inbound_settlement_count_v1 = {
 # Root = state carrying a project
 ffcs_clear_project_variables_v1 = {
 	remove_modifier = ffcs_cultural_settlement_project
+	state_region = { remove_variable = ffcs_settlement_sponsor_v1 }
 	remove_variable = ffcs_internal_transfer_guard_v1
 	remove_variable = ffcs_settlement_sponsor_v1
 	remove_variable = ffcs_settlement_original_owner_v1
@@ -65,6 +66,7 @@ ffcs_ensure_overseas_port_v2 = {
 # Root = state carrying a project
 ffcs_cancel_settlement_project_v1 = {
 	save_temporary_scope_as = ffcs_settlement_state
+	state_region = { save_temporary_scope_as = ffcs_settlement_state_region }
 	var:ffcs_settlement_sponsor_v1 ?= {
 		save_temporary_scope_as = ffcs_settlement_sponsor
 		remove_list_variable = {
@@ -73,14 +75,11 @@ ffcs_cancel_settlement_project_v1 = {
 		}
 		ffcs_decrement_active_settlement_count_v1 = yes
 	}
-	if = {
-		limit = { has_global_variable = ffcs_debug_enabled_v1 }
-		debug_log = "FFCS|CANCELLED|DATE=[TimeKeeper.GetCurrentDate.GetString]|SPONSOR=[SCOPE.sCountry('ffcs_settlement_sponsor').GetNameNoFormatting]|STATE=[SCOPE.sState('ffcs_settlement_state').GetNameNoFormatting]"
-	}
 	var:ffcs_settlement_original_owner_v1 ?= {
 		ffcs_decrement_inbound_settlement_count_v1 = yes
 	}
 	ffcs_clear_project_variables_v1 = yes
+	debug_log = "FFCS|PROJECT_CANCELLED|DATE=[TimeKeeper.GetCurrentDate.GetString]|SPONSOR=[SCOPE.sCountry('ffcs_settlement_sponsor').GetNameNoFormatting]|REGION=[SCOPE.sStateRegion('ffcs_settlement_state_region').GetNameNoFormatting]|PROJECT=[SCOPE.sState('ffcs_settlement_state').GetNameNoFormatting]|LOCK=CLEARED"
 	scope:ffcs_settlement_sponsor ?= {
 		post_notification = ffcs_settlement_cancelled
 	}
@@ -89,6 +88,7 @@ ffcs_cancel_settlement_project_v1 = {
 # Root = target-owner state; DIVISOR = remaining phase count;
 # ffcs_settlement_project = state carrying the project variables
 ffcs_apply_settlement_phase_v2 = {
+	state_region = { save_temporary_scope_as = ffcs_settlement_state_region }
 	set_local_variable = {
 		name = ffcs_phase_transfer_budget_v2
 		value = {
@@ -191,6 +191,7 @@ ffcs_apply_settlement_phase_v2 = {
 	scope:ffcs_settlement_project = {
 		remove_variable = ffcs_transfer_budget_v2
 	}
+	debug_log = "FFCS|PHASE_SWEEP_FINISHED|DATE=[TimeKeeper.GetCurrentDate.GetString]|SPONSOR=[SCOPE.sCountry('ffcs_settlement_sponsor').GetNameNoFormatting]|REGION=[SCOPE.sStateRegion('ffcs_settlement_state_region').GetNameNoFormatting]|TARGET=[THIS.GetState.GetNameNoFormatting]"
 }
 
 # Root = target-owner state; ffcs_settlement_project = project state
@@ -314,10 +315,7 @@ ffcs_complete_settlement_project_v1 = {
 			ffcs_ensure_overseas_port_v2 = yes
 		}
 	}
-	if = {
-		limit = { has_global_variable = ffcs_debug_enabled_v1 }
-		debug_log = "FFCS|EFFECT_APPLIED|DATE=[TimeKeeper.GetCurrentDate.GetString]|SPONSOR=[SCOPE.sCountry('ffcs_settlement_sponsor').GetNameNoFormatting]|REGION=[SCOPE.sStateRegion('ffcs_settlement_state_region').GetNameNoFormatting]|RESULT=COMPLETED_CONTIGUOUS"
-	}
+	debug_log = "FFCS|PROJECT_COMPLETED|DATE=[TimeKeeper.GetCurrentDate.GetString]|SPONSOR=[SCOPE.sCountry('ffcs_settlement_sponsor').GetNameNoFormatting]|REGION=[SCOPE.sStateRegion('ffcs_settlement_state_region').GetNameNoFormatting]|RESULT=COMPLETED_CONTIGUOUS|LOCK=CLEARED"
 	scope:ffcs_settlement_sponsor = {
 		post_notification = ffcs_settlement_completed
 	}
@@ -467,6 +465,7 @@ ffcs_apply_monthly_settlement_progress_v1 = {
 # Current scope = state carrying a project
 ffcs_advance_settlement_project_v1 = {
 	save_temporary_scope_as = ffcs_settlement_project
+	state_region = { save_temporary_scope_as = ffcs_settlement_state_region }
 	var:ffcs_settlement_sponsor_v1 ?= {
 		save_temporary_scope_as = ffcs_settlement_sponsor
 	}
@@ -508,29 +507,13 @@ ffcs_advance_settlement_project_v1 = {
 				TARGET = var:ffcs_settlement_original_owner_v1
 			}
 		}
-		if = {
-			limit = { has_global_variable = ffcs_debug_enabled_v1 }
-			scope:ffcs_settlement_target_state = {
-				save_temporary_scope_as = ffcs_debug_state
-			}
-			var:ffcs_settlement_sponsor_v1 ?= {
-				save_temporary_scope_as = ffcs_debug_sponsor
-			}
-			debug_log = "FFCS|EVALUATION_PASSED|DATE=[TimeKeeper.GetCurrentDate.GetString]|SPONSOR=[SCOPE.sCountry('ffcs_debug_sponsor').GetNameNoFormatting]|STATE=[SCOPE.sState('ffcs_debug_state').GetNameNoFormatting]"
-		}
+		debug_log = "FFCS|EVALUATION_PASSED|DATE=[TimeKeeper.GetCurrentDate.GetString]|SPONSOR=[SCOPE.sCountry('ffcs_settlement_sponsor').GetNameNoFormatting]|REGION=[SCOPE.sStateRegion('ffcs_settlement_state_region').GetNameNoFormatting]|TARGET=[SCOPE.sState('ffcs_settlement_target_state').GetNameNoFormatting]"
 		scope:ffcs_settlement_target_state = {
 			ffcs_apply_monthly_settlement_progress_v1 = yes
 		}
 	}
 	else = {
-		if = {
-			limit = { has_global_variable = ffcs_debug_enabled_v1 }
-			save_temporary_scope_as = ffcs_debug_state
-			var:ffcs_settlement_sponsor_v1 ?= {
-				save_temporary_scope_as = ffcs_debug_sponsor
-			}
-			debug_log = "FFCS|EVALUATION_FAILED|DATE=[TimeKeeper.GetCurrentDate.GetString]|SPONSOR=[SCOPE.sCountry('ffcs_debug_sponsor').GetNameNoFormatting]|STATE=[SCOPE.sState('ffcs_debug_state').GetNameNoFormatting]"
-		}
+		debug_log = "FFCS|EVALUATION_FAILED|DATE=[TimeKeeper.GetCurrentDate.GetString]|SPONSOR=[SCOPE.sCountry('ffcs_settlement_sponsor').GetNameNoFormatting]|REGION=[SCOPE.sStateRegion('ffcs_settlement_state_region').GetNameNoFormatting]|PROJECT=[SCOPE.sState('ffcs_settlement_project').GetNameNoFormatting]"
 		ffcs_cancel_settlement_project_v1 = yes
 	}
 }
