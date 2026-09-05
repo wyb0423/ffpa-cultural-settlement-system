@@ -1,0 +1,21 @@
+namespace = ffcs_debug
+
+ffcs_debug.1 = {
+	type = country_event
+	hidden = yes
+	orphan = yes
+	immediate = {
+		set_global_variable = ffcs_debug_enabled_v1
+		debug_log = "FFCS|DEBUG_ENABLED|DATE=[TimeKeeper.GetCurrentDate.GetString]"
+	}
+}
+
+ffcs_debug.2 = {
+	type = country_event
+	hidden = yes
+	orphan = yes
+	immediate = {
+		debug_log = "FFCS|DEBUG_DISABLED|DATE=[TimeKeeper.GetCurrentDate.GetString]"
+		remove_global_variable = ffcs_debug_enabled_v1
+	}
+}

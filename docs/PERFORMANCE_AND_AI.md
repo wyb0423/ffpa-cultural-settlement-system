@@ -54,9 +54,9 @@ Run at normal speed for at least 24 in-game months in observer mode and record:
 | Metric | Target |
 |---|---:|
 | invalid custom targets | 0 |
-| native colonies opened by Resettlement players, AI or companies | 0 |
+| native colonies opened by players, AI or companies under either FFCS law | 0 |
 | native Establish Colony rejection | command invalid before execution with no-colonial-growth reason |
-| company colonization charter under Colonial Resettlement | unavailable |
+| company colonization charter under either FFCS law | unavailable |
 | projects stuck after invalidation | 0 |
 | negative active/inbound counters | 0 |
 | max simultaneous projects at institution levels 1–5 | 2/4/6/8/10 |

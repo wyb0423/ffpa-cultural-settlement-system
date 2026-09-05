@@ -8,7 +8,7 @@ Repair the verified differences between the documented settlement contract and t
 
 - Sponsors may be recognized or unrecognized countries, but never decentralized countries.
 - Targets must be decentralized countries; unrecognized countries are not valid targets.
-- A project is cancelled on its next monthly evaluation if its original target owner changes, the target stops being decentralized, the cultural homeland condition fails, the sponsor stops being recognized or unrecognized, loses Colonial Resettlement or Colonization, becomes hostile to the target, or loses both land adjacency and the coastal-port route.
+- A project is cancelled on its next monthly evaluation if its original target owner changes, the target stops being decentralized, the cultural homeland condition fails, the sponsor stops being recognized or unrecognized, loses both Colonial Resettlement and Frontier Colonization or loses Colonization technology, becomes hostile to the target, or loses both land adjacency and the coastal-port route.
 - Strategic-region interest is required only when starting a project. Losing it does not cancel an active project.
 - Province phases remain at 25, 50, 75 and 95 progress. At 100, the reserved final province is transferred and the state becomes unincorporated.
 

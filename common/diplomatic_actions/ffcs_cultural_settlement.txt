@@ -12,7 +12,6 @@ da_ffcs_establish_cultural_settlement = {
 			is_country_type = recognized
 			is_country_type = unrecognized
 		}
-		has_law_or_variant = law_type:law_colonial_resettlement
 		has_technology_researched = colonization
 	}
 
@@ -22,13 +21,22 @@ da_ffcs_establish_cultural_settlement = {
 	}
 
 	possible = {
+		custom_tooltip = {
+			text = FFCS_REQUIRES_CULTURAL_SETTLEMENT_LAW_TT
+			ffcs_uses_cultural_settlement_law = yes
+		}
 		is_at_war = no
 		in_default = no
 		ffcs_below_settlement_cap = yes
 	}
 
 	second_state_trigger = {
-		ffcs_state_is_eligible_for_settlement = { COUNTRY = scope:country }
+		ffcs_state_is_eligible_for_settlement = {
+			COUNTRY = scope:country
+			TARGET = scope:target_country
+			STATE = root
+			REGION = root.region
+		}
 	}
 
 	accept_effect = {
@@ -47,14 +55,23 @@ da_ffcs_establish_cultural_settlement = {
 			scope:target_country = { ffcs_initialize_country_schema_v1 = yes }
 
 			scope:second_state = {
+				save_temporary_scope_as = ffcs_settlement_project
 				add_modifier = { name = ffcs_cultural_settlement_project }
 				if = {
 					limit = {
-						ffcs_generated_has_land_seed_v2 = { COUNTRY = root }
+						ffcs_generated_has_land_seed_v2 = {
+							COUNTRY = root
+							TARGET = scope:target_country
+						}
 					}
 					set_variable = { name = ffcs_settlement_route_v2 value = 1 }
 				}
-				else = {
+				else_if = {
+					limit = {
+						ffcs_generated_has_port_seed_v2 = {
+							TARGET = scope:target_country
+						}
+					}
 					set_variable = { name = ffcs_settlement_route_v2 value = 2 }
 				}
 				set_variable = {
@@ -88,6 +105,28 @@ da_ffcs_establish_cultural_settlement = {
 						add = 1
 					}
 				}
+				var:ffcs_settlement_sponsor_v1 ?= {
+					save_temporary_scope_as = ffcs_settlement_sponsor
+				}
+				var:ffcs_settlement_original_owner_v1 ?= {
+					save_temporary_scope_as = ffcs_settlement_original_owner
+				}
+				scope:ffcs_settlement_sponsor = {
+					add_to_variable_list = {
+						name = ffcs_active_settlement_states_v1
+						target = scope:ffcs_settlement_project
+					}
+					if = {
+						limit = {
+							NOT = {
+								has_journal_entry = je_ffcs_cultural_settlement_overview
+							}
+						}
+						add_journal_entry = {
+							type = je_ffcs_cultural_settlement_overview
+						}
+					}
+				}
 				if = {
 					limit = { has_global_variable = ffcs_debug_enabled_v1 }
 					save_temporary_scope_as = ffcs_debug_state
@@ -96,12 +135,35 @@ da_ffcs_establish_cultural_settlement = {
 					}
 					debug_log = "FFCS|CANDIDATE_CREATED|DATE=[TimeKeeper.GetCurrentDate.GetString]|SPONSOR=[SCOPE.sCountry('ffcs_debug_sponsor').GetNameNoFormatting]|STATE=[SCOPE.sState('ffcs_debug_state').GetNameNoFormatting]"
 				}
-			}
-			if = {
-				limit = {
-					scope:second_state = { var:ffcs_settlement_route_v2 = 2 }
+				if = {
+					limit = { var:ffcs_settlement_route_v2 = 2 }
+					scope:ffcs_settlement_sponsor = { add_treasury = -100000 }
 				}
-				add_treasury = -100000
+				if = {
+					limit = { num_provinces = 1 }
+					set_variable = { name = ffcs_settlement_progress_v1 value = 100 }
+					ffcs_complete_settlement_project_v1 = yes
+				}
+				else = {
+					scope:ffcs_settlement_project = {
+						set_variable = ffcs_internal_transfer_guard_v1
+					}
+					ffcs_apply_settlement_phase_v2 = { DIVISOR = 4 }
+					scope:ffcs_settlement_project = {
+						remove_variable = ffcs_internal_transfer_guard_v1
+					}
+					if = {
+						limit = {
+							scope:ffcs_settlement_project = {
+								has_variable_list = ffcs_settlement_provinces_v2
+							}
+						}
+						scope:ffcs_settlement_project = {
+							set_variable = { name = ffcs_settlement_progress_v1 value = 25 }
+							set_variable = { name = ffcs_settlement_phase_v1 value = 1 }
+						}
+					}
+				}
 			}
 
 			create_incident = {
@@ -121,7 +183,7 @@ da_ffcs_establish_cultural_settlement = {
 			value = 0
 			if = {
 				limit = {
-					has_law_or_variant = law_type:law_colonial_resettlement
+					ffcs_uses_cultural_settlement_law = yes
 					has_technology_researched = colonization
 					in_default = no
 					is_at_war = no
@@ -149,7 +211,12 @@ da_ffcs_establish_cultural_settlement = {
 		will_propose_with_states = {
 			exists = scope:second_state
 			scope:second_state = {
-				ffcs_state_is_eligible_for_settlement = { COUNTRY = root }
+				ffcs_state_is_eligible_for_settlement = {
+					COUNTRY = root
+					TARGET = scope:target_country
+					STATE = scope:second_state
+					REGION = scope:second_state.region
+				}
 			}
 		}
 

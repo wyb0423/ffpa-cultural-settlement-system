@@ -2,7 +2,7 @@
 
 ## Purpose
 
-Static validation proves file structure and final-database assumptions. It does not prove that the engine merged an `INJECT`, dispatched an on-action, accepted a scope transition or retained the final state after later-loaded content. Run this matrix with the authoritative load order:
+Static validation proves file structure and final-database assumptions. It does not prove that the engine selected the final `REPLACE`, dispatched an on-action, accepted a scope transition or retained the final state after later-loaded content. Run this matrix with the authoritative load order:
 
 1. `[1.13] Tech & Res`
 2. `2050: The Fire Falls`
@@ -33,24 +33,29 @@ The final-stack result must report:
 
 - native colony port provision `yes`, cost `100000` and level `1`;
 - a negative colonial-growth remainder after the conservative positive-source bound;
-- exact Core Balance AI token parity plus one Colonial Resettlement law gate;
-- the expected final upstream law and company-charter providers.
+- exact final Firefall token parity for both replaced laws plus one hard-off field each;
+- exact Core Balance AI token parity plus one shared two-law gate;
+- the expected final upstream law and company-charter providers for both laws.
 
 ## Diagnostic switch
 
-With the game in debug mode, enable lifecycle logging from the console:
+With the game in debug mode, enable lifecycle logging from the console through
+the bundled hidden debug event:
 
 ```text
-effect set_global_variable = ffcs_debug_enabled_v1
+event ffcs_debug.1
 ```
 
 Disable it immediately after the functional test:
 
 ```text
-effect remove_global_variable = ffcs_debug_enabled_v1
+event ffcs_debug.2
 ```
 
 `ffcs_debug_enabled_v1` is a test-only global switch, not a supported save interface. Enabled logging emits only for countries and states already carrying FFCS work. Search `game.log` and its rotated files for `FFCS|`.
+
+The generic `effect ...` console command is not available in Victoria 3 1.13;
+the event command is the supported test entry point for this Mod.
 
 Expected lifecycle markers:
 
@@ -64,22 +69,23 @@ FFCS|EFFECT_APPLIED / FFCS|CANCELLED
 
 ## Gate A — Native Establish Colony
 
-### Colonial Resettlement
+### FFCS laws
 
 1. Use a recognized country with Colonial Resettlement, Colonization technology and at least one Colonial Affairs level.
 2. Select a state that would otherwise be colonizable.
 3. Confirm that **Establish Colony** is invalid before execution with the no-colonial-growth reason.
 4. Attempt the command and advance one day.
 5. Confirm that no seed province, native colony marker or company colony was created.
+6. Repeat steps 1–5 under Frontier Colonization.
 
 ### Control law
 
-Repeat with Colonial Exploitation or Frontier Colonization. Establish Colony must become valid when all ordinary requirements are met. This distinguishes an FFCS law gate from a global colonization failure.
+Repeat with Colonial Exploitation. Establish Colony must become valid when all ordinary requirements are met. This distinguishes the FFCS law gate from a global colonization failure.
 
 ## Gate B — Company colonization charter
 
 1. Use a company eligible for `colonization_charter` under ordinary vanilla conditions.
-2. Under Colonial Resettlement, confirm that the charter is unavailable and displays the FFCS law explanation.
+2. Under Colonial Resettlement and then Frontier Colonization, confirm that the charter is unavailable and displays the FFCS law explanation.
 3. Confirm that AI cannot grant it during an observer run.
 4. Switch to a control colonization law and confirm that the original unrecognized-owner and company eligibility rules still apply.
 
@@ -98,24 +104,26 @@ As a separate negative control, prepare an otherwise eligible homeland state own
 
 For one valid project, confirm in order:
 
-1. `CANDIDATE_CREATED` appears once;
-2. the target owner emits `SCHEDULER_REACHED` on the monthly pulse;
-3. the state emits `EVALUATION_PASSED` and advances;
-4. the first transferred land province touches sponsor territory, while an overseas project transfers the port province first;
+1. acceptance immediately transfers a visible foothold and emits `SEED_TRANSFERRED` then `CANDIDATE_CREATED` once;
+2. the first transferred land province touches sponsor territory, while an overseas project is directly adjacent across one sea node and transfers the port province first;
+3. the sponsor emits `SCHEDULER_REACHED` on the monthly pulse, and both progress and resistance change in the next save;
+4. the state emits `EVALUATION_PASSED` and advances;
 5. every later transfer touches a province already recorded by this project and still sponsor-owned;
 6. completion emits `EFFECT_APPLIED`, leaves sponsor territory unincorporated unless already incorporated, and does not claim disconnected islands or enclaves;
 7. an overseas project deducts exactly `100000`, creates exactly a level 1 port after the foothold, and gives no refund on cancellation;
 8. sponsor active and target inbound counters return to zero.
 
+A selectable target state with only one remaining province must instead transfer and complete immediately on acceptance, including the normal overseas charge when applicable.
+
 Run separate cancellation cases for:
 
-- sponsor changes away from Colonial Resettlement;
+- sponsor changes away from both FFCS laws;
 - target ceases to be a primary-culture homeland;
 - target owner changes externally;
 - sponsor becomes invalid or hostile to the current target owner;
 - the active land or overseas route is lost.
 
-Losing only strategic-region interest must not cancel an active project. Also load a pre-0.3 active project without `ffcs_settlement_route_v2`; its next monthly check must cancel it, preserve transferred territory and recover both counters.
+Losing only strategic-region interest must not cancel an active project. Also load a pre-0.3 active project without `ffcs_settlement_route_v2`; its next monthly check must cancel it, preserve transferred territory and recover both counters. A project from the quoted-province-ID or route-scope test build with phase progress but no sponsor-owned recorded province must clear the phantom frontier, re-evaluate the actual route and retry phase 1 on its next sponsor monthly pulse.
 
 Each case must emit `EVALUATION_FAILED` or reach the owner-change cleanup, then emit `CANCELLED`. No project marker or versioned state variable may remain.
 

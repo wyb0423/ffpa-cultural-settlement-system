@@ -1,0 +1,141 @@
+# Root = state carrying a settlement project
+ffcs_monthly_settlement_progress_value = {
+	save_temporary_scope_as = ffcs_value_state
+	var:ffcs_settlement_sponsor_v1 ?= {
+		save_temporary_scope_as = ffcs_value_sponsor
+	}
+
+	add = 5
+
+	if = {
+		limit = {
+			scope:ffcs_value_sponsor = {
+				institution_investment_level = {
+					institution = institution_colonial_affairs
+					value >= 5
+				}
+			}
+		}
+		add = 10
+	}
+	else_if = {
+		limit = {
+			scope:ffcs_value_sponsor = {
+				institution_investment_level = {
+					institution = institution_colonial_affairs
+					value >= 4
+				}
+			}
+		}
+		add = 8
+	}
+	else_if = {
+		limit = {
+			scope:ffcs_value_sponsor = {
+				institution_investment_level = {
+					institution = institution_colonial_affairs
+					value >= 3
+				}
+			}
+		}
+		add = 6
+	}
+	else_if = {
+		limit = {
+			scope:ffcs_value_sponsor = {
+				institution_investment_level = {
+					institution = institution_colonial_affairs
+					value >= 2
+				}
+			}
+		}
+		add = 4
+	}
+	else_if = {
+		limit = {
+			scope:ffcs_value_sponsor = {
+				institution_investment_level = {
+					institution = institution_colonial_affairs
+					value >= 1
+				}
+			}
+		}
+		add = 2
+	}
+
+	if = {
+		limit = {
+			scope:ffcs_value_sponsor = {
+				has_technology_researched = quinine
+			}
+		}
+		add = 2
+	}
+	if = {
+		limit = {
+			scope:ffcs_value_sponsor = {
+				has_technology_researched = civilizing_mission
+			}
+		}
+		add = 3
+	}
+	if = {
+		limit = {
+			scope:ffcs_value_sponsor = {
+				is_adjacent_to_state = scope:ffcs_value_state
+			}
+		}
+		add = 3
+	}
+	if = {
+		limit = { turmoil >= 0.25 }
+		subtract = 2
+	}
+	if = {
+		limit = {
+			has_state_trait = state_trait_severe_malaria
+			scope:ffcs_value_sponsor = {
+				NOT = { has_technology_researched = malaria_prevention }
+			}
+		}
+		multiply = 0.5
+	}
+
+	divide = {
+		value = scope:ffcs_value_sponsor.var:ffcs_active_settlement_count_v1
+		min = 1
+	}
+	min = 1
+}
+
+# Root = state carrying a settlement project
+ffcs_settlement_progress_fraction = {
+	value = var:ffcs_settlement_progress_v1
+	divide = 100
+	min = 0
+	max = 1
+}
+
+ffcs_settlement_progress_value = {
+	value = var:ffcs_settlement_progress_v1
+	min = 0
+	max = 100
+}
+
+ffcs_settlement_phase_value = {
+	value = var:ffcs_settlement_phase_v1
+	min = 0
+	max = 4
+}
+
+ffcs_settlement_resistance_value = {
+	value = var:ffcs_settlement_resistance_v1
+	min = 0
+	max = 100
+}
+
+ffcs_settlement_route_value = {
+	value = var:ffcs_settlement_route_v2
+	min = 0
+	max = 2
+}

@@ -1,0 +1,18 @@
+je_ffcs_cultural_settlement_overview = {
+	icon = "gfx/interface/icons/lens_toolbar_icons/da_ffcs_establish_cultural_settlement.dds"
+	group = je_group_foreign_affairs
+
+	widget = {
+		gui = "gui/journal_entry_widgets/ffcs_settlement_overview.gui"
+		name = "widget_je_ffcs_cultural_settlement_overview"
+		container = "custom_widget_container_3"
+	}
+
+	invalid = {
+		NOT = { has_variable = ffcs_active_settlement_count_v1 }
+	}
+
+	weight = 200
+	transferable = no
+	should_be_pinned_by_default_uninvolved_or_context = yes
+}

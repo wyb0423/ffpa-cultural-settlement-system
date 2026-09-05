@@ -12,8 +12,8 @@
   "duplicate_province_resolutions": {
     "xC02050": "STATE_NORTH_ANGOLA"
   },
-  "trigger_output_sha256": "b42e699cc5165c7e7cb2ee8e6714b99ba72e4da1b4ad2d0276767be51a45427c",
-  "effect_output_sha256": "cf0b68884fa89bcbcff19a1d3677285ec9e18cd58eb14274d72159c25695ab8b",
+  "trigger_output_sha256": "8bf51949e77d2e4aa6149a32cc049bebb92064c10d84ee06403f8101b3f09605",
+  "effect_output_sha256": "57ee8a65d99aa2042c1d607542c66f10e1bdc0d22e5f3f7cc62e9c7f9771b2a7",
   "states": {
     "STATE_ABRUZZO": {
       "province_count": 5,

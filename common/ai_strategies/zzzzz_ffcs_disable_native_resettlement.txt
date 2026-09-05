@@ -1,5 +1,5 @@
 # Preserve the final Core Balance strategic-region score table.
-# Colonial Resettlement has no native colonial growth, so this gate also keeps AI
+# FFCS laws have no native colonial growth, so this gate also keeps AI
 # from spending strategic-region evaluation on an engine command it cannot use.
 INJECT:ai_strategy_default = {
 	strategic_region_stance_type_scores = {
@@ -197,7 +197,7 @@ INJECT:ai_strategy_default = {
 			if = {
 				limit = {
 					has_technology_researched = colonization
-					NOT = { has_law_or_variant = law_type:law_colonial_resettlement }
+					NOT = { ffcs_uses_cultural_settlement_law = yes }
 					NOR = {
 						has_law_or_variant = law_type:law_no_colonial_affairs
 						is_country_type = unrecognized

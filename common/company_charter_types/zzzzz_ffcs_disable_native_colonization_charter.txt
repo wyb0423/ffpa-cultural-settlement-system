@@ -1,13 +1,151 @@
-# A colonization charter is a second engine-native seed-colony entry point.
-# Countries using Colonial Resettlement must use FFCS for all new settlements.
-INJECT:colonization_charter = {
+# Full replacement is required because `possible` is a singleton section and
+# cannot be appended by an INJECT. Keep this in sync with Victoria 3 1.13.11.
+REPLACE:colonization_charter = {
+	type = colonization
+
+	icon = "gfx/interface/icons/company_charter_icons/colonization_charter.dds"
+
+	additional_input = yes
+
 	possible = {
 		owner ?= {
 			NOT = { is_country_type = unrecognized }
 			custom_tooltip = {
 				text = FFCS_NATIVE_COLONIZATION_DISABLED_TT
-				NOT = { has_law_or_variant = law_type:law_colonial_resettlement }
+				NOT = { ffcs_uses_cultural_settlement_law = yes }
 			}
+		}
+	}
+
+	ai_possible = {
+		company_prosperity >= 50
+		OR = {
+			is_company_type = company_ford_motor
+			is_company_type = company_lee_wilson
+			is_company_type = company_de_beers
+			is_company_type = company_john_holt
+			is_company_type = company_paradox
+			is_company_type = company_peruvian_amazon
+			is_company_type = company_ccci
+			is_company_type = company_bombay_burmah_trading_corporation
+			is_company_type = company_assam_company
+			is_company_type = company_nederlandse_petroleum
+			is_company_type = company_mozambique_company
+			is_company_type = company_moscow_irrigation_company
+			is_company_type = company_anglo_persian_oil
+		}
+		scope:target = {
+			NOT = {
+				any_scope_state = {
+					OR = {
+						is_homeland_of_country_cultures = root.owner
+						any_neighbouring_state = {
+							OR = {
+								is_homeland_of_country_cultures = root.owner
+								AND = {
+									owner = root.owner
+									is_incorporated = yes
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+	ai_weight = {
+		value = 0
+
+		if = {
+			limit = {
+				owner = {
+					OR = {
+						has_strategy = ai_strategy_colonial_expansion
+						has_strategy = ai_strategy_plantation_economy
+					}
+				}
+			}
+			add = 10
+		}
+
+		if = {
+			limit = {
+				is_company_type = company_ford_motor
+			}
+			add = 30
+		}
+		if = {
+			limit = {
+				is_company_type = company_lee_wilson
+			}
+			add = 5
+		}
+		if = {
+			limit = {
+				is_company_type = company_de_beers
+			}
+			add = 20
+		}
+		if = {
+			limit = {
+				is_company_type = company_john_holt
+			}
+			add = 20
+		}
+		if = {
+			limit = {
+				is_company_type = company_paradox
+			}
+			add = 20
+		}
+		if = {
+			limit = {
+				is_company_type = company_peruvian_amazon
+			}
+			add = 10
+		}
+		if = {
+			limit = {
+				is_company_type = company_ccci
+			}
+			add = 50
+		}
+		if = {
+			limit = {
+				is_company_type = company_bombay_burmah_trading_corporation
+			}
+			add = 5
+		}
+		if = {
+			limit = {
+				is_company_type = company_assam_company
+			}
+			add = 5
+		}
+		if = {
+			limit = {
+				is_company_type = company_nederlandse_petroleum
+			}
+			add = 10
+		}
+		if = {
+			limit = {
+				is_company_type = company_mozambique_company
+			}
+			add = 50
+		}
+		if = {
+			limit = {
+				is_company_type = company_moscow_irrigation_company
+			}
+			add = 10
+		}
+		if = {
+			limit = {
+				is_company_type = company_anglo_persian_oil
+			}
+			add = 10
 		}
 	}
 }

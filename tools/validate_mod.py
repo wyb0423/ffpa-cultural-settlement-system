@@ -174,6 +174,23 @@ def find_token_sequence(tokens: list[str], sequence: list[str]) -> list[int]:
     ]
 
 
+def definition_tokens(path: Path, key: str) -> list[str]:
+    tokens = script_tokens(path.read_text(encoding="utf-8-sig"))
+    names = {key, f"REPLACE:{key}"}
+    for index in range(len(tokens) - 2):
+        if tokens[index] not in names or tokens[index + 1 : index + 3] != ["=", "{"]:
+            continue
+        depth = 0
+        for end in range(index + 2, len(tokens)):
+            if tokens[end] == "{":
+                depth += 1
+            elif tokens[end] == "}":
+                depth -= 1
+                if depth == 0:
+                    return tokens[index : end + 1]
+    raise ValueError(f"definition {key} not found in {path}")
+
+
 def files_containing(directory: Path, *needles: str) -> list[Path]:
     if not directory.is_dir():
         return []
@@ -306,12 +323,12 @@ def validate_final_stack(
         )
         target_tokens = script_tokens(target_ai.read_text(encoding="utf-8-sig"))
         gate_tokens = script_tokens(
-            "NOT = { has_law_or_variant = law_type:law_colonial_resettlement }"
+            "NOT = { ffcs_uses_cultural_settlement_law = yes }"
         )
         gate_positions = find_token_sequence(target_tokens, gate_tokens)
         if len(gate_positions) != 1:
             errors.append(
-                "FFCS AI table must contain exactly one Colonial Resettlement gate"
+                "FFCS AI table must contain exactly one cultural-settlement law gate"
             )
         else:
             gate_index = gate_positions[0]
@@ -333,22 +350,46 @@ def validate_final_stack(
                 )
             else:
                 report.append(
-                    "AI table: exact Core Balance token parity plus one law gate"
+                    "AI table: exact Core Balance token parity plus one two-law gate"
                 )
 
-    law_provider = final_definition_provider(
-        stack_roots, "laws", "law_colonial_resettlement"
+    target_laws = (
+        root / "common" / "laws" / "zzzzz_ffcs_colonial_resettlement_guard.txt"
     )
+    hard_off_tokens = script_tokens("state_colony_growth_creation_factor = -100")
+    for law in ("law_colonial_resettlement", "law_frontier_colonization"):
+        law_provider = final_definition_provider(stack_roots, "laws", law)
+        if law_provider is None:
+            errors.append(f"final upstream {law} provider not found")
+        else:
+            label, path = law_provider
+            baseline_tokens = definition_tokens(path, law)
+            target_tokens = definition_tokens(target_laws, law)
+            hard_off_positions = find_token_sequence(target_tokens, hard_off_tokens)
+            if len(hard_off_positions) != 1:
+                errors.append(f"FFCS {law} must contain exactly one hard-off modifier")
+            else:
+                hard_off_index = hard_off_positions[0]
+                del target_tokens[
+                    hard_off_index : hard_off_index + len(hard_off_tokens)
+                ]
+                if target_tokens != baseline_tokens:
+                    errors.append(
+                        f"FFCS {law} differs from its final upstream definition "
+                        "beyond the expected hard-off modifier"
+                    )
+                else:
+                    report.append(
+                        f"{law}: exact final-upstream token parity plus hard-off"
+                    )
+            report.append(
+                f"{law} provider: {label}:"
+                f"{path.relative_to(stack_roots[[r.label for r in stack_roots].index(label)].path)}"
+            )
+
     charter_provider = final_definition_provider(
         stack_roots, "company_charter_types", "colonization_charter"
     )
-    if law_provider is None:
-        errors.append("final upstream law_colonial_resettlement provider not found")
-    else:
-        label, path = law_provider
-        report.append(
-            f"law provider: {label}:{path.relative_to(stack_roots[[r.label for r in stack_roots].index(label)].path)}"
-        )
     if charter_provider is None:
         errors.append("final upstream colonization_charter provider not found")
     else:
@@ -384,7 +425,12 @@ def main() -> int:
         errors.append(f"metadata parse failed: {exc}")
 
     common_files = sorted((root / "common").rglob("*.txt"))
-    for path in common_files:
+    script_files = (
+        common_files
+        + sorted((root / "events").rglob("*.txt"))
+        + sorted((root / "gui").rglob("*.gui"))
+    )
+    for path in script_files:
         errors.extend(script_balance(path))
 
     cap_trigger = (
@@ -397,6 +443,13 @@ def main() -> int:
         errors.append(
             "settlement cap must be 2/4/6/8/10 by Colonial Affairs level"
         )
+    cultural_law_trigger = script_tokens(
+        "ffcs_uses_cultural_settlement_law = { OR = { "
+        "has_law_or_variant = law_type:law_colonial_resettlement "
+        "has_law_or_variant = law_type:law_frontier_colonization } }"
+    )
+    if len(find_token_sequence(script_tokens(cap_trigger), cultural_law_trigger)) != 1:
+        errors.append("cultural-settlement law trigger must contain both owned laws")
 
     diplomatic_action = (
         root / "common" / "diplomatic_actions" / "ffcs_cultural_settlement.txt"
@@ -412,33 +465,78 @@ def main() -> int:
         script_tokens("scope:target_country = { is_country_type = decentralized }"),
     ):
         errors.append("cultural settlements must target only decentralized countries")
+    if not find_token_sequence(
+        diplomatic_action_tokens,
+        script_tokens(
+            "custom_tooltip = { text = FFCS_REQUIRES_CULTURAL_SETTLEMENT_LAW_TT "
+            "ffcs_uses_cultural_settlement_law = yes }"
+        ),
+    ):
+        errors.append("both cultural-settlement laws must be a visible possible-condition")
+    if diplomatic_action.count("ffcs_uses_cultural_settlement_law = yes") != 2:
+        errors.append("player and diplomatic-action AI must share the two-law gate")
+    action_icon = (
+        root
+        / "gfx"
+        / "interface"
+        / "icons"
+        / "lens_toolbar_icons"
+        / "da_ffcs_establish_cultural_settlement.dds"
+    )
+    if not action_icon.is_file():
+        errors.append("cultural settlement diplomatic-action icon is missing")
     if diplomatic_action.count("add_treasury = -100000") != 1:
         errors.append("overseas settlement must charge exactly 100000 once")
     if "add_treasury = -5000" in diplomatic_action:
         errors.append("land settlements must not retain the old 5000 charge")
     for required in (
-        "ffcs_generated_has_land_seed_v2 = { COUNTRY = root }",
+        "ffcs_generated_has_land_seed_v2 = { COUNTRY = root TARGET = scope:target_country }",
+        "ffcs_state_is_eligible_for_settlement = { COUNTRY = scope:country TARGET = scope:target_country STATE = root REGION = root.region }",
+        "ffcs_state_is_eligible_for_settlement = { COUNTRY = root TARGET = scope:target_country STATE = scope:second_state REGION = scope:second_state.region }",
+        "else_if = { limit = { ffcs_generated_has_port_seed_v2 = { TARGET = scope:target_country } } set_variable = { name = ffcs_settlement_route_v2 value = 2 } }",
         "set_variable = { name = ffcs_settlement_route_v2 value = 1 }",
         "set_variable = { name = ffcs_settlement_route_v2 value = 2 }",
-        "scope:second_state = { var:ffcs_settlement_route_v2 = 2 }",
+        "limit = { var:ffcs_settlement_route_v2 = 2 } scope:ffcs_settlement_sponsor = { add_treasury = -100000 }",
     ):
         if not find_token_sequence(diplomatic_action_tokens, script_tokens(required)):
             errors.append(f"route selection or overseas charge missing: {required}")
+    for required in (
+        "save_temporary_scope_as = ffcs_settlement_project",
+        "var:ffcs_settlement_sponsor_v1 ?= { save_temporary_scope_as = ffcs_settlement_sponsor }",
+        "var:ffcs_settlement_original_owner_v1 ?= { save_temporary_scope_as = ffcs_settlement_original_owner }",
+        "scope:ffcs_settlement_project = { set_variable = ffcs_internal_transfer_guard_v1 }",
+        "ffcs_apply_settlement_phase_v2 = { DIVISOR = 4 }",
+        "if = { limit = { scope:ffcs_settlement_project = { has_variable_list = ffcs_settlement_provinces_v2 } } scope:ffcs_settlement_project = { set_variable = { name = ffcs_settlement_progress_v1 value = 25 } set_variable = { name = ffcs_settlement_phase_v1 value = 1 } } }",
+        "limit = { num_provinces = 1 } set_variable = { name = ffcs_settlement_progress_v1 value = 100 } ffcs_complete_settlement_project_v1 = yes",
+        "add_to_variable_list = { name = ffcs_active_settlement_states_v1 target = scope:ffcs_settlement_project }",
+        "add_journal_entry = { type = je_ffcs_cultural_settlement_overview }",
+    ):
+        if not find_token_sequence(diplomatic_action_tokens, script_tokens(required)):
+            errors.append(f"accepted settlements must create an immediate foothold: {required}")
 
     trigger_tokens = script_tokens(cap_trigger)
-    if len(
-        find_token_sequence(
-            trigger_tokens,
-            script_tokens("owner = { is_country_type = decentralized"),
-        )
-    ) < 2:
+    if not find_token_sequence(
+        trigger_tokens,
+        script_tokens("owner = { is_country_type = decentralized"),
+    ) or not find_token_sequence(
+        trigger_tokens,
+        script_tokens("$TARGET$ = { is_country_type = decentralized }"),
+    ):
         errors.append("settlement entry and monthly validity must require a decentralized target")
+    if not find_token_sequence(
+        trigger_tokens,
+        script_tokens(
+            "state_region = { any_scope_state = { has_variable = ffcs_settlement_sponsor_v1 } }"
+        ),
+    ):
+        errors.append("settlement entry must lock the entire state region while a project exists")
     for required in (
         "has_variable = ffcs_settlement_route_v2",
         "var:ffcs_settlement_route_v2 = 1",
         "var:ffcs_settlement_route_v2 = 2",
         "ffcs_generated_has_land_seed_v2 = {",
-        "ffcs_generated_has_port_seed_v2 = yes",
+        "ffcs_generated_has_port_seed_v2 = {",
+        "TARGET = var:ffcs_settlement_original_owner_v1",
         "ffcs_generated_country_owns_port_v2 = {",
         "has_variable_list = ffcs_settlement_provinces_v2",
         "has_building = building_port",
@@ -448,8 +546,37 @@ def main() -> int:
             errors.append(f"monthly settlement validity missing route check: {required}")
     if not find_token_sequence(trigger_tokens, sponsor_type_gate):
         errors.append("monthly settlement validity must enforce the sponsor country types")
+    if not find_token_sequence(
+        trigger_tokens,
+        script_tokens(
+            "$COUNTRY$ = { "
+            "ffcs_uses_cultural_settlement_law = yes"
+        ),
+    ):
+        errors.append("monthly settlement validity must retain both supported laws")
+    if cap_trigger.count("ffcs_uses_cultural_settlement_law") != 2:
+        errors.append("two-law trigger must have one definition and one project-validity call")
     if cap_trigger.count("has_strategic_region_interest_tier") != 1:
         errors.append("strategic-region interest must be checked only when a project starts")
+    if not find_token_sequence(
+        trigger_tokens,
+        script_tokens("strategic_region = $REGION$"),
+    ):
+        errors.append("settlement eligibility must receive its strategic region explicitly")
+    if re.search(r"\$[A-Z_]+\$\.", cap_trigger):
+        errors.append("script parameters must not use unsupported chained access")
+    if len(
+        find_token_sequence(
+            trigger_tokens,
+            script_tokens("$COUNTRY$ = { has_strategic_adjacency = $STATE$ }"),
+        )
+    ) != 1:
+        errors.append("overseas entry must require direct strategic adjacency")
+    if any(
+        token.lower() == "root" or token.lower().startswith("root.")
+        for token in trigger_tokens
+    ):
+        errors.append("state-scoped settlement triggers must not depend on caller root scope")
 
     settlement_effects = (
         root / "common" / "scripted_effects" / "ffcs_settlement_effects.txt"
@@ -463,6 +590,17 @@ def main() -> int:
         "clear_variable_list = ffcs_settlement_provinces_v2",
         "remove_variable = ffcs_settlement_route_v2",
         "create_building = { building = building_port level = 1 }",
+        "limit = { ffcs_generated_has_land_seed_v2 = { COUNTRY = scope:ffcs_settlement_sponsor TARGET = scope:ffcs_settlement_original_owner } } scope:ffcs_settlement_project = { set_variable = { name = ffcs_settlement_route_v2 value = 1 } } ffcs_generated_take_land_seed_v2 = { COUNTRY = scope:ffcs_settlement_sponsor TARGET = scope:ffcs_settlement_original_owner PROJECT = scope:ffcs_settlement_project }",
+        "limit = { ffcs_generated_has_port_seed_v2 = { TARGET = scope:ffcs_settlement_original_owner } } scope:ffcs_settlement_project = { set_variable = { name = ffcs_settlement_route_v2 value = 2 } } ffcs_generated_take_port_seed_v2 = { COUNTRY = scope:ffcs_settlement_sponsor TARGET = scope:ffcs_settlement_original_owner PROJECT = scope:ffcs_settlement_project }",
+        "change_variable = { name = ffcs_settlement_progress_v1 add = ffcs_monthly_settlement_progress_value }",
+        "save_temporary_scope_as = ffcs_settlement_state",
+        "save_temporary_scope_as = ffcs_settlement_project",
+        "save_temporary_scope_as = ffcs_settlement_target_state",
+        "state.owner = scope:ffcs_settlement_sponsor",
+        "ffcs_settlement_project_remains_valid = { COUNTRY = var:ffcs_settlement_sponsor_v1 TARGET = var:ffcs_settlement_original_owner_v1 }",
+        "scope:ffcs_settlement_target_state = { ffcs_apply_monthly_settlement_progress_v1 = yes }",
+        "var:ffcs_settlement_phase_v1 >= 1 OR = { NOT = { has_variable_list = ffcs_settlement_provinces_v2 }",
+        "clear_variable_list = ffcs_settlement_provinces_v2 set_variable = { name = ffcs_settlement_phase_v1 value = 0 }",
     ):
         if not find_token_sequence(settlement_effect_tokens, script_tokens(required)):
             errors.append(f"settlement phase state machine missing: {required}")
@@ -474,18 +612,125 @@ def main() -> int:
     ):
         errors.append("contiguous phase 4 must be applied at 95 progress")
 
+    for phase in (2, 3, 4):
+        if settlement_effects.count(
+            f"post_notification = ffcs_settlement_phase_{phase}"
+        ) != 1:
+            errors.append(f"settlement phase {phase} must post exactly one notification")
+    for target in (
+        "scope:ffcs_settlement_state",
+        "scope:ffcs_settlement_project",
+    ):
+        required = (
+            "remove_list_variable = { "
+            "name = ffcs_active_settlement_states_v1 "
+            f"target = {target} }}"
+        )
+        if not find_token_sequence(settlement_effect_tokens, script_tokens(required)):
+            errors.append(f"settlement cleanup must unregister project state: {target}")
+
+    if "local_var:ffcs_monthly_progress_points" in settlement_effects:
+        errors.append("monthly progress must use a directly supported change-variable value block")
+
+    settlement_values = (
+        root / "common" / "script_values" / "ffcs_settlement_values.txt"
+    ).read_text(encoding="utf-8-sig")
+    settlement_value_tokens = script_tokens(settlement_values)
+    for required in (
+        "ffcs_monthly_settlement_progress_value = { save_temporary_scope_as = ffcs_value_state",
+        "add = 5",
+        "institution = institution_colonial_affairs value >= 5",
+        "has_technology_researched = quinine",
+        "has_technology_researched = civilizing_mission",
+        "is_adjacent_to_state = scope:ffcs_value_state",
+        "turmoil >= 0.25",
+        "has_state_trait = state_trait_severe_malaria",
+        "value = scope:ffcs_value_sponsor.var:ffcs_active_settlement_count_v1",
+        "min = 1",
+        "ffcs_settlement_progress_fraction = {",
+        "ffcs_settlement_phase_value = {",
+        "ffcs_settlement_resistance_value = {",
+        "ffcs_settlement_route_value = {",
+    ):
+        if not find_token_sequence(settlement_value_tokens, script_tokens(required)):
+            errors.append(f"shared settlement value missing: {required}")
+
+    on_actions = (
+        root / "common" / "on_actions" / "ffcs_settlement_on_actions.txt"
+    ).read_text(encoding="utf-8-sig")
+    on_action_tokens = script_tokens(on_actions)
+    for required in (
+        "on_monthly_pulse_country = { on_actions = { ffcs_monthly_country_pulse_v1 } }",
+        "limit = { has_variable = ffcs_active_settlement_count_v1 } save_temporary_scope_as = ffcs_monthly_sponsor",
+        "set_variable = { name = ffcs_active_settlement_count_v1 value = 0 }",
+        "clear_variable_list = ffcs_active_settlement_states_v1",
+        "change_variable = { name = ffcs_active_settlement_count_v1 add = 1 }",
+        "add_to_variable_list = { name = ffcs_active_settlement_states_v1 target = prev }",
+        "add_journal_entry = { type = je_ffcs_cultural_settlement_overview }",
+        "every_state = { limit = { has_variable = ffcs_settlement_sponsor_v1 var:ffcs_settlement_sponsor_v1 ?= scope:ffcs_monthly_sponsor } ffcs_advance_settlement_project_v1 = yes }",
+        "limit = { var:ffcs_active_settlement_count_v1 < 1 } remove_variable = ffcs_active_settlement_count_v1",
+        "on_state_owner_change = { on_actions = { ffcs_cancel_project_on_owner_change_v1 } }",
+        "var:ffcs_settlement_sponsor_v1 ?= owner",
+    ):
+        if not find_token_sequence(on_action_tokens, script_tokens(required)):
+            errors.append(f"settlement scheduler or owner-change injection missing: {required}")
+
+    journal_entry = (
+        root / "common" / "journal_entries" / "ffcs_settlement_journal_entries.txt"
+    ).read_text(encoding="utf-8-sig")
+    journal_tokens = script_tokens(journal_entry)
+    for required in (
+        "je_ffcs_cultural_settlement_overview = {",
+        "group = je_group_foreign_affairs",
+        'gui = "gui/journal_entry_widgets/ffcs_settlement_overview.gui"',
+        'name = "widget_je_ffcs_cultural_settlement_overview"',
+        'container = "custom_widget_container_3"',
+        "invalid = { NOT = { has_variable = ffcs_active_settlement_count_v1 } }",
+        "should_be_pinned_by_default_uninvolved_or_context = yes",
+    ):
+        if not find_token_sequence(journal_tokens, script_tokens(required)):
+            errors.append(f"settlement overview journal entry missing: {required}")
+
+    overview_gui = (
+        root / "gui" / "journal_entry_widgets" / "ffcs_settlement_overview.gui"
+    ).read_text(encoding="utf-8-sig")
+    for required in (
+        "JournalEntry.GetCountry.MakeScope.GetList('ffcs_active_settlement_states_v1')",
+        "State.MakeScope.ScriptValue('ffcs_settlement_progress_fraction')",
+        "State.MakeScope.ScriptValue('ffcs_monthly_settlement_progress_value')",
+        "State.MakeScope.ScriptValue('ffcs_settlement_phase_value')",
+        "State.MakeScope.ScriptValue('ffcs_settlement_resistance_value')",
+        "State.MakeScope.ScriptValue('ffcs_settlement_route_value')",
+        "InformationPanelBar.OpenStatePanel(State.AccessSelf)",
+    ):
+        if required not in overview_gui:
+            errors.append(f"settlement overview widget missing: {required}")
+
+    messages = (
+        root / "common" / "messages" / "ffcs_settlement_messages.txt"
+    ).read_text(encoding="utf-8-sig")
+    for phase in (2, 3, 4):
+        if messages.count(f"ffcs_settlement_phase_{phase} = {{") != 1:
+            errors.append(f"settlement phase {phase} message definition missing")
+
     native_guard = (
         root / "common" / "laws" / "zzzzz_ffcs_colonial_resettlement_guard.txt"
     ).read_text(encoding="utf-8-sig")
-    hard_off = re.search(
+    hard_off_values = [
+        float(value)
+        for value in re.findall(
         r"state_colony_growth_creation_factor\s*=\s*(-?\d+(?:\.\d+)?)",
         native_guard,
-    )
-    hard_off_value = float(hard_off.group(1)) if hard_off else 0.0
-    if not hard_off or hard_off_value > -100:
-        errors.append(
-            "Colonial Resettlement must hard-disable native colonial growth creation"
         )
+    ]
+    hard_off_value = max(hard_off_values) if hard_off_values else 0.0
+    if len(hard_off_values) != 2 or any(value > -100 for value in hard_off_values):
+        errors.append(
+            "both cultural-settlement laws must hard-disable native colonial growth creation"
+        )
+    for law in ("law_colonial_resettlement", "law_frontier_colonization"):
+        if f"REPLACE:{law}" not in native_guard:
+            errors.append(f"native colonial-growth replacement missing for {law}")
 
     charter_guard = (
         root
@@ -496,13 +741,15 @@ def main() -> int:
     if not all(
         token in charter_guard
         for token in (
-            "INJECT:colonization_charter",
-            "has_law_or_variant = law_type:law_colonial_resettlement",
+            "REPLACE:colonization_charter",
+            "NOT = { ffcs_uses_cultural_settlement_law = yes }",
         )
     ):
         errors.append(
-            "colonization charter must be unavailable under Colonial Resettlement"
+            "colonization charter must be unavailable under both FFCS laws"
         )
+    if charter_guard.count("ffcs_uses_cultural_settlement_law = yes") != 1:
+        errors.append("colonization charter must contain exactly one shared law gate")
     charter_tokens = script_tokens(charter_guard)
     for required in (
         "possible = {",
@@ -512,12 +759,14 @@ def main() -> int:
     ):
         if not find_token_sequence(charter_tokens, script_tokens(required)):
             errors.append(f"colonization charter guard missing structure: {required}")
+    if len(re.findall(r"(?m)^\s*possible\s*=\s*\{", charter_guard)) != 1:
+        errors.append("colonization charter replacement must contain exactly one possible section")
 
     text_files = [
         path
         for path in root.rglob("*")
         if path.is_file()
-        and path.suffix.lower() in {".txt", ".yml", ".md", ".py", ".json"}
+        and path.suffix.lower() in {".txt", ".gui", ".yml", ".md", ".py", ".json"}
     ]
     for path in text_files:
         data = path.read_bytes()
@@ -570,8 +819,20 @@ def main() -> int:
         if duplicates:
             errors.append(f"{language} duplicate localization keys: {duplicates}")
 
-    generated_effects = root / "common" / "scripted_effects" / "generated" / "ffcs_generated_province_phases.txt"
-    generated_triggers = root / "common" / "scripted_triggers" / "generated" / "ffcs_generated_province_routes.txt"
+    debug_events = (root / "events" / "ffcs_debug_events.txt").read_text(
+        encoding="utf-8-sig"
+    )
+    for required in (
+        "ffcs_debug.1",
+        "set_global_variable = ffcs_debug_enabled_v1",
+        "ffcs_debug.2",
+        "remove_global_variable = ffcs_debug_enabled_v1",
+    ):
+        if required not in debug_events:
+            errors.append(f"debug event entry point missing: {required}")
+
+    generated_effects = root / "common" / "scripted_effects" / "ffcs_generated_province_phases.txt"
+    generated_triggers = root / "common" / "scripted_triggers" / "ffcs_generated_province_routes.txt"
     generated_effect_text = generated_effects.read_text(encoding="utf-8-sig")
     generated_trigger_text = generated_triggers.read_text(encoding="utf-8-sig")
     for dispatcher in (
@@ -589,9 +850,15 @@ def main() -> int:
     ):
         if dispatcher not in generated_trigger_text:
             errors.append(f"generated trigger dispatcher missing: {dispatcher}")
+    if "root.owner" in generated_trigger_text:
+        errors.append("generated seed triggers must receive the target owner explicitly")
+    if "$PROJECT$ = {" not in generated_effect_text or "$PROJECT$ = {" not in generated_trigger_text:
+        errors.append("generated province logic must receive the project carrier explicitly")
     for required in (
         "state.owner = $TARGET$",
         "state.owner = $COUNTRY$",
+        "$PROJECT$ = { any_in_list = { variable = ffcs_settlement_provinces_v2",
+        "$PROJECT$ = { add_to_variable_list = { name = ffcs_settlement_provinces_v2 target = p:x",
         "any_in_list = { variable = ffcs_settlement_provinces_v2",
     ):
         if required not in generated_effect_text:
@@ -605,11 +872,11 @@ def main() -> int:
         hashes = (
             (
                 "effect_output_sha256",
-                hashlib.sha256(generated_effects.read_bytes()).hexdigest(),
+                hashlib.sha256(generated_effect_text.encode()).hexdigest(),
             ),
             (
                 "trigger_output_sha256",
-                hashlib.sha256(generated_triggers.read_bytes()).hexdigest(),
+                hashlib.sha256(generated_trigger_text.encode()).hexdigest(),
             ),
         )
         for key, actual in hashes:
@@ -617,12 +884,14 @@ def main() -> int:
                 errors.append(f"generated output does not match manifest: {key}")
         transfer_blocks = re.findall(
             r"set_owner_of_provinces\s*=\s*\{.*?"
-            r"provinces\s*=\s*\{\s*\"x([0-9A-Fa-f]{6})\"\s*\}",
+            r"provinces\s*=\s*\{\s*x([0-9A-Fa-f]{6})\s*\}",
             generated_effect_text,
             re.DOTALL,
         )
         if len(transfer_blocks) != manifest.get("transfer_branch_count"):
             errors.append("generated transfer branch count does not match manifest")
+        if re.search(r'provinces\s*=\s*\{\s*"x[0-9A-Fa-f]{6}"', generated_effect_text):
+            errors.append("generated province effects must use unquoted database IDs")
         state_total = sum(
             state.get("province_count", 0)
             for state in manifest.get("states", {}).values()

@@ -1,0 +1,158 @@
+types ffcs_settlement_overview_types {
+	type ffcs_settlement_overview_item = flowcontainer {
+		direction = vertical
+		datacontext = "[Scope.GetState]"
+		visible = "[Scope.GetState.IsValid]"
+
+		divider_clean = {}
+
+		widget = {
+			size = { 500 100 }
+			maximumsize = { 500 100 }
+			alwaystransparent = no
+			onclick = "[InformationPanelBar.OpenStatePanel(State.AccessSelf)]"
+			tooltip = "FFCS_OPEN_STATE_TOOLTIP"
+
+			background = {
+				using = dark_area
+				alpha = 0.55
+			}
+
+			vbox = {
+				margin = { 10 6 }
+				spacing = 3
+
+				hbox = {
+					size = { 100% 24 }
+
+					textbox = {
+						layoutpolicy_horizontal = expanding
+						text = "[State.GetOwner.GetFlagTextIcon] [State.GetNameNoFormatting]"
+						default_format = "#v"
+						align = left|nobaseline
+						elide = right
+					}
+
+					textbox = {
+						visible = "[EqualTo_CFixedPoint(State.MakeScope.ScriptValue('ffcs_settlement_route_value'), '(CFixedPoint)1')]"
+						text = "FFCS_SETTLEMENT_ROUTE_LAND"
+						align = right|nobaseline
+					}
+					textbox = {
+						visible = "[EqualTo_CFixedPoint(State.MakeScope.ScriptValue('ffcs_settlement_route_value'), '(CFixedPoint)2')]"
+						text = "FFCS_SETTLEMENT_ROUTE_SEA"
+						align = right|nobaseline
+					}
+				}
+
+				hbox = {
+					size = { 100% 24 }
+					spacing = 8
+
+					textbox = {
+						size = { 62 24 }
+						text = "FFCS_SETTLEMENT_PROGRESS_LABEL"
+						align = left|nobaseline
+					}
+
+					default_progressbar_horizontal = {
+						size = { 330 20 }
+						parentanchor = vcenter
+
+						blockoverride "values" {
+							value = "[FixedPointToFloat(State.MakeScope.ScriptValue('ffcs_settlement_progress_fraction'))]"
+							min = 0
+							max = 1
+						}
+					}
+
+					textbox = {
+						layoutpolicy_horizontal = expanding
+						text = "[State.MakeScope.ScriptValue('ffcs_settlement_progress_value')|0]/100"
+						align = right|nobaseline
+					}
+				}
+
+				hbox = {
+					size = { 100% 24 }
+					spacing = 4
+
+					textbox = {
+						text = "FFCS_SETTLEMENT_PHASE_LABEL"
+						align = left|nobaseline
+					}
+					textbox = {
+						visible = "[EqualTo_CFixedPoint(State.MakeScope.ScriptValue('ffcs_settlement_phase_value'), '(CFixedPoint)0')]"
+						text = "FFCS_SETTLEMENT_PHASE_0"
+						align = left|nobaseline
+					}
+					textbox = {
+						visible = "[EqualTo_CFixedPoint(State.MakeScope.ScriptValue('ffcs_settlement_phase_value'), '(CFixedPoint)1')]"
+						text = "FFCS_SETTLEMENT_PHASE_1"
+						align = left|nobaseline
+					}
+					textbox = {
+						visible = "[EqualTo_CFixedPoint(State.MakeScope.ScriptValue('ffcs_settlement_phase_value'), '(CFixedPoint)2')]"
+						text = "FFCS_SETTLEMENT_PHASE_2"
+						align = left|nobaseline
+					}
+					textbox = {
+						visible = "[EqualTo_CFixedPoint(State.MakeScope.ScriptValue('ffcs_settlement_phase_value'), '(CFixedPoint)3')]"
+						text = "FFCS_SETTLEMENT_PHASE_3"
+						align = left|nobaseline
+					}
+					textbox = {
+						visible = "[EqualTo_CFixedPoint(State.MakeScope.ScriptValue('ffcs_settlement_phase_value'), '(CFixedPoint)4')]"
+						text = "FFCS_SETTLEMENT_PHASE_4"
+						align = left|nobaseline
+					}
+
+					expand = {}
+
+					textbox = {
+						text = "FFCS_SETTLEMENT_MONTHLY_LABEL"
+						align = right|nobaseline
+					}
+					textbox = {
+						text = "[State.MakeScope.ScriptValue('ffcs_monthly_settlement_progress_value')|0]"
+						default_format = "#p"
+						align = right|nobaseline
+					}
+					textbox = {
+						text = "FFCS_SETTLEMENT_RESISTANCE_LABEL"
+						align = right|nobaseline
+					}
+					textbox = {
+						text = "[State.MakeScope.ScriptValue('ffcs_settlement_resistance_value')|0]/100"
+						align = right|nobaseline
+					}
+				}
+			}
+		}
+	}
+}
+
+flowcontainer = {
+	name = "widget_je_ffcs_cultural_settlement_overview"
+	ignoreinvisible = yes
+	direction = vertical
+
+	textbox = {
+		size = { 520 30 }
+		text = "FFCS_SETTLEMENT_OVERVIEW_HEADER"
+		default_format = "#header"
+		align = left|nobaseline
+	}
+
+	fixedgridbox = {
+		datamodel = "[JournalEntry.GetCountry.MakeScope.GetList('ffcs_active_settlement_states_v1')]"
+		addcolumn = 500
+		addrow = 106
+
+		item = {
+			ffcs_settlement_overview_item = {}
+		}
+	}
+
+	expand = {}
+}

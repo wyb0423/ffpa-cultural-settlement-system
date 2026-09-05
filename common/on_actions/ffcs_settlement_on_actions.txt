@@ -7,21 +7,56 @@ on_monthly_pulse_country = {
 ffcs_monthly_country_pulse_v1 = {
 	effect = {
 		if = {
-			limit = { has_variable = ffcs_inbound_settlement_count_v1 }
+			limit = { has_variable = ffcs_active_settlement_count_v1 }
+			save_temporary_scope_as = ffcs_monthly_sponsor
 			if = {
 				limit = { has_global_variable = ffcs_debug_enabled_v1 }
 				debug_log = "FFCS|SCHEDULER_REACHED|DATE=[TimeKeeper.GetCurrentDate.GetString]|COUNTRY=[THIS.GetCountry.GetNameNoFormatting]"
 			}
 			ffcs_initialize_country_schema_v1 = yes
-			every_scope_state = {
-				limit = { has_variable = ffcs_settlement_sponsor_v1 }
+			set_variable = { name = ffcs_active_settlement_count_v1 value = 0 }
+			clear_variable_list = ffcs_active_settlement_states_v1
+			every_state = {
+				limit = {
+					has_variable = ffcs_settlement_sponsor_v1
+					var:ffcs_settlement_sponsor_v1 ?= scope:ffcs_monthly_sponsor
+				}
+				scope:ffcs_monthly_sponsor = {
+					change_variable = { name = ffcs_active_settlement_count_v1 add = 1 }
+					add_to_variable_list = {
+						name = ffcs_active_settlement_states_v1
+						target = prev
+					}
+				}
+			}
+			if = {
+				limit = {
+					var:ffcs_active_settlement_count_v1 > 0
+					NOT = {
+						has_journal_entry = je_ffcs_cultural_settlement_overview
+					}
+				}
+				add_journal_entry = {
+					type = je_ffcs_cultural_settlement_overview
+				}
+			}
+			every_state = {
+				limit = {
+					has_variable = ffcs_settlement_sponsor_v1
+					var:ffcs_settlement_sponsor_v1 ?= scope:ffcs_monthly_sponsor
+				}
 				ffcs_advance_settlement_project_v1 = yes
+			}
+			if = {
+				limit = { var:ffcs_active_settlement_count_v1 < 1 }
+				remove_variable = ffcs_active_settlement_count_v1
+				clear_variable_list = ffcs_active_settlement_states_v1
 			}
 		}
 	}
 }
 
-# Root = state. A conquest must not strand counters on the old target owner.
+# Root = state. A third-party conquest must not strand project counters.
 on_state_owner_change = {
 	on_actions = {
 		ffcs_cancel_project_on_owner_change_v1
@@ -33,7 +68,12 @@ ffcs_cancel_project_on_owner_change_v1 = {
 		has_variable = ffcs_settlement_sponsor_v1
 		has_variable = ffcs_settlement_original_owner_v1
 		NOT = { has_variable = ffcs_internal_transfer_guard_v1 }
-		NOT = { var:ffcs_settlement_original_owner_v1 ?= owner }
+		NOT = {
+			OR = {
+				var:ffcs_settlement_original_owner_v1 ?= owner
+				var:ffcs_settlement_sponsor_v1 ?= owner
+			}
+		}
 	}
 	effect = {
 		ffcs_cancel_settlement_project_v1 = yes

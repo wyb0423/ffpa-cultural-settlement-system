@@ -194,8 +194,8 @@ def owner_neighbours(neighbours: tuple[int, ...], owner: str) -> str:
 def project_neighbours(neighbours: tuple[int, ...]) -> str:
     identities = " ".join(f"this = {p(neighbour)}" for neighbour in neighbours)
     return (
-        "any_in_list = { variable = ffcs_settlement_provinces_v2 "
-        f"state.owner = $COUNTRY$ OR = {{ {identities} }} }}"
+        "$PROJECT$ = { any_in_list = { variable = ffcs_settlement_provinces_v2 "
+        f"state.owner = $COUNTRY$ OR = {{ {identities} }} }} }}"
     )
 
 
@@ -225,13 +225,12 @@ def grouped_trigger(
 
 def transfer(candidate: int) -> str:
     return (
-        "add_to_variable_list = { "
+        "$PROJECT$ = { add_to_variable_list = { "
         f"name = ffcs_settlement_provinces_v2 target = {p(candidate)} "
-        "} "
+        "} change_variable = { name = ffcs_transfer_budget_v2 add = -1 } } "
         "state_region = { set_owner_of_provinces = { "
-        f'country = $COUNTRY$ provinces = {{ "x{candidate:06X}" }} '
-        "} } "
-        "change_variable = { name = ffcs_transfer_budget_v2 add = -1 }"
+        f"country = $COUNTRY$ provinces = {{ x{candidate:06X} }} "
+        "} }"
     )
 
 
@@ -264,7 +263,7 @@ def grouped_effect(
             )
             lines.append(
                 f"\t\t{inner_keyword} = {{ limit = {{ "
-                "var:ffcs_transfer_budget_v2 > 0 num_provinces > 1 "
+                "$PROJECT$ = { var:ffcs_transfer_budget_v2 > 0 } num_provinces > 1 "
                 f"{p(candidate)}.state.owner = $TARGET$ "
                 f"{neighbour_test(neighbours)} }} {transfer(candidate)} }}"
             )
@@ -305,13 +304,13 @@ def render_outputs(
         "ffcs_generated_has_land_seed_v2",
         regions,
         land,
-        "root.owner",
+        "$TARGET$",
         lambda neighbours: owner_neighbours(neighbours, "$COUNTRY$"),
-        "# Root = target state; COUNTRY = sponsor",
+        "# Root = target state; COUNTRY = sponsor; TARGET = current target owner",
     )
     trigger_lines.extend(
         [
-            "# Root = target state",
+            "# Root = target state; TARGET = current target owner",
             "ffcs_generated_has_port_seed_v2 = {",
             "\tOR = {",
         ]
@@ -320,7 +319,7 @@ def render_outputs(
         if region.port is not None:
             trigger_lines.append(
                 f"\t\tAND = {{ state_region = s:{region.name} "
-                f"{p(region.port)}.state.owner = root.owner }}"
+                f"{p(region.port)}.state.owner = $TARGET$ }}"
             )
     trigger_lines.extend(["\t}", "}", ""])
     trigger_lines.extend(
@@ -343,7 +342,7 @@ def render_outputs(
         frontier,
         "$TARGET$",
         project_neighbours,
-        "# Root = target state; COUNTRY = sponsor; TARGET = original owner",
+        "# Root = target state; COUNTRY = sponsor; TARGET = original owner; PROJECT = project state",
     )
 
     effect_lines = [
@@ -358,12 +357,12 @@ def render_outputs(
         land,
         lambda neighbours: owner_neighbours(neighbours, "$COUNTRY$"),
         one_only=True,
-        comment="# Root = target state; COUNTRY = sponsor; TARGET = original owner",
+        comment="# Root = target state; COUNTRY = sponsor; TARGET = original owner; PROJECT = project state",
     )
 
     effect_lines.extend(
         [
-            "# Root = target state; COUNTRY = sponsor; TARGET = original owner",
+            "# Root = target state; COUNTRY = sponsor; TARGET = original owner; PROJECT = project state",
             "ffcs_generated_take_port_seed_v2 = {",
         ]
     )
@@ -374,7 +373,7 @@ def render_outputs(
         keyword = "if" if branch == 0 else "else_if"
         effect_lines.append(
             f"\t{keyword} = {{ limit = {{ state_region = s:{region.name} "
-            "var:ffcs_transfer_budget_v2 > 0 num_provinces > 1 "
+            "$PROJECT$ = { var:ffcs_transfer_budget_v2 > 0 } num_provinces > 1 "
             f"{p(region.port)}.state.owner = $TARGET$ }} "
             f"{transfer(region.port)} }}"
         )
@@ -386,7 +385,7 @@ def render_outputs(
         frontier,
         project_neighbours,
         one_only=False,
-        comment="# Root = target state; COUNTRY = sponsor; TARGET = original owner",
+        comment="# Root = target state; COUNTRY = sponsor; TARGET = original owner; PROJECT = project state",
     )
 
     counts = {
@@ -408,7 +407,6 @@ def main() -> None:
         default=root
         / "common"
         / "scripted_effects"
-        / "generated"
         / "ffcs_generated_province_phases.txt",
     )
     parser.add_argument(
@@ -417,7 +415,6 @@ def main() -> None:
         default=root
         / "common"
         / "scripted_triggers"
-        / "generated"
         / "ffcs_generated_province_routes.txt",
     )
     parser.add_argument(
@@ -448,7 +445,8 @@ def main() -> None:
         (args.effects_output, effects),
     ):
         path.parent.mkdir(parents=True, exist_ok=True)
-        path.write_text(text, encoding="utf-8", newline="\n")
+        with path.open("w", encoding="utf-8", newline="\n") as output:
+            output.write(text)
 
     manifest = {
         "generator_schema": 2,
@@ -482,11 +480,8 @@ def main() -> None:
             for region in regions
         },
     }
-    args.manifest.write_text(
-        json.dumps(manifest, ensure_ascii=False, indent=2) + "\n",
-        encoding="utf-8",
-        newline="\n",
-    )
+    with args.manifest.open("w", encoding="utf-8", newline="\n") as output:
+        output.write(json.dumps(manifest, ensure_ascii=False, indent=2) + "\n")
     print(
         f"Generated {len(regions)} state regions, {len(resolved)} provinces, "
         f"{manifest['adjacency_edge_count']} edges"

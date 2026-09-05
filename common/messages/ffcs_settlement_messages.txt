@@ -10,6 +10,24 @@ ffcs_settlement_setback = {
 	notification_type = feed
 }
 
+ffcs_settlement_phase_2 = {
+	type = country
+	texture = "gfx/interface/icons/notification_icons/colonial.dds"
+	notification_type = feed
+}
+
+ffcs_settlement_phase_3 = {
+	type = country
+	texture = "gfx/interface/icons/notification_icons/colonial.dds"
+	notification_type = feed
+}
+
+ffcs_settlement_phase_4 = {
+	type = country
+	texture = "gfx/interface/icons/notification_icons/colonial.dds"
+	notification_type = feed
+}
+
 ffcs_settlement_completed = {
 	type = country
 	texture = "gfx/interface/icons/notification_icons/colonial.dds"
