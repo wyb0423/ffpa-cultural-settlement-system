@@ -51,6 +51,25 @@ ffcs_half_yearly_ai_settlement_pulse_v1 = {
 	}
 }
 
+on_monthly_pulse = {
+	on_actions = {
+		ffcs_monthly_orphan_project_cleanup_v1
+	}
+}
+
+# No root scope. Projects must not survive the country stored as their sponsor.
+ffcs_monthly_orphan_project_cleanup_v1 = {
+	effect = {
+		every_state = {
+			limit = {
+				has_variable = ffcs_settlement_sponsor_v1
+				NOT = { exists = var:ffcs_settlement_sponsor_v1 }
+			}
+			ffcs_cancel_settlement_project_v1 = { REASON = SPONSOR_DESTROYED }
+		}
+	}
+}
+
 on_monthly_pulse_country = {
 	on_actions = {
 		ffcs_monthly_country_pulse_v1

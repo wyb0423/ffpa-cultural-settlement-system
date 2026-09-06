@@ -7,7 +7,7 @@ The hot path is the country monthly pulse:
 1. one cheap `has_variable` gate per country;
 2. only countries with inbound projects iterate their owned state scopes;
 3. only marked states execute progress logic;
-4. generated province scans occur only at the four phase thresholds and completion.
+4. generated province scans occur only when a project reaches its next province-transfer threshold or completion.
 
 If `C` is the number of countries, `T` the number of target countries with projects, `S_t` their owned states and `P` active projects, monthly work is approximately:
 
@@ -15,9 +15,9 @@ If `C` is the number of countries, `T` the number of target countries with proje
 
 It is not `O(C * world_states)` and does not scan pops, buildings or provinces monthly. Route validity uses generated literal ownership checks, while frontier scans run only when a phase fires.
 
-In the inspected Firefall start data there are roughly 801 referenced country tags and 670 province-bearing state regions. An inactive country performs only a variable-presence gate each month; schema variables are created only for countries that actually enter the system. With 20 active projects spread over small target countries, the extra monthly traversal should normally remain in the low hundreds of state checks, not hundreds of thousands.
+In the inspected Firefall start data there are roughly 801 referenced country tags and 675 province-bearing state regions. An inactive country performs only a variable-presence gate each month; schema variables are created only for countries that actually enter the system. With 20 active projects spread over small target countries, the extra monthly traversal should normally remain in the low hundreds of state checks, not hundreds of thousands.
 
-Expected monthly impact remains low for ordinary project counts. Raising the per-country ceiling from 5 to 10 can at most double one sponsor's simultaneous marked states and phase-transfer bursts, but it does not add a monthly world scan. The generated effect and trigger files total about 59 MiB for this map and the offline deterministic generation pass takes about 2 seconds on the development machine. A frontier sweep is linear in state size per pass and can become quadratic for an unfavourable province-ID order; runtime profiling must cover both initial loading and large-state phase ticks.
+Expected monthly impact remains low for ordinary project counts. Raising the per-country ceiling from 5 to 10 can at most double one sponsor's simultaneous marked states and province-transfer checks, but it does not add a monthly world scan. The generated effect and trigger files total about 88 MiB for this map and the offline deterministic generation pass takes about 3 seconds on the development machine. Each transfer uses an equal-weight `random_list` whose candidate checks are linear in the current state-region size; runtime profiling must cover both initial loading and large-state transfer ticks.
 
 ## AI feasibility
 

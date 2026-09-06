@@ -757,11 +757,13 @@ ffcs_apply_monthly_settlement_progress_v1 = {
 	}
 	if = {
 		limit = {
-			scope:ffcs_settlement_project = {
-				var:ffcs_settlement_progress_v1 >= 100
-			}
 			OR = {
-				num_provinces = 1
+				AND = {
+					scope:ffcs_settlement_project = {
+						var:ffcs_settlement_progress_v1 >= 100
+					}
+					num_provinces = 1
+				}
 				AND = {
 					scope:ffcs_settlement_project = {
 						has_variable_list = ffcs_settlement_provinces_v2

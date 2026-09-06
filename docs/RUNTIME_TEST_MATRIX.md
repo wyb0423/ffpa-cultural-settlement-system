@@ -131,7 +131,7 @@ For one valid project, confirm in order:
 3. the sponsor emits one `PROJECT_RECOUNTED` on the monthly pulse, progress changes in the next save, never exceeds the next province threshold while a transfer is available, and no pulse transfers more than one later province;
 4. crossing 50 emits `PHASE_APPLIED` and `CLAIM_GRANTED` once and gives the sponsor a claim on the state region without a milestone transfer burst;
 5. every later transfer touches a province already recorded by this project and still sponsor-owned, and recalculates `ffcs_settlement_next_province_progress_v3`;
-6. completion emits `PROJECT_COMPLETED`, leaves sponsor territory unincorporated unless already incorporated, prevents a new project from reaching 100 while another reachable transfer remains, and does not take disconnected islands or enclaves;
+6. completion emits `PROJECT_COMPLETED`, leaves sponsor territory unincorporated unless already incorporated, prevents a new project from reaching 100 while another reachable transfer remains, and completes on the next monthly pulse without taking disconnected islands or enclaves once no legal frontier remains;
 7. an overseas project deducts exactly `100000`, creates exactly a level 1 port after the foothold, and gives no refund on cancellation;
 8. sponsor active and target inbound counters return to zero.
 

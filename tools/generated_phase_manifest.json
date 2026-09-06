@@ -1,19 +1,20 @@
 {
-  "generator_schema": 2,
-  "state_region_count": 670,
-  "province_count": 40054,
-  "adjacency_edge_count": 113068,
-  "internal_adjacency_edge_count": 98699,
-  "land_seed_candidate_count": 39848,
-  "frontier_candidate_count": 39843,
-  "port_seed_count": 369,
-  "transfer_branch_count": 80060,
-  "disconnected_state_region_count": 86,
+  "generator_schema": 5,
+  "selection_mode": "root_bound_staged_uniform_random_frontier",
+  "state_region_count": 675,
+  "province_count": 40718,
+  "adjacency_edge_count": 114946,
+  "internal_adjacency_edge_count": 100258,
+  "land_seed_candidate_count": 40507,
+  "frontier_candidate_count": 40502,
+  "port_seed_count": 372,
+  "transfer_branch_count": 81381,
+  "disconnected_state_region_count": 88,
   "duplicate_province_resolutions": {
     "xC02050": "STATE_NORTH_ANGOLA"
   },
-  "trigger_output_sha256": "8bf51949e77d2e4aa6149a32cc049bebb92064c10d84ee06403f8101b3f09605",
-  "effect_output_sha256": "57ee8a65d99aa2042c1d607542c66f10e1bdc0d22e5f3f7cc62e9c7f9771b2a7",
+  "trigger_output_sha256": "d6dd1ffd1963c878cf104883f2a45aab5e9bfb42ca89bccf6c332cc2aa480247",
+  "effect_output_sha256": "afacf3af4e6c5a476cf65b1d3e5fb3e899bd364eebbb81e33198768c9b38e156",
   "states": {
     "STATE_ABRUZZO": {
       "province_count": 5,
@@ -179,6 +180,11 @@
       "province_count": 6,
       "port": "xD5DB0B",
       "component_count": 1
+    },
+    "STATE_ARAUCANIA": {
+      "province_count": 114,
+      "port": "x553B3F",
+      "component_count": 9
     },
     "STATE_AREQUIPA": {
       "province_count": 24,
@@ -1756,7 +1762,7 @@
       "component_count": 1
     },
     "STATE_MATO_GROSSO": {
-      "province_count": 296,
+      "province_count": 297,
       "port": null,
       "component_count": 1
     },
@@ -2120,6 +2126,11 @@
       "port": "x00D7F5",
       "component_count": 1
     },
+    "STATE_NORTH_RHINE": {
+      "province_count": 6,
+      "port": null,
+      "component_count": 1
+    },
     "STATE_NORTH_SUMATRA": {
       "province_count": 37,
       "port": "x8A3E15",
@@ -2259,6 +2270,11 @@
       "province_count": 73,
       "port": null,
       "component_count": 1
+    },
+    "STATE_PATAGONIA": {
+      "province_count": 241,
+      "port": "xB64102",
+      "component_count": 3
     },
     "STATE_PEGU": {
       "province_count": 21,
@@ -2436,9 +2452,9 @@
       "component_count": 1
     },
     "STATE_RUHR": {
-      "province_count": 3,
+      "province_count": 4,
       "port": null,
-      "component_count": 2
+      "component_count": 1
     },
     "STATE_RUTHENIA": {
       "province_count": 5,
@@ -2473,6 +2489,11 @@
     "STATE_SANTA_CATARINA": {
       "province_count": 20,
       "port": "x02483B",
+      "component_count": 1
+    },
+    "STATE_SANTA_CRUZ": {
+      "province_count": 96,
+      "port": null,
       "component_count": 1
     },
     "STATE_SANTA_FE": {
@@ -2684,6 +2705,11 @@
       "province_count": 7,
       "port": "x9EF337",
       "component_count": 5
+    },
+    "STATE_SOUTH_AUSTRALIA": {
+      "province_count": 205,
+      "port": "x90DF50",
+      "component_count": 2
     },
     "STATE_SOUTH_CAMEROON": {
       "province_count": 37,

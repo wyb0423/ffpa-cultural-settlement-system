@@ -15,6 +15,13 @@ from pathlib import Path
 
 LOCALIZATION_KEY = re.compile(r"^\s*([A-Za-z0-9_.-]+):(?:\d+)?\s+", re.MULTILINE)
 TOP_LEVEL_KEY = re.compile(r"^\s*([A-Za-z0-9_.:-]+)\s*=\s*\{")
+STATE_REGION_KEY = re.compile(
+    r"^\s*(STATE_[A-Za-z0-9_-]+)\s*=\s*\{", re.MULTILINE
+)
+PROVINCE_LIST = re.compile(r"\bprovinces\s*=\s*\{([^}]*)\}", re.DOTALL)
+PROVINCE_ID = re.compile(
+    r"(?<![A-Za-z0-9_])x([0-9A-Fa-f]{6})(?![A-Za-z0-9_])"
+)
 COLONY_CREATION_FACTOR = re.compile(
     r"\bstate_colony_growth_creation_factor\s*=\s*"
     r"([-+]?\d+(?:\.\d+)?)\b"
@@ -202,6 +209,17 @@ def files_containing(directory: Path, *needles: str) -> list[Path]:
     return matches
 
 
+def state_region_inventory(directory: Path) -> tuple[set[str], set[str]]:
+    states: set[str] = set()
+    provinces: set[str] = set()
+    for path in sorted(directory.glob("*.txt")):
+        text = strip_script_comments(path.read_text(encoding="utf-8-sig"))
+        states.update(STATE_REGION_KEY.findall(text))
+        for province_list in PROVINCE_LIST.findall(text):
+            provinces.update(PROVINCE_ID.findall(province_list))
+    return states, provinces
+
+
 def final_definition_provider(
     stack_roots: list[StackRoot], database: str, key: str
 ) -> tuple[str, Path] | None:
@@ -235,6 +253,34 @@ def validate_final_stack(
             )
     if errors:
         return errors, report
+
+    state_region_root = stack_roots[2].path / "map_data" / "state_regions"
+    manifest_path = root / "tools" / "generated_phase_manifest.json"
+    if not state_region_root.is_dir():
+        errors.append(f"Firefall root has no state-region database: {state_region_root}")
+    elif not manifest_path.exists():
+        errors.append("generated phase manifest is missing")
+    else:
+        source_states, source_provinces = state_region_inventory(state_region_root)
+        manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+        generated_states = set(manifest.get("states", {}))
+        if source_states != generated_states:
+            missing = sorted(source_states - generated_states)
+            extra = sorted(generated_states - source_states)
+            errors.append(
+                "generated state-region coverage differs from Firefall: "
+                f"missing={missing}, extra={extra}"
+            )
+        if len(source_provinces) != manifest.get("province_count"):
+            errors.append(
+                "generated province coverage differs from Firefall: "
+                f"source={len(source_provinces)}, generated={manifest.get('province_count')}"
+            )
+        if source_states == generated_states and len(source_provinces) == manifest.get("province_count"):
+            report.append(
+                "generated map coverage: "
+                f"{len(source_states)} state regions, {len(source_provinces)} provinces"
+            )
 
     for define, expected in COLONY_PORT_DEFINES.items():
         matches: list[tuple[str, Path, str]] = []
@@ -419,8 +465,8 @@ def main() -> int:
             errors.append("metadata id is not the stable mod id")
         if parsed.get("supported_game_version") != "1.13.*":
             errors.append("supported game version is not 1.13.*")
-        if parsed.get("version") != "0.4.0":
-            errors.append("metadata version must be 0.4.0")
+        if parsed.get("version") != "0.4.3":
+            errors.append("metadata version must be 0.4.3")
     except (OSError, json.JSONDecodeError) as exc:
         errors.append(f"metadata parse failed: {exc}")
 
@@ -714,6 +760,7 @@ def main() -> int:
         "NOT = { state_region = { any_scope_state = { owner = scope:ffcs_settlement_original_owner } } }",
         "ffcs_cancel_settlement_project_v1 = { REASON = TARGET_EXHAUSTED }",
         "ffcs_cancel_settlement_project_v1 = { REASON = PROJECT_INVALID }",
+        "OR = { AND = { scope:ffcs_settlement_project = { var:ffcs_settlement_progress_v1 >= 100 } num_provinces = 1 } AND = { scope:ffcs_settlement_project = { has_variable_list = ffcs_settlement_provinces_v2 } NOT = { ffcs_generated_has_frontier_v2 = { COUNTRY = scope:ffcs_settlement_sponsor TARGET = scope:ffcs_settlement_original_owner PROJECT = scope:ffcs_settlement_project } } } } } ffcs_complete_settlement_project_v1 = yes",
     ):
         if not find_token_sequence(settlement_effect_tokens, script_tokens(required)):
             errors.append(f"settlement phase state machine missing: {required}")
@@ -865,6 +912,8 @@ def main() -> int:
         if diagnostic_text.count(f"FFCS|{marker}") != 1:
             errors.append(f"terminal diagnostic must have one shared definition: FFCS|{marker}")
     for required in (
+        "on_monthly_pulse = { on_actions = { ffcs_monthly_orphan_project_cleanup_v1 } }",
+        "ffcs_monthly_orphan_project_cleanup_v1 = { effect = { every_state = { limit = { has_variable = ffcs_settlement_sponsor_v1 NOT = { exists = var:ffcs_settlement_sponsor_v1 } } ffcs_cancel_settlement_project_v1 = { REASON = SPONSOR_DESTROYED } } } }",
         "on_monthly_pulse_country = { on_actions = { ffcs_monthly_country_pulse_v1 } }",
         "limit = { has_variable = ffcs_active_settlement_count_v1 } save_temporary_scope_as = ffcs_monthly_sponsor",
         "set_variable = { name = ffcs_active_settlement_count_v1 value = 0 }",
@@ -1076,6 +1125,12 @@ def main() -> int:
         if dispatcher not in generated_effect_text:
             errors.append(f"generated effect dispatcher missing: {dispatcher}")
     for dispatcher in (
+        "ffcs_generated_take_land_seed_v2",
+        "ffcs_generated_transfer_frontier_sweep_v2",
+    ):
+        if "random_list" not in definition_tokens(generated_effects, dispatcher):
+            errors.append(f"generated effect dispatcher must select randomly: {dispatcher}")
+    for dispatcher in (
         "ffcs_generated_has_land_seed_v2",
         "ffcs_generated_has_port_seed_v2",
         "ffcs_generated_country_owns_port_v2",
@@ -1089,8 +1144,9 @@ def main() -> int:
         errors.append("generated province logic must receive the project carrier explicitly")
     for required in (
         "state.owner = $TARGET$",
-        "state.owner = $COUNTRY$",
-        "$PROJECT$ = { any_in_list = { variable = ffcs_settlement_provinces_v2",
+        "var:ffcs_random_original_owner_v5 ?= p:x",
+        "var:ffcs_random_sponsor_v5 ?= p:x",
+        "var:ffcs_random_project_v5 = { any_in_list = { variable = ffcs_settlement_provinces_v2",
         "$PROJECT$ = { add_to_variable_list = { name = ffcs_settlement_provinces_v2 target = p:x",
         "any_in_list = { variable = ffcs_settlement_provinces_v2",
     ):
@@ -1100,8 +1156,10 @@ def main() -> int:
     manifest_path = root / "tools" / "generated_phase_manifest.json"
     if manifest_path.exists():
         manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
-        if manifest.get("generator_schema") != 2:
-            errors.append("generated manifest schema must be 2")
+        if manifest.get("generator_schema") != 5:
+            errors.append("generated manifest schema must be 5")
+        if manifest.get("selection_mode") != "root_bound_staged_uniform_random_frontier":
+            errors.append("generated manifest selection mode must bind scopes before random selection")
         hashes = (
             (
                 "effect_output_sha256",
@@ -1123,8 +1181,29 @@ def main() -> int:
         )
         if len(transfer_blocks) != manifest.get("transfer_branch_count"):
             errors.append("generated transfer branch count does not match manifest")
-        if generated_effect_text.count("state.owner = $TARGET$") != len(transfer_blocks):
-            errors.append("every generated transfer must recheck the candidate's original owner")
+        random_candidates = generated_effect_text.count("\n\t\t\t1 = { trigger = {")
+        expected_random_candidates = (
+            manifest.get("land_seed_candidate_count", 0)
+            + manifest.get("frontier_candidate_count", 0)
+        )
+        if random_candidates != expected_random_candidates:
+            errors.append("every generated land and frontier candidate must be randomized")
+        selector_writes = generated_effect_text.count(
+            "set_variable = { name = ffcs_random_candidate_v5 value = "
+        )
+        selector_branches = generated_effect_text.count(
+            "has_variable = ffcs_random_candidate_v5 var:ffcs_random_candidate_v5 = "
+        )
+        if selector_writes != expected_random_candidates or selector_branches != expected_random_candidates:
+            errors.append("every randomized candidate must use a staged selector branch")
+        if any(
+            any(forbidden in line for forbidden in ("$PROJECT$", "$COUNTRY$", "$TARGET$", "set_owner_of_provinces"))
+            for line in generated_effect_text.splitlines()
+            if "1 = { trigger = {" in line
+        ):
+            errors.append("generated random_list entries must use bound scopes and avoid ownership transfer")
+        if generated_effect_text.count("var:ffcs_random_original_owner_v5 ?= p:x") != expected_random_candidates:
+            errors.append("every randomized candidate must recheck its bound original owner")
         if re.search(r'provinces\s*=\s*\{\s*"x[0-9A-Fa-f]{6}"', generated_effect_text):
             errors.append("generated province effects must use unquoted database IDs")
         state_total = sum(
