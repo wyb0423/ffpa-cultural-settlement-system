@@ -1,3 +1,56 @@
+on_half_yearly_pulse_country = {
+	on_actions = {
+		ffcs_half_yearly_ai_settlement_pulse_v1
+	}
+}
+
+ffcs_half_yearly_ai_settlement_pulse_v1 = {
+	trigger = {
+		is_ai = yes
+		OR = {
+			is_country_type = recognized
+			is_country_type = unrecognized
+		}
+		ffcs_uses_cultural_settlement_law = yes
+		has_technology_researched = colonization
+		in_default = no
+		is_at_war = no
+		ffcs_below_settlement_cap = yes
+	}
+	effect = {
+		save_temporary_scope_as = ffcs_ai_settlement_sponsor
+		random_state = {
+			limit = {
+				owner = { is_country_type = decentralized }
+				ffcs_state_is_eligible_for_settlement = {
+					COUNTRY = scope:ffcs_ai_settlement_sponsor
+					TARGET = owner
+					STATE = this
+					REGION = this.region
+				}
+			}
+			save_temporary_scope_as = ffcs_ai_settlement_state
+			owner = { save_temporary_scope_as = ffcs_ai_settlement_target }
+		}
+		if = {
+			limit = {
+				exists = scope:ffcs_ai_settlement_state
+				exists = scope:ffcs_ai_settlement_target
+			}
+			scope:ffcs_ai_settlement_state = {
+				ffcs_start_settlement_project_v1 = {
+					COUNTRY = scope:ffcs_ai_settlement_sponsor
+					TARGET = scope:ffcs_ai_settlement_target
+				}
+			}
+		}
+		else_if = {
+			limit = { has_global_variable = ffcs_debug_enabled_v1 }
+			debug_log = "FFCS|AI_NO_ELIGIBLE_TARGET|DATE=[TimeKeeper.GetCurrentDate.GetString]|SPONSOR=[THIS.GetCountry.GetNameNoFormatting]|SOURCE=HALF_YEARLY_PULSE"
+		}
+	}
+}
+
 on_monthly_pulse_country = {
 	on_actions = {
 		ffcs_monthly_country_pulse_v1
@@ -9,7 +62,6 @@ ffcs_monthly_country_pulse_v1 = {
 		if = {
 			limit = { has_variable = ffcs_active_settlement_count_v1 }
 			save_temporary_scope_as = ffcs_monthly_sponsor
-			debug_log = "FFCS|SCHEDULER_REACHED|DATE=[TimeKeeper.GetCurrentDate.GetString]|COUNTRY=[THIS.GetCountry.GetNameNoFormatting]"
 			ffcs_initialize_country_schema_v1 = yes
 			set_variable = { name = ffcs_active_settlement_count_v1 value = 0 }
 			clear_variable_list = ffcs_active_settlement_states_v1
@@ -25,12 +77,10 @@ ffcs_monthly_country_pulse_v1 = {
 						target = prev
 					}
 				}
-				state_region = {
-					set_variable = {
-						name = ffcs_settlement_sponsor_v1
-						value = scope:ffcs_monthly_sponsor
-					}
-				}
+			}
+			if = {
+				limit = { has_global_variable = ffcs_debug_enabled_v1 }
+				debug_log = "FFCS|PROJECT_RECOUNTED|DATE=[TimeKeeper.GetCurrentDate.GetString]|COUNTRY=[THIS.GetCountry.GetNameNoFormatting]|COUNT=[THIS.GetCountry.MakeScope.Var('ffcs_active_settlement_count_v1').GetValue|0]"
 			}
 			if = {
 				limit = {
@@ -63,6 +113,7 @@ ffcs_monthly_country_pulse_v1 = {
 on_state_owner_change = {
 	on_actions = {
 		ffcs_cancel_project_on_owner_change_v1
+		ffcs_reconcile_region_on_owner_change_v2
 	}
 }
 
@@ -79,6 +130,23 @@ ffcs_cancel_project_on_owner_change_v1 = {
 		}
 	}
 	effect = {
-		ffcs_cancel_settlement_project_v1 = yes
+		ffcs_cancel_settlement_project_v1 = { REASON = OWNER_CHANGED }
+	}
+}
+
+# Root = state. Reconcile all competing projects after any ownership change in their region.
+ffcs_reconcile_region_on_owner_change_v2 = {
+	trigger = {
+		state_region = {
+			any_scope_state = {
+				has_variable = ffcs_settlement_sponsor_v1
+				has_variable = ffcs_settlement_original_owner_v1
+			}
+		}
+	}
+	effect = {
+		state_region = {
+			ffcs_reconcile_exhausted_settlement_projects_v2 = yes
+		}
 	}
 }

@@ -46,6 +46,13 @@ the bundled hidden debug event:
 event ffcs_debug.1
 ```
 
+Enabling diagnostics also runs a one-shot AI eligibility probe. Re-run it at
+any time without toggling the switch:
+
+```text
+event ffcs_debug.3
+```
+
 Disable it immediately after the functional test:
 
 ```text
@@ -60,12 +67,25 @@ the event command is the supported test entry point for this Mod.
 Expected lifecycle markers:
 
 ```text
-FFCS|CANDIDATE_CREATED
-FFCS|SCHEDULER_REACHED
-FFCS|EVALUATION_PASSED / FFCS|EVALUATION_FAILED
+FFCS|PROJECT_CREATED / FFCS|PROJECT_REJECTED
+FFCS|AI_PROJECT_STARTED
+FFCS|PROJECT_CARRIER_REBOUND
+FFCS|PROJECT_RECOUNTED
 FFCS|SEED_TRANSFERRED
-FFCS|EFFECT_APPLIED / FFCS|CANCELLED
+FFCS|PHASE_APPLIED / FFCS|CLAIM_GRANTED
+FFCS|TARGET_EXHAUSTED
+FFCS|PROJECT_COMPLETED / FFCS|PROJECT_CANCELLED
+FFCS|JOURNAL_INVALIDATED
+FFCS|AI_BLOCKED / FFCS|AI_CANDIDATE_FOUND / FFCS|AI_NO_ELIGIBLE_TARGET
 ```
+
+Every routine marker above is emitted only while `ffcs_debug_enabled_v1` exists, except `FFCS|AI_PROJECT_STARTED` and `FFCS|INVARIANT_FAILED`, which are unconditional. Sponsor, region and project fields must not be blank or `NULL_STATE`.
+
+The AI probe logs only the first eligible state for each otherwise ready AI
+sponsor. `AI_NO_ELIGIBLE_TARGET` means the shared eligibility trigger rejected
+every state. After the next half-yearly country pulse, an eligible sponsor must
+emit `AI_PROJECT_STARTED`; a candidate without that marker means the shared AI
+dispatcher or startup revalidation failed.
 
 ## Gate A — Native Establish Colony
 
@@ -98,18 +118,20 @@ For the same sponsor, prepare two otherwise equivalent target states:
 
 The custom diplomatic action must list/select only the positive state. Repeat once for a player and once for AI. A negative state receiving a project is a release blocker even if it later cancels.
 
+The player positive control must have the required strategic-region interest. The AI positive control does not need that interest because FFCS disables its native colonization stance; all homeland, owner, route, malaria and cap gates still apply.
+
 As a separate negative control, prepare an otherwise eligible homeland state owned by an unrecognized country. It must not be listed or selected by either the player or AI.
 
 ## Lifecycle and cleanup
 
 For one valid project, confirm in order:
 
-1. acceptance immediately transfers a visible foothold and emits `SEED_TRANSFERRED` then `CANDIDATE_CREATED` once;
+1. acceptance immediately transfers a visible foothold and emits `PROJECT_CREATED`, `SEED_TRANSFERRED`, `PROJECT_CARRIER_REBOUND` and `PHASE_APPLIED|...|PHASE=1` once; the rebound carrier may remain on the original owner's residual state or follow the sponsor when the whole state changes hands;
 2. the first transferred land province touches sponsor territory, while an overseas project is directly adjacent across one sea node and transfers the port province first;
-3. the sponsor emits `SCHEDULER_REACHED` on the monthly pulse, and both progress and resistance change in the next save;
-4. the state emits `EVALUATION_PASSED` and advances;
-5. every later transfer touches a province already recorded by this project and still sponsor-owned;
-6. completion emits `EFFECT_APPLIED`, leaves sponsor territory unincorporated unless already incorporated, and does not claim disconnected islands or enclaves;
+3. the sponsor emits one `PROJECT_RECOUNTED` on the monthly pulse, progress changes in the next save, never exceeds the next province threshold while a transfer is available, and no pulse transfers more than one later province;
+4. crossing 50 emits `PHASE_APPLIED` and `CLAIM_GRANTED` once and gives the sponsor a claim on the state region without a milestone transfer burst;
+5. every later transfer touches a province already recorded by this project and still sponsor-owned, and recalculates `ffcs_settlement_next_province_progress_v3`;
+6. completion emits `PROJECT_COMPLETED`, leaves sponsor territory unincorporated unless already incorporated, prevents a new project from reaching 100 while another reachable transfer remains, and does not take disconnected islands or enclaves;
 7. an overseas project deducts exactly `100000`, creates exactly a level 1 port after the foothold, and gives no refund on cancellation;
 8. sponsor active and target inbound counters return to zero.
 
@@ -123,18 +145,33 @@ Run separate cancellation cases for:
 - sponsor becomes invalid or hostile to the current target owner;
 - the active land or overseas route is lost.
 
-Losing only strategic-region interest must not cancel an active project. Also load a pre-0.3 active project without `ffcs_settlement_route_v2`; its next monthly check must cancel it, preserve transferred territory and recover both counters. A project from the quoted-province-ID or route-scope test build with phase progress but no sponsor-owned recorded province must clear the phantom frontier, re-evaluate the actual route and retry phase 1 on its next sponsor monthly pulse.
+Losing only strategic-region interest must not cancel an active project. Also load a pre-0.3 active project without `ffcs_settlement_route_v2`; its next monthly check must cancel it, preserve transferred territory and recover both counters. A project from the quoted-province-ID or route-scope test build with phase progress but no sponsor-owned recorded province must clear the phantom frontier, re-evaluate the actual route and retry phase 1 on its next sponsor monthly pulse. An active project without `ffcs_settlement_next_province_progress_v3` must derive a threshold before its next monthly gain without resetting its current progress. A new large project must stop each gain at its next threshold, transfer exactly one reachable province and remain below 100 while another reachable transfer exists. A legacy project already at 100 must continue transferring one reachable province per pulse until it completes.
 
-Each case must emit `EVALUATION_FAILED` or reach the owner-change cleanup, then emit `CANCELLED`. No project marker or versioned state variable may remain.
+Each case must emit one `PROJECT_CANCELLED` with the expected reason. No project marker or versioned state variable may remain.
+
+## Competitive settlement
+
+1. Have countries A and B start projects in the same state region against the same decentralized country D. Both projects must establish distinct sponsor-owned carriers and appear only in their own sponsor's Journal Entry.
+2. Have A attempt a second project in that region. It must fail revalidation with no fee, incident, counter or project variable mutation; B's project must not block A's first project.
+3. Advance both projects across 50 progress. Both sponsors must receive a region claim exactly once.
+4. Inspect every transferred province. Valid ownership transitions are D→A or D→B only; A→B and B→A are release blockers.
+5. Let A take D's last reachable province. A must emit `PROJECT_COMPLETED`; B must emit `TARGET_EXHAUSTED` followed by one `PROJECT_CANCELLED|...|REASON=TARGET_EXHAUSTED` in the same ownership-change flow.
+6. If B has no other project, its active counter must disappear and `JOURNAL_INVALIDATED` must follow. If B has another project elsewhere, only the exhausted row disappears.
+7. Repeat with two different original owners in one state region. Exhausting one owner must not cancel projects against the other.
+8. Repeat by removing D's last state through war or an external effect. The state-owner-change reconciliation must produce the same cleanup.
+9. For an overseas contest over a unique port, confirm that a later sponsor without a remaining valid seed route cannot start and cannot take the first sponsor's port.
+10. The acceptance tick must not emit `Failed to fetch variable for 'ffcs_transfer_budget_v2'`, `Event target link 'var' returned an unset scope` or `PROJECT_CARRIER_REBIND_FAILED`.
 
 ## Journal overview
 
 1. Start one land project and one overseas project. Confirm a single **Cultural Settlements** Journal Entry appears with two rows.
-2. Confirm each row shows the correct state, route, phase, progress, monthly growth and resistance; clicking a row must open that state.
-3. Advance one monthly pulse and compare the displayed growth with the actual progress change before any random setback.
-4. Cross 50 and 75 progress and confirm the row phase and corresponding notification update once each. At 95, expect the milestone notification unless the same pulse reaches 100 and posts completion instead.
-5. Complete or cancel one project and confirm only its row disappears. End the last project and confirm the Journal Entry silently invalidates.
+2. Confirm each row shows the correct state, route, phase, progress and monthly capacity; clicking a row must open that state.
+3. Advance one monthly pulse and confirm the actual progress change equals the smaller of the displayed monthly capacity and the distance to the next province threshold.
+4. Cross 50, 75 and 95 progress and confirm the row phase and corresponding notification update once each, including when one pulse jumps directly to 100, with no extra province transfer caused solely by a milestone.
+5. Complete or cancel one project and confirm only its row disappears. End the last project and confirm the Journal Entry invalidates, clears its saved row list and emits `JOURNAL_INVALIDATED` only while debug logging is enabled.
 6. Load an old save with active projects but no `ffcs_active_settlement_states_v1` list. After one monthly pulse, confirm the list and Journal Entry rebuild without resetting project progress.
+7. Load a pre-0.4 save containing the old state-region sponsor lock. The `ffcs_settlement_schema_v2` migration must preserve the project, remove the obsolete lock and allow another sponsor to compete in that region.
+8. Load a save containing `ffcs_settlement_resistance_v1`. The `ffcs_settlement_schema_v3` migration must preserve project progress and remove the legacy resistance variable.
 
 ## Final-state evidence
 
@@ -149,6 +186,6 @@ Only this post-reload observation counts as final retained-state evidence.
 
 ## AI and performance runs
 
-Run a 24-month functional observer test, followed by a five-year stability test. Record starts, legal targets, completions, cancellations, native colonies and stuck projects. Then repeat the same save and speed with FFCS disabled for a tick-time baseline. The performance run must have `ffcs_debug_enabled_v1` removed.
+Restart the game after installing the scripts, then run a 24-month functional observer test followed by a five-year stability test. The first eligible AI start should occur on the next half-yearly country pulse and emit unconditional `AI_PROJECT_STARTED`. Record starts, legal targets, completions, cancellations, native colonies and stuck projects. Then repeat the same save and speed with FFCS disabled for a tick-time baseline. The performance run must have `ffcs_debug_enabled_v1` removed.
 
 Release thresholds are defined in `PERFORMANCE_AND_AI.md`.

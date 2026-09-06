@@ -1,7 +1,7 @@
 {
   "name": "FFPA — Cultural Settlement System",
   "id": "com.wyb.ffpa-cultural-settlement-system",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "supported_game_version": "1.13.*",
   "short_description": "A culture-locked Colonial Resettlement replacement with contiguous province growth and port-first overseas settlements.",
   "tags": [

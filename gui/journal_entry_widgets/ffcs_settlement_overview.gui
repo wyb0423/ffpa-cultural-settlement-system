@@ -136,16 +136,6 @@ types ffcs_settlement_overview_types {
 						default_format = "#p"
 						align = right|nobaseline
 					}
-					textbox = {
-						size = { 80 24 }
-						text = "FFCS_SETTLEMENT_RESISTANCE_LABEL"
-						align = right|nobaseline
-					}
-					textbox = {
-						size = { 60 24 }
-						text = "[State.MakeScope.ScriptValue('ffcs_settlement_resistance_value')|0]/100"
-						align = right|nobaseline
-					}
 				}
 			}
 		}

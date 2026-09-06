@@ -419,8 +419,8 @@ def main() -> int:
             errors.append("metadata id is not the stable mod id")
         if parsed.get("supported_game_version") != "1.13.*":
             errors.append("supported game version is not 1.13.*")
-        if parsed.get("version") != "0.3.0":
-            errors.append("metadata version must be 0.3.0")
+        if parsed.get("version") != "0.4.0":
+            errors.append("metadata version must be 0.4.0")
     except (OSError, json.JSONDecodeError) as exc:
         errors.append(f"metadata parse failed: {exc}")
 
@@ -455,6 +455,14 @@ def main() -> int:
         root / "common" / "diplomatic_actions" / "ffcs_cultural_settlement.txt"
     ).read_text(encoding="utf-8-sig")
     diplomatic_action_tokens = script_tokens(diplomatic_action)
+    settlement_effects = (
+        root / "common" / "scripted_effects" / "ffcs_settlement_effects.txt"
+    ).read_text(encoding="utf-8-sig")
+    settlement_effect_tokens = script_tokens(settlement_effects)
+    on_actions = (
+        root / "common" / "on_actions" / "ffcs_settlement_on_actions.txt"
+    ).read_text(encoding="utf-8-sig")
+    on_action_tokens = script_tokens(on_actions)
     sponsor_type_gate = script_tokens(
         "OR = { is_country_type = recognized is_country_type = unrecognized }"
     )
@@ -473,8 +481,12 @@ def main() -> int:
         ),
     ):
         errors.append("both cultural-settlement laws must be a visible possible-condition")
-    if diplomatic_action.count("ffcs_uses_cultural_settlement_law = yes") != 2:
-        errors.append("player and diplomatic-action AI must share the two-law gate")
+    if (
+        diplomatic_action.count("ffcs_uses_cultural_settlement_law = yes") != 1
+        or settlement_effects.count("ffcs_uses_cultural_settlement_law = yes") != 1
+        or on_actions.count("ffcs_uses_cultural_settlement_law = yes") != 1
+    ):
+        errors.append("player, shared startup revalidation and AI pulse must share the two-law gate")
     action_icon = (
         root
         / "gfx"
@@ -485,72 +497,118 @@ def main() -> int:
     )
     if not action_icon.is_file():
         errors.append("cultural settlement diplomatic-action icon is missing")
-    if diplomatic_action.count("add_treasury = -100000") != 1:
+    if settlement_effects.count("add_treasury = -100000") != 1:
         errors.append("overseas settlement must charge exactly 100000 once")
-    if "add_treasury = -5000" in diplomatic_action:
+    if "add_treasury = -5000" in diplomatic_action + settlement_effects:
         errors.append("land settlements must not retain the old 5000 charge")
     if not find_token_sequence(
         diplomatic_action_tokens,
-        script_tokens(
-            "evaluation_chance = { value = 0 if = { limit = { "
-            "ffcs_uses_cultural_settlement_law = yes "
-            "has_technology_researched = colonization in_default = no "
-            "is_at_war = no ffcs_below_settlement_cap = yes } add = 0.05 "
-            "if = { limit = { country_rank = rank_value:great_power } add = 0.05 }"
-        ),
+        script_tokens("ai = { evaluation_chance = { value = 0 } }"),
     ):
-        errors.append("eligible minor AI countries must receive a nonzero settlement evaluation chance")
+        errors.append("diplomatic-action AI must be disabled in favor of the shared AI pulse")
+    for required in (
+        "on_half_yearly_pulse_country = { on_actions = { ffcs_half_yearly_ai_settlement_pulse_v1 } }",
+        "ffcs_half_yearly_ai_settlement_pulse_v1 = { trigger = { is_ai = yes",
+        "random_state = { limit = { owner = { is_country_type = decentralized } ffcs_state_is_eligible_for_settlement = { COUNTRY = scope:ffcs_ai_settlement_sponsor TARGET = owner STATE = this REGION = this.region } }",
+        "scope:ffcs_ai_settlement_state = { ffcs_start_settlement_project_v1 = { COUNTRY = scope:ffcs_ai_settlement_sponsor TARGET = scope:ffcs_ai_settlement_target } }",
+    ):
+        if not find_token_sequence(on_action_tokens, script_tokens(required)):
+            errors.append(f"shared AI settlement pulse missing: {required}")
     for required in (
         "show_effect_in_tooltip = no",
-        "ffcs_generated_has_land_seed_v2 = { COUNTRY = scope:ffcs_settlement_sponsor TARGET = scope:ffcs_settlement_original_owner }",
         "ffcs_state_is_eligible_for_settlement = { COUNTRY = scope:country TARGET = scope:target_country STATE = root REGION = root.region }",
-        "ffcs_state_is_eligible_for_settlement = { COUNTRY = root TARGET = scope:target_country STATE = scope:second_state REGION = scope:second_state.region }",
+        "scope:second_state = { ffcs_start_settlement_project_v1 = { COUNTRY = root TARGET = scope:target_country } }",
+    ):
+        if not find_token_sequence(diplomatic_action_tokens, script_tokens(required)):
+            errors.append(f"diplomatic settlement entry missing: {required}")
+    for required in (
+        "ffcs_start_settlement_project_v1 = {",
+        "state_region = { every_scope_state = { limit = { owner = $TARGET$ } save_temporary_scope_as = ffcs_accept_target_state } }",
+        "exists = scope:ffcs_accept_target_state",
+        "scope:ffcs_accept_target_state = { ffcs_state_is_eligible_for_settlement = { COUNTRY = $COUNTRY$ TARGET = $TARGET$ STATE = scope:ffcs_accept_target_state REGION = scope:ffcs_accept_target_state.region } }",
+        "$COUNTRY$ = { save_temporary_scope_as = ffcs_settlement_sponsor ffcs_initialize_country_schema_v1 = yes",
+        "$TARGET$ = { save_temporary_scope_as = ffcs_settlement_original_owner ffcs_initialize_country_schema_v1 = yes }",
+        "scope:ffcs_accept_target_state = { save_temporary_scope_as = ffcs_settlement_project",
+        "save_temporary_scope_as = ffcs_settlement_project",
+        "state_region = { save_temporary_scope_as = ffcs_settlement_state_region }",
+        "ffcs_generated_has_land_seed_v2 = { COUNTRY = scope:ffcs_settlement_sponsor TARGET = scope:ffcs_settlement_original_owner }",
         "else_if = { limit = { ffcs_generated_has_port_seed_v2 = { TARGET = scope:ffcs_settlement_original_owner } } set_variable = { name = ffcs_settlement_route_v2 value = 2 } }",
         "set_variable = { name = ffcs_settlement_route_v2 value = 1 }",
         "set_variable = { name = ffcs_settlement_route_v2 value = 2 }",
-        "limit = { var:ffcs_settlement_route_v2 = 2 } scope:ffcs_settlement_sponsor = { add_treasury = -100000 }",
-    ):
-        if not find_token_sequence(diplomatic_action_tokens, script_tokens(required)):
-            errors.append(f"route selection or overseas charge missing: {required}")
-    for required in (
-        "limit = { exists = scope:second_state } save_temporary_scope_as = ffcs_settlement_sponsor",
-        "scope:target_country = { save_temporary_scope_as = ffcs_settlement_original_owner ffcs_initialize_country_schema_v1 = yes }",
-        "save_temporary_scope_as = ffcs_settlement_project",
-        "state_region = { save_temporary_scope_as = ffcs_settlement_state_region set_variable = { name = ffcs_settlement_sponsor_v1 value = scope:ffcs_settlement_sponsor } }",
         "set_variable = { name = ffcs_settlement_sponsor_v1 value = scope:ffcs_settlement_sponsor }",
         "set_variable = { name = ffcs_settlement_original_owner_v1 value = scope:ffcs_settlement_original_owner }",
+        "limit = { var:ffcs_settlement_route_v2 = 2 } scope:ffcs_settlement_sponsor = { add_treasury = -100000 }",
         "scope:ffcs_settlement_project = { set_variable = ffcs_internal_transfer_guard_v1 }",
-        "ffcs_apply_settlement_phase_v2 = { DIVISOR = 4 }",
-        "if = { limit = { scope:ffcs_settlement_project = { has_variable_list = ffcs_settlement_provinces_v2 } } scope:ffcs_settlement_project = { set_variable = { name = ffcs_settlement_progress_v1 value = 25 } set_variable = { name = ffcs_settlement_phase_v1 value = 1 } } }",
+        "ffcs_transfer_one_settlement_province_v3 = yes",
+        "if = { limit = { exists = scope:ffcs_settlement_project scope:ffcs_settlement_project = { has_variable_list = ffcs_settlement_provinces_v2 OR = { owner = scope:ffcs_settlement_sponsor owner = scope:ffcs_settlement_original_owner } } } scope:ffcs_settlement_project = { set_variable = { name = ffcs_settlement_progress_v1 value = 25 } set_variable = { name = ffcs_settlement_phase_v1 value = 1 }",
+        "scope:ffcs_settlement_target_state ?= { ffcs_update_next_province_progress_v3 = yes }",
         "limit = { num_provinces = 1 } set_variable = { name = ffcs_settlement_progress_v1 value = 100 } ffcs_complete_settlement_project_v1 = yes",
         "add_to_variable_list = { name = ffcs_active_settlement_states_v1 target = scope:ffcs_settlement_project }",
         "add_journal_entry = { type = je_ffcs_cultural_settlement_overview }",
     ):
-        if not find_token_sequence(diplomatic_action_tokens, script_tokens(required)):
-            errors.append(f"accepted settlements must create an immediate foothold: {required}")
+        if not find_token_sequence(settlement_effect_tokens, script_tokens(required)):
+            errors.append(f"shared settlement startup missing: {required}")
+    start_begin = settlement_effects.find("ffcs_start_settlement_project_v1 = {")
+    start_end = settlement_effects.find("# Root = sponsor country", start_begin)
+    start_effect_tokens = script_tokens(settlement_effects[start_begin:start_end])
+    revalidation_positions = find_token_sequence(
+        start_effect_tokens,
+        script_tokens(
+            "ffcs_state_is_eligible_for_settlement = { COUNTRY = $COUNTRY$ "
+            "TARGET = $TARGET$ STATE = scope:ffcs_accept_target_state "
+            "REGION = scope:ffcs_accept_target_state.region }"
+        ),
+    )
+    mutation_positions = find_token_sequence(
+        start_effect_tokens,
+        script_tokens(
+            "set_variable = { name = ffcs_active_settlement_count_v1 value = 0 }"
+        ),
+    )
+    if not (
+        start_begin >= 0
+        and start_end >= 0
+        and mutation_positions
+        and any(
+            position < mutation_positions[0] for position in revalidation_positions
+        )
+    ):
+        errors.append("shared startup must revalidate the selected state before persistent mutation")
     if re.search(
         r"name\s*=\s*ffcs_settlement_(?:sponsor|original_owner)_v1\s+"
         r"value\s*=\s*(?:root|owner)\b",
-        diplomatic_action,
+        settlement_effects[start_begin:start_end],
     ):
         errors.append("settlement scope variables must be initialized from explicit saved scopes")
 
     trigger_tokens = script_tokens(cap_trigger)
     if not find_token_sequence(
         trigger_tokens,
-        script_tokens("owner = { is_country_type = decentralized"),
+        script_tokens("owner = $TARGET$ $TARGET$ = { is_country_type = decentralized"),
     ) or not find_token_sequence(
         trigger_tokens,
         script_tokens("$TARGET$ = { is_country_type = decentralized }"),
     ):
         errors.append("settlement entry and monthly validity must require a decentralized target")
+    old_region_lock = script_tokens(
+        "state_region = { OR = { has_variable = ffcs_settlement_sponsor_v1 "
+        "any_scope_state = { has_variable = ffcs_settlement_sponsor_v1 } } }"
+    )
+    if find_token_sequence(trigger_tokens, old_region_lock):
+        errors.append("settlement entry must not retain the pre-0.4 global region lock")
     if not find_token_sequence(
         trigger_tokens,
         script_tokens(
-            "state_region = { OR = { has_variable = ffcs_settlement_sponsor_v1 any_scope_state = { has_variable = ffcs_settlement_sponsor_v1 } } }"
+            "NOT = { has_variable = ffcs_settlement_sponsor_v1 } "
+            "custom_tooltip = { text = FFCS_SETTLEMENT_REGION_SPONSOR_LIMIT_TT "
+            "NOT = { state_region = { any_scope_state = { "
+            "has_variable = ffcs_settlement_sponsor_v1 "
+            "var:ffcs_settlement_sponsor_v1 ?= $COUNTRY$ } } } }"
         ),
     ):
-        errors.append("settlement entry must lock the entire state region while a project exists")
+        errors.append(
+            "settlement entry must block only a busy target state or the same sponsor in the region"
+        )
     for required in (
         "has_variable = ffcs_settlement_route_v2",
         "var:ffcs_settlement_route_v2 = 1",
@@ -583,6 +641,17 @@ def main() -> int:
         errors.append("strategic-region interest must be checked only when a project starts")
     if not find_token_sequence(
         trigger_tokens,
+        script_tokens(
+            "OR = { $COUNTRY$ = { is_ai = yes } $COUNTRY$ = { "
+            "has_strategic_region_interest_tier = { strategic_region = $REGION$ "
+            "value >= interest_tier_effect_stake_colonial_claim_min_tier } } }"
+        ),
+    ):
+        errors.append(
+            "AI settlement entry must not depend on the disabled native colonization interest stance"
+        )
+    if not find_token_sequence(
+        trigger_tokens,
         script_tokens("strategic_region = $REGION$"),
     ):
         errors.append("settlement eligibility must receive its strategic region explicitly")
@@ -601,24 +670,34 @@ def main() -> int:
     ):
         errors.append("state-scoped settlement triggers must not depend on caller root scope")
 
-    settlement_effects = (
-        root / "common" / "scripted_effects" / "ffcs_settlement_effects.txt"
-    ).read_text(encoding="utf-8-sig")
-    settlement_effect_tokens = script_tokens(settlement_effects)
     if re.search(
         r"(?:COUNTRY|TARGET)\s*=\s*var:ffcs_settlement_",
         cap_trigger + settlement_effects,
     ):
         errors.append("nested settlement checks must use restored country scopes, not local var links")
     for required in (
-        "ffcs_apply_settlement_phase_v2 = { DIVISOR = 4 }",
-        "ffcs_apply_settlement_phase_v2 = { DIVISOR = 3 }",
-        "ffcs_apply_settlement_phase_v2 = { DIVISOR = 2 }",
-        "ffcs_apply_settlement_phase_v2 = { DIVISOR = 1 }",
+        "limit = { NOT = { has_variable = ffcs_settlement_schema_v2 } }",
+        "state_region = { remove_variable = ffcs_settlement_sponsor_v1 }",
+        "set_variable = { name = ffcs_settlement_schema_v2 value = 1 }",
+        "limit = { NOT = { has_variable = ffcs_settlement_schema_v3 } }",
+        "remove_variable = ffcs_settlement_resistance_v1",
+        "set_variable = { name = ffcs_settlement_schema_v3 value = 1 }",
+        "remove_variable = ffcs_settlement_next_province_progress_v3",
+        "value = 100 subtract = local_var:ffcs_current_progress_v3 divide = num_provinces add = local_var:ffcs_current_progress_v3 max = 100",
+        "set_variable = { name = ffcs_transfer_budget_v2 value = 1 }",
+        "NOT = { has_variable = ffcs_settlement_next_province_progress_v3 }",
+        "set_local_variable = { name = ffcs_monthly_can_transfer_v3 value = 0 }",
+        "set_local_variable = { name = ffcs_monthly_can_transfer_v3 value = 1 }",
+        "var:ffcs_settlement_progress_v1 > var:ffcs_settlement_next_province_progress_v3",
+        "set_variable = { name = ffcs_settlement_progress_v1 value = var:ffcs_settlement_next_province_progress_v3 }",
+        "var:ffcs_settlement_progress_v1 >= var:ffcs_settlement_next_province_progress_v3",
+        "ffcs_transfer_one_settlement_province_v3 = yes",
+        "set_variable = { name = ffcs_settlement_progress_v1 value = 100 }",
         "clear_variable_list = ffcs_settlement_provinces_v2",
         "remove_variable = ffcs_settlement_route_v2",
         "state_region = { remove_variable = ffcs_settlement_sponsor_v1 }",
         "create_building = { building = building_port level = 1 }",
+        "ffcs_rebind_settlement_project_v2 = { every_scope_state = { limit = { has_variable = ffcs_settlement_sponsor_v1 var:ffcs_settlement_sponsor_v1 ?= scope:ffcs_settlement_sponsor } save_temporary_scope_as = ffcs_settlement_project if = { limit = { NOT = { has_modifier = ffcs_cultural_settlement_project } } add_modifier = { name = ffcs_cultural_settlement_project } } } }",
         "limit = { ffcs_generated_has_land_seed_v2 = { COUNTRY = scope:ffcs_settlement_sponsor TARGET = scope:ffcs_settlement_original_owner } } scope:ffcs_settlement_project = { set_variable = { name = ffcs_settlement_route_v2 value = 1 } } ffcs_generated_take_land_seed_v2 = { COUNTRY = scope:ffcs_settlement_sponsor TARGET = scope:ffcs_settlement_original_owner PROJECT = scope:ffcs_settlement_project }",
         "limit = { ffcs_generated_has_port_seed_v2 = { TARGET = scope:ffcs_settlement_original_owner } } scope:ffcs_settlement_project = { set_variable = { name = ffcs_settlement_route_v2 value = 2 } } ffcs_generated_take_port_seed_v2 = { COUNTRY = scope:ffcs_settlement_sponsor TARGET = scope:ffcs_settlement_original_owner PROJECT = scope:ffcs_settlement_project }",
         "change_variable = { name = ffcs_settlement_progress_v1 add = ffcs_monthly_settlement_progress_value }",
@@ -630,16 +709,72 @@ def main() -> int:
         "scope:ffcs_settlement_target_state = { ffcs_apply_monthly_settlement_progress_v1 = yes }",
         "var:ffcs_settlement_phase_v1 >= 1 OR = { NOT = { has_variable_list = ffcs_settlement_provinces_v2 }",
         "clear_variable_list = ffcs_settlement_provinces_v2 set_variable = { name = ffcs_settlement_phase_v1 value = 0 }",
+        "set_variable = { name = ffcs_settlement_next_province_progress_v3 value = var:ffcs_settlement_progress_v1 }",
+        "ffcs_reconcile_exhausted_settlement_projects_v2 = { every_scope_state = { limit = { has_variable = ffcs_settlement_sponsor_v1 has_variable = ffcs_settlement_original_owner_v1 NOT = { has_variable = ffcs_internal_transfer_guard_v1 } }",
+        "NOT = { state_region = { any_scope_state = { owner = scope:ffcs_settlement_original_owner } } }",
+        "ffcs_cancel_settlement_project_v1 = { REASON = TARGET_EXHAUSTED }",
+        "ffcs_cancel_settlement_project_v1 = { REASON = PROJECT_INVALID }",
     ):
         if not find_token_sequence(settlement_effect_tokens, script_tokens(required)):
             errors.append(f"settlement phase state machine missing: {required}")
+    if settlement_effects.count("ffcs_rebind_settlement_project_v2 = yes") != 2:
+        errors.append("every state-splitting transfer path must rebind the project carrier")
+    if "while = {" in settlement_effects:
+        errors.append("settlement transfers must not batch provinces in a while loop")
+    if "ffcs_settlement_resistance_v1" in diplomatic_action:
+        errors.append("new settlement projects must not initialize resistance")
+    if settlement_effects.count("ffcs_settlement_resistance_v1") != 2:
+        errors.append("legacy resistance may appear only in schema migration and cleanup")
+    if re.search(r"(?:set|change)_variable\s*=\s*\{[^{}]*ffcs_settlement_resistance_v1", settlement_effects):
+        errors.append("settlement state machine must not set or change resistance")
+    if "var:ffcs_settlement_resistance_v1" in settlement_effects:
+        errors.append("settlement state machine must not branch on resistance")
+    if "ffcs_settlement_setback" in settlement_effects:
+        errors.append("settlement state machine must not post resistance setbacks")
+    monthly_start = settlement_effects.find("ffcs_apply_monthly_settlement_progress_v1 = {")
+    monthly_end = settlement_effects.find(
+        "# Current scope = state carrying a project", monthly_start
+    )
+    monthly_effects = settlement_effects[monthly_start:monthly_end]
+    threshold_initialization = monthly_effects.find(
+        "NOT = { has_variable = ffcs_settlement_next_province_progress_v3 }"
+    )
+    monthly_growth = monthly_effects.find(
+        "change_variable = {\n\t\t\tname = ffcs_settlement_progress_v1"
+    )
+    threshold_cap = monthly_effects.find(
+        "var:ffcs_settlement_progress_v1 > var:ffcs_settlement_next_province_progress_v3"
+    )
+    if (
+        min(
+            monthly_start,
+            monthly_end,
+            threshold_initialization,
+            monthly_growth,
+            threshold_cap,
+        )
+        < 0
+        or not threshold_initialization < monthly_growth < threshold_cap
+    ):
+        errors.append("monthly progress must initialize and then stop at the next province threshold")
     if not re.search(
-        r"ffcs_settlement_progress_v1\s*>=\s*95.*?"
-        r"ffcs_apply_settlement_phase_v2\s*=\s*\{\s*DIVISOR\s*=\s*1",
+        r"ffcs_settlement_progress_v1\s*>=\s*50.*?"
+        r"state_region\s*=\s*\{\s*add_claim\s*=\s*scope:ffcs_settlement_sponsor\s*\}",
         settlement_effects,
         re.DOTALL,
     ):
-        errors.append("contiguous phase 4 must be applied at 95 progress")
+        errors.append("settlement sponsor must gain a state-region claim at 50 progress")
+    if settlement_effects.count("add_claim = scope:ffcs_settlement_sponsor") != 1:
+        errors.append("the 50-progress state-region claim must be granted exactly once")
+    if "FFCS|CLAIM_GRANTED" not in settlement_effects:
+        errors.append("the 50-progress claim must emit a gated diagnostic marker")
+    if not re.search(
+        r"ffcs_settlement_progress_v1\s*>=\s*95.*?"
+        r"set_variable\s*=\s*\{\s*name\s*=\s*ffcs_settlement_phase_v1\s+value\s*=\s*4",
+        settlement_effects,
+        re.DOTALL,
+    ):
+        errors.append("settlement phase 4 must be recorded at 95 progress")
 
     for phase in (2, 3, 4):
         if settlement_effects.count(
@@ -668,7 +803,7 @@ def main() -> int:
     for required in (
         "ffcs_monthly_settlement_progress_value = { save_temporary_scope_as = ffcs_value_state",
         "add = 0.5",
-        "value = scope:ffcs_value_sponsor.gdp divide = 100000000 max = 2",
+        "value = scope:ffcs_value_sponsor.cached_ai_incorporated_population divide = 10000000 max = 2",
         "institution = institution_colonial_affairs value >= 5",
         "has_technology_researched = quinine",
         "has_technology_researched = civilizing_mission",
@@ -679,28 +814,56 @@ def main() -> int:
         "min = 0.25",
         "ffcs_settlement_progress_fraction = {",
         "ffcs_settlement_phase_value = {",
-        "ffcs_settlement_resistance_value = {",
         "ffcs_settlement_route_value = {",
     ):
         if not find_token_sequence(settlement_value_tokens, script_tokens(required)):
             errors.append(f"shared settlement value missing: {required}")
+    if re.search(r"\bgdp\b", settlement_values, re.IGNORECASE):
+        errors.append("settlement growth must scale from incorporated population, not GDP")
+    if "resistance" in settlement_values.lower():
+        errors.append("settlement script values must not expose removed resistance")
 
-    on_actions = (
-        root / "common" / "on_actions" / "ffcs_settlement_on_actions.txt"
-    ).read_text(encoding="utf-8-sig")
-    on_action_tokens = script_tokens(on_actions)
+    region_lock_write = script_tokens(
+        "state_region = { set_variable = { name = ffcs_settlement_sponsor_v1"
+    )
+    if find_token_sequence(diplomatic_action_tokens, region_lock_write) or find_token_sequence(
+        on_action_tokens, region_lock_write
+    ):
+        errors.append("runtime paths must not write the obsolete global region lock")
     diagnostic_text = "\n".join((diplomatic_action, settlement_effects, on_actions))
     for marker in (
         "PROJECT_CREATED",
-        "SCHEDULER_REACHED",
-        "EVALUATION_PASSED",
-        "EVALUATION_FAILED",
-        "PHASE_SWEEP_FINISHED",
+        "PROJECT_REJECTED",
+        "AI_PROJECT_STARTED",
+        "PROJECT_CARRIER_REBOUND",
+        "PROJECT_RECOUNTED",
+        "PHASE_APPLIED",
+        "CLAIM_GRANTED",
+        "TARGET_EXHAUSTED",
         "PROJECT_COMPLETED",
         "PROJECT_CANCELLED",
+        "INVARIANT_FAILED",
     ):
         if f"FFCS|{marker}" not in diagnostic_text:
             errors.append(f"runtime diagnostic marker missing: FFCS|{marker}")
+    debug_lines = [line for line in diagnostic_text.splitlines() if "debug_log" in line]
+    if any("SCOPE.s" in line for line in debug_lines):
+        errors.append("debug logs must use direct scopes or saved-variable data functions")
+    for match in re.finditer(r'debug_log\s*=\s*"FFCS\|([^|]+)', diagnostic_text):
+        marker = match.group(1)
+        if marker not in ("AI_PROJECT_STARTED", "INVARIANT_FAILED") and "has_global_variable = ffcs_debug_enabled_v1" not in diagnostic_text[max(0, match.start() - 500) : match.start()]:
+            errors.append(f"routine diagnostic marker must be debug-gated: FFCS|{marker}")
+    if diagnostic_text.count("FFCS|AI_PROJECT_STARTED") != 1 or not re.search(
+        r'if\s*=\s*\{\s*limit\s*=\s*\{\s*scope:ffcs_settlement_sponsor\s*=\s*'
+        r'\{\s*is_ai\s*=\s*yes\s*\}\s*\}\s*debug_log\s*=\s*"FFCS\|AI_PROJECT_STARTED',
+        settlement_effects,
+    ):
+        errors.append("AI project startup must have exactly one unconditional diagnostic marker")
+    if diagnostic_text.count("FFCS|INVARIANT_FAILED") != 1:
+        errors.append("project carrier invariant failure must have exactly one diagnostic marker")
+    for marker in ("PROJECT_COMPLETED", "PROJECT_CANCELLED"):
+        if diagnostic_text.count(f"FFCS|{marker}") != 1:
+            errors.append(f"terminal diagnostic must have one shared definition: FFCS|{marker}")
     for required in (
         "on_monthly_pulse_country = { on_actions = { ffcs_monthly_country_pulse_v1 } }",
         "limit = { has_variable = ffcs_active_settlement_count_v1 } save_temporary_scope_as = ffcs_monthly_sponsor",
@@ -708,12 +871,14 @@ def main() -> int:
         "clear_variable_list = ffcs_active_settlement_states_v1",
         "change_variable = { name = ffcs_active_settlement_count_v1 add = 1 }",
         "add_to_variable_list = { name = ffcs_active_settlement_states_v1 target = prev }",
-        "state_region = { set_variable = { name = ffcs_settlement_sponsor_v1 value = scope:ffcs_monthly_sponsor } }",
         "add_journal_entry = { type = je_ffcs_cultural_settlement_overview }",
         "every_state = { limit = { has_variable = ffcs_settlement_sponsor_v1 var:ffcs_settlement_sponsor_v1 ?= scope:ffcs_monthly_sponsor } ffcs_advance_settlement_project_v1 = yes }",
         "limit = { var:ffcs_active_settlement_count_v1 < 1 } remove_variable = ffcs_active_settlement_count_v1",
-        "on_state_owner_change = { on_actions = { ffcs_cancel_project_on_owner_change_v1 } }",
+        "on_state_owner_change = { on_actions = { ffcs_cancel_project_on_owner_change_v1 ffcs_reconcile_region_on_owner_change_v2 } }",
         "var:ffcs_settlement_sponsor_v1 ?= owner",
+        "ffcs_cancel_settlement_project_v1 = { REASON = OWNER_CHANGED }",
+        "ffcs_reconcile_region_on_owner_change_v2 = { trigger = { state_region = { any_scope_state = { has_variable = ffcs_settlement_sponsor_v1 has_variable = ffcs_settlement_original_owner_v1 } } }",
+        "state_region = { ffcs_reconcile_exhausted_settlement_projects_v2 = yes }",
     ):
         if not find_token_sequence(on_action_tokens, script_tokens(required)):
             errors.append(f"settlement scheduler or owner-change injection missing: {required}")
@@ -729,10 +894,13 @@ def main() -> int:
         'name = "widget_je_ffcs_cultural_settlement_overview"',
         'container = "custom_widget_container_3"',
         "invalid = { NOT = { has_variable = ffcs_active_settlement_count_v1 } }",
+        "on_invalid = { clear_variable_list = ffcs_active_settlement_states_v1",
         "should_be_pinned_by_default_uninvolved_or_context = yes",
     ):
         if not find_token_sequence(journal_tokens, script_tokens(required)):
             errors.append(f"settlement overview journal entry missing: {required}")
+    if "FFCS|JOURNAL_INVALIDATED" not in journal_entry:
+        errors.append("settlement journal invalidation diagnostic is missing")
 
     overview_gui = (
         root / "gui" / "journal_entry_widgets" / "ffcs_settlement_overview.gui"
@@ -742,12 +910,13 @@ def main() -> int:
         "State.MakeScope.ScriptValue('ffcs_settlement_progress_fraction')",
         "State.MakeScope.ScriptValue('ffcs_monthly_settlement_progress_value')",
         "State.MakeScope.ScriptValue('ffcs_settlement_phase_value')",
-        "State.MakeScope.ScriptValue('ffcs_settlement_resistance_value')",
         "State.MakeScope.ScriptValue('ffcs_settlement_route_value')",
         "InformationPanelBar.OpenStatePanel(State.AccessSelf)",
     ):
         if required not in overview_gui:
             errors.append(f"settlement overview widget missing: {required}")
+    if "resistance" in overview_gui.lower():
+        errors.append("settlement overview widget must not display removed resistance")
 
     messages = (
         root / "common" / "messages" / "ffcs_settlement_messages.txt"
@@ -755,6 +924,8 @@ def main() -> int:
     for phase in (2, 3, 4):
         if messages.count(f"ffcs_settlement_phase_{phase} = {{") != 1:
             errors.append(f"settlement phase {phase} message definition missing")
+    if "ffcs_settlement_setback" in messages:
+        errors.append("removed settlement setback message must not be defined")
 
     native_guard = (
         root / "common" / "laws" / "zzzzz_ffcs_colonial_resettlement_guard.txt"
@@ -857,6 +1028,14 @@ def main() -> int:
             f"English-only={sorted(set(en_keys) - set(zh_keys))}, "
             f"Chinese-only={sorted(set(zh_keys) - set(en_keys))}"
         )
+    obsolete_resistance_keys = {
+        "FFCS_SETTLEMENT_RESISTANCE_LABEL",
+        "notification_ffcs_settlement_setback_name",
+        "notification_ffcs_settlement_setback_desc",
+        "notification_ffcs_settlement_setback_tooltip",
+    }
+    if obsolete_resistance_keys & (set(en_keys) | set(zh_keys)):
+        errors.append("removed resistance localization keys must not remain")
     for language, keys in (("English", en_keys), ("Chinese", zh_keys)):
         duplicates = sorted(key for key, count in Counter(keys).items() if count > 1)
         if duplicates:
@@ -870,6 +1049,17 @@ def main() -> int:
         "set_global_variable = ffcs_debug_enabled_v1",
         "ffcs_debug.2",
         "remove_global_variable = ffcs_debug_enabled_v1",
+        "ffcs_debug.3",
+        "trigger_event = { id = ffcs_debug.3 }",
+        "FFCS|AI_PROBE_STARTED",
+        "FFCS|AI_BLOCKED",
+        "FFCS|AI_CANDIDATE_FOUND",
+        "FFCS|AI_NO_ELIGIBLE_TARGET",
+        "FFCS|AI_PROBE_FINISHED",
+        "ffcs_state_is_eligible_for_settlement",
+        "remove_variable = ffcs_ai_probe_found_v1",
+        "remove_variable = ffcs_ai_probe_sponsor_v1",
+        "remove_variable = ffcs_ai_probe_target_v1",
     ):
         if required not in debug_events:
             errors.append(f"debug event entry point missing: {required}")
@@ -933,6 +1123,8 @@ def main() -> int:
         )
         if len(transfer_blocks) != manifest.get("transfer_branch_count"):
             errors.append("generated transfer branch count does not match manifest")
+        if generated_effect_text.count("state.owner = $TARGET$") != len(transfer_blocks):
+            errors.append("every generated transfer must recheck the candidate's original owner")
         if re.search(r'provinces\s*=\s*\{\s*"x[0-9A-Fa-f]{6}"', generated_effect_text):
             errors.append("generated province effects must use unquoted database IDs")
         state_total = sum(

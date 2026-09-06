@@ -4,12 +4,6 @@ ffcs_settlement_foothold = {
 	notification_type = feed
 }
 
-ffcs_settlement_setback = {
-	type = country
-	texture = "gfx/interface/icons/notification_icons/colonial.dds"
-	notification_type = feed
-}
-
 ffcs_settlement_phase_2 = {
 	type = country
 	texture = "gfx/interface/icons/notification_icons/colonial.dds"

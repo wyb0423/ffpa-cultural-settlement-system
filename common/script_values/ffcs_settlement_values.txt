@@ -5,8 +5,8 @@ ffcs_monthly_settlement_progress_value = {
 		save_temporary_scope_as = ffcs_value_sponsor
 	}
 
-	# Native colonial growth scales with national capacity and is capped. Native
-	# growth itself is hard-disabled by FFCS, so GDP is the stable scale proxy.
+	# Native colonial growth scales with incorporated population and is capped.
+	# FFCS reaches its population bonus ceiling at 20 million incorporated pops.
 	add = 0.5
 
 	if = {
@@ -90,8 +90,8 @@ ffcs_monthly_settlement_progress_value = {
 		add = 0.5
 	}
 	add = {
-		value = scope:ffcs_value_sponsor.gdp
-		divide = 100000000
+		value = scope:ffcs_value_sponsor.cached_ai_incorporated_population
+		divide = 10000000
 		max = 2
 	}
 	if = {
@@ -133,12 +133,6 @@ ffcs_settlement_phase_value = {
 	value = var:ffcs_settlement_phase_v1
 	min = 0
 	max = 4
-}
-
-ffcs_settlement_resistance_value = {
-	value = var:ffcs_settlement_resistance_v1
-	min = 0
-	max = 100
 }
 
 ffcs_settlement_route_value = {

@@ -11,6 +11,13 @@ je_ffcs_cultural_settlement_overview = {
 	invalid = {
 		NOT = { has_variable = ffcs_active_settlement_count_v1 }
 	}
+	on_invalid = {
+		clear_variable_list = ffcs_active_settlement_states_v1
+		if = {
+			limit = { has_global_variable = ffcs_debug_enabled_v1 }
+			debug_log = "FFCS|JOURNAL_INVALIDATED|DATE=[TimeKeeper.GetCurrentDate.GetString]|COUNTRY=[THIS.GetCountry.GetNameNoFormatting]"
+		}
+	}
 
 	weight = 200
 	transferable = no

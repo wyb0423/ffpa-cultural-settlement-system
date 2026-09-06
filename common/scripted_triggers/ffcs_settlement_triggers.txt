@@ -48,15 +48,20 @@ ffcs_state_is_eligible_for_settlement = {
 		text = FFCS_CULTURAL_HOMELAND_ONLY_TT
 		is_homeland_of_country_cultures = $COUNTRY$
 	}
-	NOT = {
-		state_region = {
-			OR = {
-				has_variable = ffcs_settlement_sponsor_v1
-				any_scope_state = { has_variable = ffcs_settlement_sponsor_v1 }
+	NOT = { has_variable = ffcs_settlement_sponsor_v1 }
+	custom_tooltip = {
+		text = FFCS_SETTLEMENT_REGION_SPONSOR_LIMIT_TT
+		NOT = {
+			state_region = {
+				any_scope_state = {
+					has_variable = ffcs_settlement_sponsor_v1
+					var:ffcs_settlement_sponsor_v1 ?= $COUNTRY$
+				}
 			}
 		}
 	}
-	owner = {
+	owner = $TARGET$
+	$TARGET$ = {
 		is_country_type = decentralized
 		NOT = { is_diplomatic_play_enemy_of = $COUNTRY$ }
 	}
@@ -79,10 +84,13 @@ ffcs_state_is_eligible_for_settlement = {
 		NOT = { has_state_trait = state_trait_severe_malaria }
 		$COUNTRY$ = { has_technology_researched = quinine }
 	}
-	$COUNTRY$ = {
-		has_strategic_region_interest_tier = {
-			strategic_region = $REGION$
-			value >= interest_tier_effect_stake_colonial_claim_min_tier
+	OR = {
+		$COUNTRY$ = { is_ai = yes }
+		$COUNTRY$ = {
+			has_strategic_region_interest_tier = {
+				strategic_region = $REGION$
+				value >= interest_tier_effect_stake_colonial_claim_min_tier
+			}
 		}
 	}
 }

@@ -34,10 +34,13 @@ Do not rename or change the meaning of these without a versioned migration:
 - `ffcs_settlement_original_owner_v1`
 - `ffcs_settlement_progress_v1`
 - `ffcs_settlement_phase_v1`
-- `ffcs_settlement_resistance_v1`
+- `ffcs_settlement_resistance_v1` (legacy only; removed from projects by the v3 migration)
 - `ffcs_settlement_schema_v1`
+- `ffcs_settlement_schema_v2`
+- `ffcs_settlement_schema_v3`
 - `ffcs_settlement_route_v2`
 - `ffcs_settlement_provinces_v2`
+- `ffcs_settlement_next_province_progress_v3`
 
 ## Generated data
 

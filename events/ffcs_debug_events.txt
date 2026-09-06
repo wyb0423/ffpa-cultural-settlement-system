@@ -7,6 +7,7 @@ ffcs_debug.1 = {
 	immediate = {
 		set_global_variable = ffcs_debug_enabled_v1
 		debug_log = "FFCS|DEBUG_ENABLED|DATE=[TimeKeeper.GetCurrentDate.GetString]"
+		trigger_event = { id = ffcs_debug.3 }
 	}
 }
 
@@ -17,5 +18,96 @@ ffcs_debug.2 = {
 	immediate = {
 		debug_log = "FFCS|DEBUG_DISABLED|DATE=[TimeKeeper.GetCurrentDate.GetString]"
 		remove_global_variable = ffcs_debug_enabled_v1
+	}
+}
+
+# Manual, one-shot AI diagnostic. It has no recurring runtime cost.
+ffcs_debug.3 = {
+	type = country_event
+	hidden = yes
+	immediate = {
+		if = {
+			limit = { has_global_variable = ffcs_debug_enabled_v1 }
+			debug_log = "FFCS|AI_PROBE_STARTED|DATE=[TimeKeeper.GetCurrentDate.GetString]"
+			every_country = {
+				limit = {
+					is_ai = yes
+					OR = {
+						is_country_type = recognized
+						is_country_type = unrecognized
+					}
+					ffcs_uses_cultural_settlement_law = yes
+				}
+				save_temporary_scope_as = ffcs_ai_probe_sponsor
+				remove_variable = ffcs_ai_probe_found_v1
+				if = {
+					limit = { NOT = { has_technology_researched = colonization } }
+					debug_log = "FFCS|AI_BLOCKED|DATE=[TimeKeeper.GetCurrentDate.GetString]|SPONSOR=[THIS.GetCountry.GetNameNoFormatting]|REASON=NO_COLONIZATION_TECH"
+				}
+				else_if = {
+					limit = { is_at_war = yes }
+					debug_log = "FFCS|AI_BLOCKED|DATE=[TimeKeeper.GetCurrentDate.GetString]|SPONSOR=[THIS.GetCountry.GetNameNoFormatting]|REASON=AT_WAR"
+				}
+				else_if = {
+					limit = { in_default = yes }
+					debug_log = "FFCS|AI_BLOCKED|DATE=[TimeKeeper.GetCurrentDate.GetString]|SPONSOR=[THIS.GetCountry.GetNameNoFormatting]|REASON=IN_DEFAULT"
+				}
+				else_if = {
+					limit = { NOT = { ffcs_below_settlement_cap = yes } }
+					debug_log = "FFCS|AI_BLOCKED|DATE=[TimeKeeper.GetCurrentDate.GetString]|SPONSOR=[THIS.GetCountry.GetNameNoFormatting]|REASON=SETTLEMENT_CAP"
+				}
+				else = {
+					every_country = {
+						limit = {
+							is_country_type = decentralized
+							scope:ffcs_ai_probe_sponsor = {
+								NOT = { has_variable = ffcs_ai_probe_found_v1 }
+							}
+						}
+						save_temporary_scope_as = ffcs_ai_probe_target
+						every_scope_state = {
+							limit = {
+								scope:ffcs_ai_probe_sponsor = {
+									NOT = { has_variable = ffcs_ai_probe_found_v1 }
+								}
+							}
+							save_temporary_scope_as = ffcs_ai_probe_state
+							if = {
+								limit = {
+									ffcs_state_is_eligible_for_settlement = {
+										COUNTRY = scope:ffcs_ai_probe_sponsor
+										TARGET = scope:ffcs_ai_probe_target
+										STATE = scope:ffcs_ai_probe_state
+										REGION = scope:ffcs_ai_probe_state.region
+									}
+								}
+								set_variable = {
+									name = ffcs_ai_probe_sponsor_v1
+									value = scope:ffcs_ai_probe_sponsor
+								}
+								set_variable = {
+									name = ffcs_ai_probe_target_v1
+									value = scope:ffcs_ai_probe_target
+								}
+								scope:ffcs_ai_probe_sponsor = {
+									set_variable = ffcs_ai_probe_found_v1
+								}
+								debug_log = "FFCS|AI_CANDIDATE_FOUND|DATE=[TimeKeeper.GetCurrentDate.GetString]|SPONSOR=[THIS.GetState.MakeScope.Var('ffcs_ai_probe_sponsor_v1').GetCountry.GetNameNoFormatting]|TARGET=[THIS.GetState.MakeScope.Var('ffcs_ai_probe_target_v1').GetCountry.GetNameNoFormatting]|STATE=[THIS.GetState.GetNameNoFormatting]"
+								remove_variable = ffcs_ai_probe_sponsor_v1
+								remove_variable = ffcs_ai_probe_target_v1
+							}
+						}
+					}
+					if = {
+						limit = { NOT = { has_variable = ffcs_ai_probe_found_v1 } }
+						debug_log = "FFCS|AI_NO_ELIGIBLE_TARGET|DATE=[TimeKeeper.GetCurrentDate.GetString]|SPONSOR=[THIS.GetCountry.GetNameNoFormatting]"
+					}
+					else = {
+						remove_variable = ffcs_ai_probe_found_v1
+					}
+				}
+			}
+			debug_log = "FFCS|AI_PROBE_FINISHED|DATE=[TimeKeeper.GetCurrentDate.GetString]"
+		}
 	}
 }

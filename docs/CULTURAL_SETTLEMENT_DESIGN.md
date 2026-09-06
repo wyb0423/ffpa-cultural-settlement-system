@@ -15,7 +15,7 @@ Victoria 3 1.13 diplomatic actions do expose:
 - a direct acceptance effect;
 - state-aware AI proposal gates and scores.
 
-The custom diplomatic action is therefore the authoritative entry point.
+The custom diplomatic action is the player entry point. AI entry is dispatched from a half-yearly country pulse because runtime tests showed that the generic diplomatic-action AI scheduler did not reliably submit otherwise legal state targets. Both paths call one shared startup effect, which revalidates the same state trigger before persistent mutation.
 
 Victoria 3 1.13.11 exposes a stronger engine command gate: `ESTABLISH_COLONY_NO_COLONIAL_GROWTH` invalidates **Establish Colony** when the acting country produces no colonial growth. Colonial Resettlement and Frontier Colonization therefore receive `state_colony_growth_creation_factor = -100`, a hard-off sentinel larger than every positive creation-factor source in the supported final database. This makes the command invalid before execution and prevents seed-province creation. The Colonial Affairs institution remains active so its investment level and bureaucracy cost continue to drive FFCS capacity and speed.
 
@@ -32,6 +32,7 @@ A project may start only when all of the following are true:
 - actor has an actual province border with the target, or direct strategic adjacency across one sea node to a target-controlled port province;
 - actor has the required strategic-region interest tier;
 - selected state has no active `ffcs` project;
+- actor has no other active project in the selected state region; projects sponsored by other countries are allowed;
 - actor is below its custom project cap of two projects per Colonial Affairs level;
 - actor and target are not at war with each other.
 
@@ -51,12 +52,12 @@ available state
 
 At any monthly tick:
     invalid sponsor, law, culture or ownership -> cancel and clean counters
-    severe resistance roll -> setback or cancellation event
+    original owner has no remaining state in the region -> cancel as target exhausted
 ```
 
-The project is stored on the target owner's residual state object. The sponsor and original owner keep numeric active/inbound counters. Monthly maintenance is dispatched from the sponsor's country pulse and scans only while that sponsor has active projects; this avoids relying on decentralized target countries receiving country pulses and avoids persistent lists containing destroyed state scopes.
+After the immediate foothold splits the state, the project variables remain on the sponsor-owned project state. The original owner's residual state is rediscovered from the fixed state region each month. The sponsor and original owner keep numeric active/inbound counters. Monthly maintenance is dispatched from the sponsor's country pulse and scans only while that sponsor has active projects; this avoids relying on decentralized target countries receiving country pulses.
 
-`on_state_owner_change` cancels a project immediately if war or another effect transfers its residual target state. Cleanup decrements the saved original owner rather than the new owner, preventing stranded concurrency counters.
+`on_state_owner_change` cancels a project immediately if war or another effect transfers its project carrier to a third party. It also reconciles every project in that state region: when one competitor or an external conquest removes the original owner's last state, all remaining projects against that owner terminate as target-exhausted. Cleanup decrements the saved original owner rather than the new owner, preventing stranded concurrency counters.
 
 ## Progress model
 
@@ -67,18 +68,17 @@ Monthly progress is calculated in integer points:
 - quinine: +2;
 - civilizing mission: +3;
 - land adjacency: +3;
-- active projects divide the final total, with a floor of 1;
-- severe resistance can impose a temporary penalty.
+- active projects divide the final total, with a floor of 1.
 
-Acceptance initializes progress at 25 and immediately applies phase 1, so every successful action produces a visible foothold. Later province-phase thresholds are 50, 75 and 95. At 100 only a final province still connected to this project's frontier is transferred; disconnected territory remains with the original owner.
+Acceptance initializes progress at 25 and immediately transfers one seed province, so every successful action produces a visible foothold. Later province transfers use dynamically spaced progress thresholds and each monthly pulse can transfer at most one province. Monthly progress is capped at the next reachable province threshold before that province transfers, so new projects do not build a hidden transfer backlog or reach 100 while another reachable transfer remains. The 50, 75 and 95 thresholds remain presentation milestones only; crossing 50 grants the sponsor a state-region claim once. Disconnected territory remains with the original owner.
 
 The institution is read through proven 1–5 trigger tiers because Victoria 3 1.13 exposes an investment-level comparison trigger but no proven numeric getter. The same explicit tiers set the concurrent-project limits to 2/4/6/8/10. Lowering institution investment does not cancel projects already in progress, but it prevents starting another project until the active count falls below the new cap.
 
-## Province phases
+## Province progress
 
 The generator reads the final Firefall state-region files and province map, builds four-neighbour pixel adjacency with horizontal map wrapping, and emits literal dispatchers. A land seed must be owned by the explicitly supplied target owner and touch a sponsor-owned province. An overseas seed requires direct strategic adjacency across one sea node and is the state region's target-owned port province. Passing the target owner explicitly is required because diplomatic-action state selection and acceptance do not share the same `root` scope. Each later candidate must be owned by the original target and touch a province recorded in this project's `ffcs_settlement_provinces_v2` list that is still sponsor-owned. Generated `set_owner_of_provinces` lists use unquoted province database IDs, matching the Victoria 3 1.13 effect syntax.
 
-At acceptance/50/75/95 progress the remaining state is divided across 4/3/2/1 phases with ceiling rounding. Scans stop at the phase budget, a missing frontier, or one residual province. A selectable state already reduced to one province completes immediately at acceptance; otherwise completion claims that last province only if it remains on the same project frontier. Overseas projects charge `100000` when accepted and create a level 1 port during the immediate foothold transfer.
+After every transfer, the next threshold is recalculated as `current progress + (100 - current progress) / remaining target provinces`. This spaces the remaining reachable provinces across the remaining progress without storing an original province total. If one monthly gain would cross that threshold, progress stops at the threshold, one province transfers and excess capacity is not carried forward. A selectable state already reduced to one province completes immediately at acceptance; otherwise the last province transfers only if it remains on the same project frontier. Overseas projects charge `100000` when accepted and create a level 1 port during the immediate foothold transfer. Existing projects without `ffcs_settlement_next_province_progress_v3` derive it before their next monthly gain; legacy projects already at 100 continue draining any reachable backlog one province per pulse.
 
 ## Native feature parity
 
@@ -87,13 +87,13 @@ At acceptance/50/75/95 progress the remaining state is divided across 4/3/2/1 ph
 | exact target eligibility | reproduced | hard state trigger for both player and AI |
 | coastal/adjacent access | reproduced | actual province border or one-sea-node strategic adjacency to a target-controlled port province |
 | initial foothold | reproduced | land-border seed or port seed transferred on acceptance |
-| province-by-province visual growth | approximated | contiguous project-frontier chunks at four thresholds |
+| province-by-province visual growth | approximated | one contiguous project-frontier province at each dynamic threshold |
 | overseas port cost and provision | reproduced | £100,000 at acceptance; level 1 port after foothold |
 | growth divided among colonies | reproduced in intent | custom active-project divisor |
 | institution/technology scaling | approximated | explicit tiered progress model |
-| malaria/terrain delay | approximated | scripted resistance/progress modifiers |
-| competition | partial | different owners/partitions can be targeted; one project per target state object |
-| colony tension/native uprising | approximated | custom resistance and incidents |
+| malaria/terrain delay | approximated | scripted progress modifiers |
+| competition | reproduced | multiple sponsors may compete in one region; each project can take only provinces still owned by its fixed original target |
+| colony tension/native uprising | omitted | no independent resistance timer or resistance-driven failure |
 | colony pause/resume | omitted initially | cancellation is automatic; manual controls can be added later |
 | colonial state flag | not scriptable | completed land is unincorporated, not a native colony object |
 | native player map interaction | disabled for both FFCS laws | zero colonial-growth generation invalidates the command before seed creation |
@@ -103,6 +103,6 @@ At acceptance/50/75/95 progress the remaining state is divided across 4/3/2/1 ph
 
 The final AI score table is copied from `2050 Firefall — Core Balance Adapter` and changes only the `stance_colonize_region` eligibility for the two FFCS laws. Both final Firefall law definitions are copied with only one added `state_colony_growth_creation_factor = -100` field inside their existing `modifier` blocks; this avoids relying on duplicate singleton-block injection. The company-charter gate relies on the final `colonization_charter` definition. All three are intentionally load-order-sensitive and must be compared whenever an upstream law, institution, AI strategy or charter definition changes.
 
-Old saves may already contain engine-native colonies or active company charters created before version 0.2. FFCS does not destructively transfer or delete that territory. Active FFCS projects created before version 0.3 lack a provable route/frontier record and cancel on their next monthly check without returning land or money. Projects from the broken quoted-province-ID or route-scope test builds reset a phase that left no sponsor-owned frontier, re-evaluate the real land/port seed and retry it on the next sponsor monthly pulse. Only new projects use the v2 route and province-list interfaces.
+Old saves may already contain engine-native colonies or active company charters created before version 0.2. FFCS does not destructively transfer or delete that territory. Active FFCS projects created before version 0.3 lack a provable route/frontier record and cancel on their next monthly check without returning land or money. Projects from the broken quoted-province-ID or route-scope test builds reset a phase that left no sponsor-owned frontier, re-evaluate the real land/port seed and retry it on the next sponsor monthly pulse. Version 0.4 preserves existing projects while removing the obsolete state-region-wide sponsor lock through `ffcs_settlement_schema_v2`; `ffcs_settlement_schema_v3` preserves active projects while removing their legacy resistance variable.
 
 No machine-specific game or Workshop path is stored in runtime files. Tool scripts accept paths as command-line arguments.

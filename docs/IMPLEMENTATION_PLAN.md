@@ -8,7 +8,7 @@
 - create versioned project variables, counters and monthly dispatch;
 - complete a project by transferring the whole selected state as an initial executable fallback.
 
-Acceptance: the action appears, invalid states cannot be selected, an AI proposal uses the same filter, acceptance immediately transfers the first foothold, progress survives a save/load and completion leaves an unincorporated state.
+Acceptance: the action appears, invalid states cannot be selected, the half-yearly AI dispatcher uses the same filter and startup effect, acceptance immediately transfers the first foothold, progress survives a save/load and completion leaves an unincorporated state.
 
 ## Milestone 2 — Generated territorial growth
 
@@ -20,11 +20,11 @@ Acceptance: the action appears, invalid states cannot be selected, an AI proposa
 
 Acceptance: every transfer branch checks live ownership and a real map edge, the port seed belongs to its state region, disconnected components are not crossed, and running the generator twice produces identical bytes.
 
-## Milestone 3 — Friction and feedback
+## Milestone 3 — Progress and feedback
 
-- add resistance and progress modifiers;
-- add setback, cancellation and completion notifications/events;
-- reflect access, institution and technology in AI scores;
+- add progress modifiers;
+- add cancellation and completion notifications/events;
+- enforce access, institution and technology in the AI dispatcher;
 - add defensive cleanup when law, culture, target ownership or sponsor validity changes.
 
 Acceptance: projects cannot become immortal, counters return to zero, and the AI does not start projects it cannot maintain.

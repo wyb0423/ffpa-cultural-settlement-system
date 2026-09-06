@@ -21,24 +21,24 @@ Expected monthly impact remains low for ordinary project counts. Raising the per
 
 ## AI feasibility
 
-The AI can operate the system because the diplomatic-action AI API provides the selected state in `will_propose_with_states` and `propose_score`. The AI does not need to click a custom button or reason about hidden variables after starting a project.
+The diplomatic-action AI path is disabled. A native half-yearly country pulse selects one legal target state for each eligible AI sponsor below its project cap, then calls the same startup effect as the player action. This avoids depending on the engine's opaque diplomatic-action proposal scheduling.
 
 AI safety rules:
 
-- evaluation chance only for eligible major/great powers or colonial countries;
-- no proposal above the project cap;
+- each eligible AI country can start at most one project per half-yearly pulse;
+- no start above the project cap;
 - project cap is exactly two per Colonial Affairs institution level (2/4/6/8/10);
-- no proposal while bankrupt/defaulting or in a dangerous war state;
+- no start while bankrupt/defaulting or at war;
 - exact homeland and access checks before proposal;
-- adjacency, claims, existing regional presence and strategic AI value increase score;
-- remote projects receive a strong penalty;
+- the player strategic-interest gate is waived only for AI because the native colonization stance that normally supplies it is disabled;
+- one state is chosen randomly from the complete eligible set;
 - native colonization stance is disabled for this law so the AI does not split attention between systems;
 - native Establish Colony is invalid because the law produces no colonial growth;
 - company colonization charters are unavailable to owners using this law.
 
 ## Risks requiring runtime evidence
 
-- diplomatic-action AI may evaluate state combinations less often than expected;
+- the half-yearly global eligible-state selection cost may be higher than static inspection suggests;
 - transferring province chunks can invalidate or recreate state scopes differently from static inspection;
 - province scopes stored in a variable list require explicit save/reload evidence on 1.13;
 - saved sponsor and state-region scopes may not survive the final whole-state ownership merge as expected;
