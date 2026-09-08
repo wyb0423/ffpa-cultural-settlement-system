@@ -628,6 +628,15 @@ def main() -> int:
         errors.append("settlement scope variables must be initialized from explicit saved scopes")
 
     trigger_tokens = script_tokens(cap_trigger)
+    cultural_scope_gate = script_tokens(
+        "ffcs_state_is_in_settlement_scope = { OR = { "
+        "is_homeland_of_country_cultures = $COUNTRY$ "
+        "$COUNTRY$ = { has_technology_researched = neoimperialism } } }"
+    )
+    if not find_token_sequence(trigger_tokens, cultural_scope_gate):
+        errors.append("settlement scope must unlock non-homelands with neoimperialism")
+    if cap_trigger.count("ffcs_state_is_in_settlement_scope") != 3:
+        errors.append("settlement entry and monthly validity must share the cultural scope gate")
     if not find_token_sequence(
         trigger_tokens,
         script_tokens("owner = $TARGET$ $TARGET$ = { is_country_type = decentralized"),
@@ -859,6 +868,7 @@ def main() -> int:
         "has_state_trait = state_trait_severe_malaria",
         "value = scope:ffcs_value_sponsor.var:ffcs_active_settlement_count_v1",
         "min = 0.25",
+        "multiply = 2.5",
         "ffcs_settlement_progress_fraction = {",
         "ffcs_settlement_phase_value = {",
         "ffcs_settlement_route_value = {",

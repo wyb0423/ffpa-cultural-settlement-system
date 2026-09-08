@@ -113,6 +113,7 @@ ffcs_monthly_settlement_progress_value = {
 		min = 1
 	}
 	min = 0.25
+	multiply = 2.5
 }
 
 # Root = state carrying a settlement project
