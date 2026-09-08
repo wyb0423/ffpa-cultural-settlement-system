@@ -224,13 +224,6 @@ ffcs_start_settlement_project_v1 = {
 				}
 			}
 		}
-
-		scope:ffcs_settlement_sponsor = {
-			create_incident = {
-				country = scope:ffcs_settlement_original_owner
-				value = 5
-			}
-		}
 	}
 	else = {
 		if = {
