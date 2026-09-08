@@ -743,9 +743,11 @@ def main() -> int:
         "NOT = { has_variable = ffcs_settlement_next_province_progress_v3 }",
         "set_local_variable = { name = ffcs_monthly_can_transfer_v3 value = 0 }",
         "set_local_variable = { name = ffcs_monthly_can_transfer_v3 value = 1 }",
-        "var:ffcs_settlement_progress_v1 > var:ffcs_settlement_next_province_progress_v3",
+        "set_local_variable = { name = ffcs_monthly_progress_target_v4 value = var:ffcs_settlement_progress_v1 }",
         "set_variable = { name = ffcs_settlement_progress_v1 value = var:ffcs_settlement_next_province_progress_v3 }",
         "var:ffcs_settlement_progress_v1 >= var:ffcs_settlement_next_province_progress_v3",
+        "local_var:ffcs_monthly_progress_target_v4 >= var:ffcs_settlement_next_province_progress_v3",
+        "set_variable = { name = ffcs_settlement_progress_v1 value = local_var:ffcs_monthly_progress_target_v4 }",
         "ffcs_transfer_one_settlement_province_v3 = yes",
         "set_variable = { name = ffcs_settlement_progress_v1 value = 100 }",
         "clear_variable_list = ffcs_settlement_provinces_v2",
@@ -798,8 +800,21 @@ def main() -> int:
     monthly_growth = monthly_effects.find(
         "change_variable = {\n\t\t\tname = ffcs_settlement_progress_v1"
     )
-    threshold_cap = monthly_effects.find(
-        "var:ffcs_settlement_progress_v1 > var:ffcs_settlement_next_province_progress_v3"
+    monthly_target = monthly_effects.find(
+        "name = ffcs_monthly_progress_target_v4"
+    )
+    first_transfer = monthly_effects.find("ffcs_transfer_one_settlement_province_v3 = yes")
+    second_threshold = monthly_effects.find(
+        "local_var:ffcs_monthly_progress_target_v4 >= var:ffcs_settlement_next_province_progress_v3",
+        first_transfer,
+    )
+    second_transfer = monthly_effects.find(
+        "ffcs_transfer_one_settlement_province_v3 = yes",
+        first_transfer + 1,
+    )
+    phase_progression = monthly_effects.find(
+        "var:ffcs_settlement_progress_v1 >= 25",
+        second_transfer,
     )
     if (
         min(
@@ -807,12 +822,30 @@ def main() -> int:
             monthly_end,
             threshold_initialization,
             monthly_growth,
-            threshold_cap,
+            monthly_target,
+            first_transfer,
+            second_threshold,
+            second_transfer,
+            phase_progression,
         )
         < 0
-        or not threshold_initialization < monthly_growth < threshold_cap
+        or not (
+            threshold_initialization
+            < monthly_growth
+            < monthly_target
+            < first_transfer
+            < second_threshold
+            < second_transfer
+            < phase_progression
+        )
     ):
-        errors.append("monthly progress must initialize and then stop at the next province threshold")
+        errors.append("monthly progress must pay at most two sequential province thresholds")
+    if monthly_effects.count("ffcs_transfer_one_settlement_province_v3 = yes") != 2:
+        errors.append("monthly progress must attempt exactly two threshold-funded transfers")
+    if monthly_effects.count(
+        "value = var:ffcs_settlement_next_province_progress_v3"
+    ) != 2:
+        errors.append("both monthly transfers must stop progress at their paid threshold")
     if not re.search(
         r"ffcs_settlement_progress_v1\s*>=\s*50.*?"
         r"state_region\s*=\s*\{\s*add_claim\s*=\s*scope:ffcs_settlement_sponsor\s*\}",

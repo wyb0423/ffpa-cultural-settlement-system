@@ -654,9 +654,26 @@ ffcs_apply_monthly_settlement_progress_v1 = {
 
 	if = {
 		limit = {
+			scope:ffcs_settlement_project = {
+				var:ffcs_settlement_progress_v1 > 100
+			}
+		}
+		scope:ffcs_settlement_project = {
+			set_variable = { name = ffcs_settlement_progress_v1 value = 100 }
+		}
+	}
+	scope:ffcs_settlement_project = {
+		set_local_variable = {
+			name = ffcs_monthly_progress_target_v4
+			value = var:ffcs_settlement_progress_v1
+		}
+	}
+
+	if = {
+		limit = {
 			local_var:ffcs_monthly_can_transfer_v3 = 1
 			scope:ffcs_settlement_project = {
-				var:ffcs_settlement_progress_v1 > var:ffcs_settlement_next_province_progress_v3
+				var:ffcs_settlement_progress_v1 >= var:ffcs_settlement_next_province_progress_v3
 			}
 		}
 		scope:ffcs_settlement_project = {
@@ -664,16 +681,45 @@ ffcs_apply_monthly_settlement_progress_v1 = {
 				name = ffcs_settlement_progress_v1
 				value = var:ffcs_settlement_next_province_progress_v3
 			}
+			set_variable = ffcs_internal_transfer_guard_v1
 		}
-	}
-	else_if = {
-		limit = {
+		ffcs_transfer_one_settlement_province_v3 = yes
+		scope:ffcs_settlement_project = {
+			remove_variable = ffcs_internal_transfer_guard_v1
+		}
+
+		if = {
+			limit = {
+				num_provinces > 1
+				scope:ffcs_settlement_project = {
+					has_variable_list = ffcs_settlement_provinces_v2
+					local_var:ffcs_monthly_progress_target_v4 >= var:ffcs_settlement_next_province_progress_v3
+				}
+				ffcs_generated_has_frontier_v2 = {
+					COUNTRY = scope:ffcs_settlement_sponsor
+					TARGET = scope:ffcs_settlement_original_owner
+					PROJECT = scope:ffcs_settlement_project
+				}
+			}
 			scope:ffcs_settlement_project = {
-				var:ffcs_settlement_progress_v1 > 100
+				set_variable = {
+					name = ffcs_settlement_progress_v1
+					value = var:ffcs_settlement_next_province_progress_v3
+				}
+				set_variable = ffcs_internal_transfer_guard_v1
+			}
+			ffcs_transfer_one_settlement_province_v3 = yes
+			scope:ffcs_settlement_project = {
+				remove_variable = ffcs_internal_transfer_guard_v1
 			}
 		}
-		scope:ffcs_settlement_project = {
-			set_variable = { name = ffcs_settlement_progress_v1 value = 100 }
+		else = {
+			scope:ffcs_settlement_project = {
+				set_variable = {
+					name = ffcs_settlement_progress_v1
+					value = local_var:ffcs_monthly_progress_target_v4
+				}
+			}
 		}
 	}
 
@@ -772,19 +818,6 @@ ffcs_apply_monthly_settlement_progress_v1 = {
 			}
 		}
 		ffcs_complete_settlement_project_v1 = yes
-	}
-	else_if = {
-		limit = {
-			local_var:ffcs_monthly_can_transfer_v3 = 1
-			scope:ffcs_settlement_project = {
-				var:ffcs_settlement_progress_v1 >= var:ffcs_settlement_next_province_progress_v3
-			}
-		}
-		scope:ffcs_settlement_project = { set_variable = ffcs_internal_transfer_guard_v1 }
-		ffcs_transfer_one_settlement_province_v3 = yes
-		scope:ffcs_settlement_project = {
-			remove_variable = ffcs_internal_transfer_guard_v1
-		}
 	}
 }
 
