@@ -40,7 +40,7 @@
  notification_ffcs_settlement_phase_4_name: "最终测绘开始"
  notification_ffcs_settlement_phase_4_desc: "达到95进度后，[SCOPE.sState('ffcs_settlement_state').GetStateRegion.GetName]的拓殖走廊进入最终测绘；官员将依次登记余下每一个连续地块的移交。"
  notification_ffcs_settlement_phase_4_tooltip: "#header $notification_ffcs_settlement_phase_4_name$#!\n$TOOLTIP_DELIMITER$\n$notification_ffcs_settlement_phase_4_desc$"
- notification_ffcs_settlement_completed_name: "故土拓殖完成"
+ notification_ffcs_settlement_completed_name: "故土拓殖完成：[SCOPE.sStateRegion('ffcs_settlement_state_region').GetName]"
  notification_ffcs_settlement_completed_desc: "我国在[SCOPE.sStateRegion('ffcs_settlement_state_region').GetName]沿拓殖路线取得的全部领土如今都已纳入行政；大火后散落在旧地图与家族记忆中的故土线索，终于由测绘线、定居点与国家权力重新连成一片。"
  notification_ffcs_settlement_completed_tooltip: "#header $notification_ffcs_settlement_completed_name$#!\n$TOOLTIP_DELIMITER$\n$notification_ffcs_settlement_completed_desc$"
  notification_ffcs_settlement_cancelled_name: "拓殖之路中断"

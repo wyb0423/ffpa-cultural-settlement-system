@@ -27,7 +27,7 @@ types ffcs_settlement_overview_types {
 
 					textbox = {
 						layoutpolicy_horizontal = expanding
-						text = "[State.GetOwner.GetFlagTextIcon] [State.GetNameNoFormatting]"
+						text = "[State.GetOwner.GetFlagTextIcon] [State.GetStateRegion.GetNameNoFormatting]"
 						default_format = "#v"
 						align = left|nobaseline
 						elide = right

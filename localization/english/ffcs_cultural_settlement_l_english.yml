@@ -40,7 +40,7 @@
  notification_ffcs_settlement_phase_4_name: "The Final Survey Begins"
  notification_ffcs_settlement_phase_4_desc: "At 95 progress, the territorial corridor in [SCOPE.sState('ffcs_settlement_state').GetStateRegion.GetName] has entered its final survey. Officials will continue recording each remaining connected transfer in turn."
  notification_ffcs_settlement_phase_4_tooltip: "#header $notification_ffcs_settlement_phase_4_name$#!\n$TOOLTIP_DELIMITER$\n$notification_ffcs_settlement_phase_4_desc$"
- notification_ffcs_settlement_completed_name: "Homeland Settlement Complete"
+ notification_ffcs_settlement_completed_name: "Homeland Settlement Complete: [SCOPE.sStateRegion('ffcs_settlement_state_region').GetName]"
  notification_ffcs_settlement_completed_desc: "All territory reached by our settlement route in [SCOPE.sStateRegion('ffcs_settlement_state_region').GetName] now answers to our administration. Fragments of homeland preserved after the Firefall in old maps and family memory have been joined by survey lines, settlements, and state authority."
  notification_ffcs_settlement_completed_tooltip: "#header $notification_ffcs_settlement_completed_name$#!\n$TOOLTIP_DELIMITER$\n$notification_ffcs_settlement_completed_desc$"
  notification_ffcs_settlement_cancelled_name: "The Settlement Road Closes"
