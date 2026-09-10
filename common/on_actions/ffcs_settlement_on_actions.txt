@@ -57,15 +57,23 @@ on_monthly_pulse = {
 	}
 }
 
-# No root scope. Projects must not survive the country stored as their sponsor.
+# No root scope. Repair split-state carriers and cancel projects whose sponsor no longer exists.
 ffcs_monthly_orphan_project_cleanup_v1 = {
 	effect = {
 		every_state = {
-			limit = {
-				has_variable = ffcs_settlement_sponsor_v1
-				NOT = { exists = var:ffcs_settlement_sponsor_v1 }
+			limit = { has_variable = ffcs_settlement_sponsor_v1 }
+			if = {
+				limit = { exists = var:ffcs_settlement_sponsor_v1 }
+				var:ffcs_settlement_sponsor_v1 ?= {
+					save_temporary_scope_as = ffcs_settlement_sponsor
+				}
+				state_region = {
+					ffcs_rebind_settlement_project_v2 = yes
+				}
 			}
-			ffcs_cancel_settlement_project_v1 = { REASON = SPONSOR_DESTROYED }
+			else = {
+				ffcs_cancel_settlement_project_v1 = { REASON = SPONSOR_DESTROYED }
+			}
 		}
 	}
 }
@@ -82,6 +90,19 @@ ffcs_monthly_country_pulse_v1 = {
 			limit = { has_variable = ffcs_active_settlement_count_v1 }
 			save_temporary_scope_as = ffcs_monthly_sponsor
 			ffcs_initialize_country_schema_v1 = yes
+			every_state = {
+				limit = {
+					has_variable = ffcs_settlement_sponsor_v1
+					var:ffcs_settlement_sponsor_v1 ?= scope:ffcs_monthly_sponsor
+					NOT = { owner = scope:ffcs_monthly_sponsor }
+				}
+				var:ffcs_settlement_sponsor_v1 ?= {
+					save_temporary_scope_as = ffcs_settlement_sponsor
+				}
+				state_region = {
+					ffcs_rebind_settlement_project_v2 = yes
+				}
+			}
 			set_variable = { name = ffcs_active_settlement_count_v1 value = 0 }
 			clear_variable_list = ffcs_active_settlement_states_v1
 			every_state = {

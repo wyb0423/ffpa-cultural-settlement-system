@@ -199,24 +199,6 @@ def bound_owner_neighbours(neighbours: tuple[int, ...]) -> str:
     return f"OR = {{ {tests} }}"
 
 
-def project_neighbours(neighbours: tuple[int, ...]) -> str:
-    identities = " ".join(f"this = {p(neighbour)}" for neighbour in neighbours)
-    return (
-        "$PROJECT$ = { any_in_list = { variable = ffcs_settlement_provinces_v2 "
-        f"state.owner = $COUNTRY$ OR = {{ {identities} }} }} }}"
-    )
-
-
-def bound_project_neighbours(neighbours: tuple[int, ...]) -> str:
-    identities = " ".join(f"this = {p(neighbour)}" for neighbour in neighbours)
-    return (
-        "var:ffcs_random_project_v5 = { any_in_list = { "
-        "variable = ffcs_settlement_provinces_v2 "
-        "prev.var:ffcs_settlement_sponsor_v1 ?= state.owner "
-        f"OR = {{ {identities} }} }} }}"
-    )
-
-
 def grouped_trigger(
     name: str,
     regions: list[StateRegion],
@@ -378,7 +360,7 @@ def render_outputs(
         regions,
         frontier,
         "$TARGET$",
-        project_neighbours,
+        lambda neighbours: owner_neighbours(neighbours, "$COUNTRY$"),
         "# Root = target state; COUNTRY = sponsor; TARGET = original owner; PROJECT = project state",
     )
 
@@ -418,7 +400,7 @@ def render_outputs(
         "ffcs_generated_transfer_frontier_sweep_v2",
         regions,
         frontier,
-        bound_project_neighbours,
+        bound_owner_neighbours,
         comment="# Root = target state; COUNTRY = sponsor; TARGET = original owner; PROJECT = project state",
     )
 

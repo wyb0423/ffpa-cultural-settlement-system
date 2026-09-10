@@ -586,7 +586,7 @@ def main() -> int:
         "limit = { var:ffcs_settlement_route_v2 = 2 } scope:ffcs_settlement_sponsor = { add_treasury = -100000 }",
         "scope:ffcs_settlement_project = { set_variable = ffcs_internal_transfer_guard_v1 }",
         "ffcs_transfer_one_settlement_province_v3 = yes",
-        "if = { limit = { exists = scope:ffcs_settlement_project scope:ffcs_settlement_project = { has_variable_list = ffcs_settlement_provinces_v2 OR = { owner = scope:ffcs_settlement_sponsor owner = scope:ffcs_settlement_original_owner } } } scope:ffcs_settlement_project = { set_variable = { name = ffcs_settlement_progress_v1 value = 25 } set_variable = { name = ffcs_settlement_phase_v1 value = 1 }",
+        "if = { limit = { exists = scope:ffcs_settlement_project scope:ffcs_settlement_project = { has_variable_list = ffcs_settlement_provinces_v2 owner = scope:ffcs_settlement_sponsor } } scope:ffcs_settlement_project = { set_variable = { name = ffcs_settlement_progress_v1 value = 25 } set_variable = { name = ffcs_settlement_phase_v1 value = 1 }",
         "scope:ffcs_settlement_target_state ?= { ffcs_update_next_province_progress_v3 = yes }",
         "limit = { num_provinces = 1 } set_variable = { name = ffcs_settlement_progress_v1 value = 100 } ffcs_complete_settlement_project_v1 = yes",
         "add_to_variable_list = { name = ffcs_active_settlement_states_v1 target = scope:ffcs_settlement_project }",
@@ -663,6 +663,16 @@ def main() -> int:
     ):
         errors.append(
             "settlement entry must block only a busy target state or the same sponsor in the region"
+        )
+    if not find_token_sequence(
+        trigger_tokens,
+        script_tokens(
+            "OR = { owner = $COUNTRY$ AND = { owner = $TARGET$ "
+            "NOT = { has_variable_list = ffcs_settlement_provinces_v2 } } }"
+        ),
+    ):
+        errors.append(
+            "a project with a recorded foothold must use its sponsor-owned state carrier"
         )
     for required in (
         "has_variable = ffcs_settlement_route_v2",
@@ -754,7 +764,12 @@ def main() -> int:
         "remove_variable = ffcs_settlement_route_v2",
         "state_region = { remove_variable = ffcs_settlement_sponsor_v1 }",
         "create_building = { building = building_port level = 1 }",
-        "ffcs_rebind_settlement_project_v2 = { every_scope_state = { limit = { has_variable = ffcs_settlement_sponsor_v1 var:ffcs_settlement_sponsor_v1 ?= scope:ffcs_settlement_sponsor } save_temporary_scope_as = ffcs_settlement_project if = { limit = { NOT = { has_modifier = ffcs_cultural_settlement_project } } add_modifier = { name = ffcs_cultural_settlement_project } } } }",
+        "ffcs_rebind_settlement_project_v2 = { save_temporary_scope_as = ffcs_rebind_state_region every_scope_state = { limit = { has_variable = ffcs_settlement_sponsor_v1 var:ffcs_settlement_sponsor_v1 ?= scope:ffcs_settlement_sponsor } save_temporary_scope_as = ffcs_old_settlement_project }",
+        "scope:ffcs_old_settlement_project = { state_region = scope:ffcs_rebind_state_region var:ffcs_settlement_sponsor_v1 ?= scope:ffcs_settlement_sponsor NOT = { owner = scope:ffcs_settlement_sponsor }",
+        "every_scope_state = { limit = { owner = scope:ffcs_settlement_sponsor NOT = { has_variable = ffcs_settlement_sponsor_v1 } } save_temporary_scope_as = ffcs_new_settlement_project }",
+        "scope:ffcs_old_settlement_project = { var:ffcs_settlement_original_owner_v1 ?= { save_temporary_scope_as = ffcs_settlement_original_owner } } scope:ffcs_new_settlement_project = { set_variable = { name = ffcs_settlement_sponsor_v1 value = scope:ffcs_settlement_sponsor } set_variable = { name = ffcs_settlement_original_owner_v1 value = scope:ffcs_settlement_original_owner }",
+        "every_in_list = { variable = ffcs_settlement_provinces_v2 scope:ffcs_new_settlement_project = { add_to_variable_list = { name = ffcs_settlement_provinces_v2 target = prev } } }",
+        "scope:ffcs_old_settlement_project = { ffcs_clear_project_variables_v1 = yes } scope:ffcs_new_settlement_project = { save_temporary_scope_as = ffcs_settlement_project",
         "limit = { ffcs_generated_has_land_seed_v2 = { COUNTRY = scope:ffcs_settlement_sponsor TARGET = scope:ffcs_settlement_original_owner } } scope:ffcs_settlement_project = { set_variable = { name = ffcs_settlement_route_v2 value = 1 } } ffcs_generated_take_land_seed_v2 = { COUNTRY = scope:ffcs_settlement_sponsor TARGET = scope:ffcs_settlement_original_owner PROJECT = scope:ffcs_settlement_project }",
         "limit = { ffcs_generated_has_port_seed_v2 = { TARGET = scope:ffcs_settlement_original_owner } } scope:ffcs_settlement_project = { set_variable = { name = ffcs_settlement_route_v2 value = 2 } } ffcs_generated_take_port_seed_v2 = { COUNTRY = scope:ffcs_settlement_sponsor TARGET = scope:ffcs_settlement_original_owner PROJECT = scope:ffcs_settlement_project }",
         "change_variable = { name = ffcs_settlement_progress_v1 add = ffcs_monthly_settlement_progress_value }",
@@ -763,7 +778,6 @@ def main() -> int:
         "save_temporary_scope_as = ffcs_settlement_target_state",
         "state.owner = scope:ffcs_settlement_sponsor",
         "ffcs_settlement_project_remains_valid = { COUNTRY = scope:ffcs_settlement_sponsor TARGET = scope:ffcs_settlement_original_owner }",
-        "scope:ffcs_settlement_target_state = { ffcs_apply_monthly_settlement_progress_v1 = yes }",
         "var:ffcs_settlement_phase_v1 >= 1 OR = { NOT = { has_variable_list = ffcs_settlement_provinces_v2 }",
         "clear_variable_list = ffcs_settlement_provinces_v2 set_variable = { name = ffcs_settlement_phase_v1 value = 0 }",
         "set_variable = { name = ffcs_settlement_next_province_progress_v3 value = var:ffcs_settlement_progress_v1 }",
@@ -771,10 +785,12 @@ def main() -> int:
         "NOT = { state_region = { any_scope_state = { owner = scope:ffcs_settlement_original_owner } } }",
         "ffcs_cancel_settlement_project_v1 = { REASON = TARGET_EXHAUSTED }",
         "ffcs_cancel_settlement_project_v1 = { REASON = PROJECT_INVALID }",
-        "OR = { AND = { scope:ffcs_settlement_project = { var:ffcs_settlement_progress_v1 >= 100 } num_provinces = 1 } AND = { scope:ffcs_settlement_project = { has_variable_list = ffcs_settlement_provinces_v2 } NOT = { ffcs_generated_has_frontier_v2 = { COUNTRY = scope:ffcs_settlement_sponsor TARGET = scope:ffcs_settlement_original_owner PROJECT = scope:ffcs_settlement_project } } } } } ffcs_complete_settlement_project_v1 = yes",
+        "scope:ffcs_settlement_target_state = { if = { limit = { scope:ffcs_settlement_project = { has_variable_list = ffcs_settlement_provinces_v2 } NOT = { ffcs_generated_has_frontier_v2 = { COUNTRY = scope:ffcs_settlement_sponsor TARGET = scope:ffcs_settlement_original_owner PROJECT = scope:ffcs_settlement_project } } } ffcs_complete_settlement_project_v1 = yes } else = { ffcs_apply_monthly_settlement_progress_v1 = yes } }",
     ):
         if not find_token_sequence(settlement_effect_tokens, script_tokens(required)):
             errors.append(f"settlement phase state machine missing: {required}")
+    if "FFCS|PROJECT_CARRIER_MOVED" not in settlement_effects:
+        errors.append("project carrier migration must emit a diagnostic marker")
     if settlement_effects.count("ffcs_rebind_settlement_project_v2 = yes") != 2:
         errors.append("every state-splitting transfer path must rebind the project carrier")
     if "while = {" in settlement_effects:
@@ -956,9 +972,12 @@ def main() -> int:
             errors.append(f"terminal diagnostic must have one shared definition: FFCS|{marker}")
     for required in (
         "on_monthly_pulse = { on_actions = { ffcs_monthly_orphan_project_cleanup_v1 } }",
-        "ffcs_monthly_orphan_project_cleanup_v1 = { effect = { every_state = { limit = { has_variable = ffcs_settlement_sponsor_v1 NOT = { exists = var:ffcs_settlement_sponsor_v1 } } ffcs_cancel_settlement_project_v1 = { REASON = SPONSOR_DESTROYED } } } }",
+        "ffcs_monthly_orphan_project_cleanup_v1 = { effect = { every_state = { limit = { has_variable = ffcs_settlement_sponsor_v1 } if = { limit = { exists = var:ffcs_settlement_sponsor_v1 }",
+        "var:ffcs_settlement_sponsor_v1 ?= { save_temporary_scope_as = ffcs_settlement_sponsor } state_region = { ffcs_rebind_settlement_project_v2 = yes }",
+        "else = { ffcs_cancel_settlement_project_v1 = { REASON = SPONSOR_DESTROYED } }",
         "on_monthly_pulse_country = { on_actions = { ffcs_monthly_country_pulse_v1 } }",
         "limit = { has_variable = ffcs_active_settlement_count_v1 } save_temporary_scope_as = ffcs_monthly_sponsor",
+        "every_state = { limit = { has_variable = ffcs_settlement_sponsor_v1 var:ffcs_settlement_sponsor_v1 ?= scope:ffcs_monthly_sponsor NOT = { owner = scope:ffcs_monthly_sponsor } }",
         "set_variable = { name = ffcs_active_settlement_count_v1 value = 0 }",
         "clear_variable_list = ffcs_active_settlement_states_v1",
         "change_variable = { name = ffcs_active_settlement_count_v1 add = 1 }",
@@ -1183,18 +1202,37 @@ def main() -> int:
             errors.append(f"generated trigger dispatcher missing: {dispatcher}")
     if "root.owner" in generated_trigger_text:
         errors.append("generated seed triggers must receive the target owner explicitly")
-    if "$PROJECT$ = {" not in generated_effect_text or "$PROJECT$ = {" not in generated_trigger_text:
-        errors.append("generated province logic must receive the project carrier explicitly")
+    if "$PROJECT$ = {" not in generated_effect_text:
+        errors.append("generated transfer effects must receive the project carrier explicitly")
     for required in (
         "state.owner = $TARGET$",
         "var:ffcs_random_original_owner_v5 ?= p:x",
         "var:ffcs_random_sponsor_v5 ?= p:x",
-        "var:ffcs_random_project_v5 = { any_in_list = { variable = ffcs_settlement_provinces_v2",
         "$PROJECT$ = { add_to_variable_list = { name = ffcs_settlement_provinces_v2 target = p:x",
-        "any_in_list = { variable = ffcs_settlement_provinces_v2",
     ):
         if required not in generated_effect_text:
             errors.append(f"generated frontier ownership check missing: {required}")
+    frontier_trigger_tokens = definition_tokens(
+        generated_triggers, "ffcs_generated_has_frontier_v2"
+    )
+    frontier_effect_tokens = definition_tokens(
+        generated_effects, "ffcs_generated_transfer_frontier_sweep_v2"
+    )
+    if not any(
+        token.endswith(".state.owner")
+        and frontier_trigger_tokens[index + 1 : index + 3] == ["=", "$COUNTRY$"]
+        for index, token in enumerate(frontier_trigger_tokens[:-2])
+    ):
+        errors.append("generated frontier trigger must accept every sponsor-owned neighbour")
+    if not any(
+        token == "var:ffcs_random_sponsor_v5"
+        and frontier_effect_tokens[index + 1] == "?="
+        and frontier_effect_tokens[index + 2].endswith(".state.owner")
+        for index, token in enumerate(frontier_effect_tokens[:-2])
+    ):
+        errors.append("generated frontier transfer must accept every sponsor-owned neighbour")
+    if "any_in_list" in frontier_trigger_tokens or "any_in_list" in frontier_effect_tokens:
+        errors.append("generated frontier must not be limited to project-recorded provinces")
 
     manifest_path = root / "tools" / "generated_phase_manifest.json"
     if manifest_path.exists():

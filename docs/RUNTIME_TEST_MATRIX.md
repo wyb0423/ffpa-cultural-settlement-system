@@ -130,8 +130,8 @@ For one valid project, confirm in order:
 2. the first transferred land province touches sponsor territory, while an overseas project is directly adjacent across one sea node and transfers the port province first;
 3. the sponsor emits one `PROJECT_RECOUNTED` on the monthly pulse, progress changes in the next save, never exceeds the next province threshold while a transfer is available, and no pulse transfers more than one later province;
 4. crossing 50 emits `PHASE_APPLIED` and `CLAIM_GRANTED` once and gives the sponsor a claim on the state region without a milestone transfer burst;
-5. every later transfer touches a province already recorded by this project and still sponsor-owned, and recalculates `ffcs_settlement_next_province_progress_v3`;
-6. completion emits `PROJECT_COMPLETED`, leaves sponsor territory unincorporated unless already incorporated, prevents a new project from reaching 100 while another reachable transfer remains, and completes on the next monthly pulse without taking disconnected islands or enclaves once no legal frontier remains;
+5. every later transfer touches any sponsor-owned province in the state region, including a pre-existing sponsor enclave not recorded by this project, and recalculates `ffcs_settlement_next_province_progress_v3`;
+6. completion emits `PROJECT_COMPLETED`, leaves sponsor territory unincorporated unless already incorporated, prevents a new project from reaching 100 while another reachable transfer remains, and completes on the next monthly pulse only after no original-owner province touches any sponsor-owned province in the state region;
 7. an overseas project deducts exactly `100000`, creates exactly a level 1 port after the foothold, and gives no refund on cancellation;
 8. sponsor active and target inbound counters return to zero.
 
@@ -161,6 +161,7 @@ Each case must emit one `PROJECT_CANCELLED` with the expected reason. No project
 8. Repeat by removing D's last state through war or an external effect. The state-owner-change reconciliation must produce the same cleanup.
 9. For an overseas contest over a unique port, confirm that a later sponsor without a remaining valid seed route cannot start and cannot take the first sponsor's port.
 10. The acceptance tick must not emit `Failed to fetch variable for 'ffcs_transfer_budget_v2'`, `Event target link 'var' returned an unset scope` or `PROJECT_CARRIER_REBIND_FAILED`.
+11. Load a save in which an established project's variables remain on D's residual target state. On the next monthly pulse, `PROJECT_CARRIER_MOVED` must appear once, the full project state and province list must exist only on A's state, and B must then be able to select D's residual state if its own route remains valid.
 
 ## Journal overview
 
