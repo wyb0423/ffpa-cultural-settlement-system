@@ -127,7 +127,7 @@ As a separate negative control, prepare an otherwise eligible homeland state own
 For one valid project, confirm in order:
 
 1. acceptance immediately transfers a visible foothold and emits `PROJECT_CREATED`, `SEED_TRANSFERRED`, `PROJECT_CARRIER_REBOUND` and `PHASE_APPLIED|...|PHASE=1` once; the rebound carrier may remain on the original owner's residual state or follow the sponsor when the whole state changes hands;
-2. the first transferred land province touches sponsor territory, while an overseas project is directly adjacent across one sea node and transfers the port province first;
+2. the first transferred land province touches sponsor territory by a pixel border or unconditional map strait, while an overseas project is directly adjacent across one sea node and transfers the port province first;
 3. the sponsor emits one `PROJECT_RECOUNTED` on the monthly pulse, progress changes in the next save, never exceeds the next province threshold while a transfer is available, and no pulse transfers more than one later province;
 4. crossing 50 emits `PHASE_APPLIED` and `CLAIM_GRANTED` once and gives the sponsor a claim on the state region without a milestone transfer burst;
 5. every later transfer touches any sponsor-owned province in the state region, including a pre-existing sponsor enclave not recorded by this project, and recalculates `ffcs_settlement_next_province_progress_v3`;

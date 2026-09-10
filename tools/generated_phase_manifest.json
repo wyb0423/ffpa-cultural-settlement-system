@@ -1,20 +1,22 @@
 {
-  "generator_schema": 5,
+  "generator_schema": 6,
   "selection_mode": "root_bound_staged_uniform_random_frontier",
   "state_region_count": 675,
   "province_count": 40718,
-  "adjacency_edge_count": 114946,
-  "internal_adjacency_edge_count": 100258,
-  "land_seed_candidate_count": 40507,
-  "frontier_candidate_count": 40502,
+  "adjacencies_input_sha256": "0eeb26c7e0bf93a605e8e070f2b67beda001e20b49bf3bdb5b7098cfecd46406",
+  "strait_adjacency_edge_count": 226,
+  "adjacency_edge_count": 115164,
+  "internal_adjacency_edge_count": 100439,
+  "land_seed_candidate_count": 40661,
+  "frontier_candidate_count": 40652,
   "port_seed_count": 372,
-  "transfer_branch_count": 81381,
-  "disconnected_state_region_count": 88,
+  "transfer_branch_count": 81685,
+  "disconnected_state_region_count": 45,
   "duplicate_province_resolutions": {
     "xC02050": "STATE_NORTH_ANGOLA"
   },
-  "trigger_output_sha256": "593704c48fe45d743cba7cf7b42b256641929c6464443cfa3d3df80a7b9a20ab",
-  "effect_output_sha256": "464b6660a5dedca7fed009921a41016f8e08167fe823bac52cb8263c8bbc06cd",
+  "trigger_output_sha256": "5993d8690667b3d66c5c3f1b972b3bb2b4540acae27fb8777f8fc23fac0a22ce",
+  "effect_output_sha256": "c9ed4dade3ac3b44b412ffc4beec93c7b6afa70a111c3dd483359928bed6d315",
   "states": {
     "STATE_ABRUZZO": {
       "province_count": 5,
@@ -24,7 +26,7 @@
     "STATE_ABU_DHABI": {
       "province_count": 19,
       "port": "x65A581",
-      "component_count": 2
+      "component_count": 1
     },
     "STATE_ACEH": {
       "province_count": 21,
@@ -69,7 +71,7 @@
     "STATE_ALASKA": {
       "province_count": 1028,
       "port": "xF423DB",
-      "component_count": 7
+      "component_count": 1
     },
     "STATE_ALBANIA": {
       "province_count": 9,
@@ -134,7 +136,7 @@
     "STATE_AMUR": {
       "province_count": 258,
       "port": "x35771E",
-      "component_count": 3
+      "component_count": 1
     },
     "STATE_ANHALT": {
       "province_count": 11,
@@ -184,7 +186,7 @@
     "STATE_ARAUCANIA": {
       "province_count": 114,
       "port": "x553B3F",
-      "component_count": 9
+      "component_count": 2
     },
     "STATE_AREQUIPA": {
       "province_count": 24,
@@ -259,7 +261,7 @@
     "STATE_AZORES": {
       "province_count": 3,
       "port": "x769456",
-      "component_count": 3
+      "component_count": 2
     },
     "STATE_BADEN": {
       "province_count": 5,
@@ -274,7 +276,7 @@
     "STATE_BAHAMAS": {
       "province_count": 4,
       "port": "x72C072",
-      "component_count": 4
+      "component_count": 1
     },
     "STATE_BAHIA": {
       "province_count": 110,
@@ -299,7 +301,7 @@
     "STATE_BALEARIC_ISLANDS": {
       "province_count": 2,
       "port": "x7D3FD7",
-      "component_count": 2
+      "component_count": 1
     },
     "STATE_BALKH": {
       "province_count": 39,
@@ -429,7 +431,7 @@
     "STATE_BRITISH_COLUMBIA": {
       "province_count": 414,
       "port": "x38DFFE",
-      "component_count": 6
+      "component_count": 1
     },
     "STATE_BRITTANY": {
       "province_count": 14,
@@ -489,7 +491,7 @@
     "STATE_CALIFORNIA": {
       "province_count": 110,
       "port": "x1116AA",
-      "component_count": 2
+      "component_count": 1
     },
     "STATE_CAMBODIA": {
       "province_count": 34,
@@ -504,7 +506,7 @@
     "STATE_CANARY_ISLANDS": {
       "province_count": 5,
       "port": "x655491",
-      "component_count": 5
+      "component_count": 2
     },
     "STATE_CAPE_COLONY": {
       "province_count": 43,
@@ -514,7 +516,7 @@
     "STATE_CAPE_VERDE": {
       "province_count": 4,
       "port": "x4B7FA5",
-      "component_count": 4
+      "component_count": 2
     },
     "STATE_CATALONIA": {
       "province_count": 11,
@@ -534,7 +536,7 @@
     "STATE_CELEBES": {
       "province_count": 34,
       "port": "x0C7820",
-      "component_count": 4
+      "component_count": 1
     },
     "STATE_CENTRAL_CUBA": {
       "province_count": 10,
@@ -624,7 +626,7 @@
     "STATE_CHUKOTKA": {
       "province_count": 474,
       "port": "xE720A3",
-      "component_count": 2
+      "component_count": 1
     },
     "STATE_CHUVASHIA": {
       "province_count": 18,
@@ -809,7 +811,7 @@
     "STATE_EASTERN_NEW_GUINEA": {
       "province_count": 85,
       "port": "x686A28",
-      "component_count": 5
+      "component_count": 1
     },
     "STATE_EASTERN_NORWAY": {
       "province_count": 40,
@@ -829,7 +831,7 @@
     "STATE_EAST_AEGEAN_ISLANDS": {
       "province_count": 3,
       "port": "xE011A0",
-      "component_count": 3
+      "component_count": 1
     },
     "STATE_EAST_ANGLIA": {
       "province_count": 9,
@@ -874,7 +876,7 @@
     "STATE_EAST_MICRONESIA": {
       "province_count": 6,
       "port": "x808011",
-      "component_count": 6
+      "component_count": 4
     },
     "STATE_EAST_PRUSSIA": {
       "province_count": 19,
@@ -969,7 +971,7 @@
     "STATE_FIJI": {
       "province_count": 3,
       "port": "x61A3E3",
-      "component_count": 2
+      "component_count": 1
     },
     "STATE_FLANDERS": {
       "province_count": 6,
@@ -979,7 +981,7 @@
     "STATE_FLORIDA": {
       "province_count": 35,
       "port": "xE58A3D",
-      "component_count": 2
+      "component_count": 1
     },
     "STATE_FORMOSA": {
       "province_count": 7,
@@ -1059,7 +1061,7 @@
     "STATE_GOTALAND": {
       "province_count": 27,
       "port": "x41C0E0",
-      "component_count": 2
+      "component_count": 1
     },
     "STATE_GOTLAND": {
       "province_count": 2,
@@ -1079,12 +1081,12 @@
     "STATE_GREENLAND": {
       "province_count": 349,
       "port": "x5B326C",
-      "component_count": 10
+      "component_count": 2
     },
     "STATE_GUANGDONG": {
       "province_count": 26,
       "port": "xB031E0",
-      "component_count": 2
+      "component_count": 1
     },
     "STATE_GUANGXI": {
       "province_count": 61,
@@ -1154,7 +1156,7 @@
     "STATE_HAWAIIAN_ISLANDS": {
       "province_count": 3,
       "port": "x492B26",
-      "component_count": 2
+      "component_count": 1
     },
     "STATE_HEDJAZ": {
       "province_count": 105,
@@ -1184,7 +1186,7 @@
     "STATE_HIGHLANDS": {
       "province_count": 19,
       "port": "x37518E",
-      "component_count": 2
+      "component_count": 1
     },
     "STATE_HILL_PUNJAB": {
       "province_count": 25,
@@ -1274,7 +1276,7 @@
     "STATE_INDIAN_OCEAN_TERRITORY": {
       "province_count": 3,
       "port": "xD0E090",
-      "component_count": 3
+      "component_count": 2
     },
     "STATE_INGRIA": {
       "province_count": 30,
@@ -1294,7 +1296,7 @@
     "STATE_IONIAN_ISLANDS": {
       "province_count": 2,
       "port": "x405060",
-      "component_count": 2
+      "component_count": 1
     },
     "STATE_IOWA": {
       "province_count": 47,
@@ -1319,7 +1321,7 @@
     "STATE_ISTRIA": {
       "province_count": 6,
       "port": "x36B2E3",
-      "component_count": 2
+      "component_count": 1
     },
     "STATE_IVORY_COAST": {
       "province_count": 28,
@@ -1334,7 +1336,7 @@
     "STATE_JAMAICA": {
       "province_count": 3,
       "port": "x7070B8",
-      "component_count": 2
+      "component_count": 1
     },
     "STATE_JETISY": {
       "province_count": 121,
@@ -1499,7 +1501,7 @@
     "STATE_KOLYMA": {
       "province_count": 1060,
       "port": null,
-      "component_count": 2
+      "component_count": 1
     },
     "STATE_KONYA": {
       "province_count": 44,
@@ -1549,7 +1551,7 @@
     "STATE_KYUSHU": {
       "province_count": 12,
       "port": "xAE5874",
-      "component_count": 3
+      "component_count": 2
     },
     "STATE_LANCASHIRE": {
       "province_count": 8,
@@ -1569,7 +1571,7 @@
     "STATE_LARISTAN": {
       "province_count": 19,
       "port": "x350DED",
-      "component_count": 2
+      "component_count": 1
     },
     "STATE_LAZIO": {
       "province_count": 4,
@@ -1689,7 +1691,7 @@
     "STATE_LUZON": {
       "province_count": 25,
       "port": "xF4CD9C",
-      "component_count": 4
+      "component_count": 1
     },
     "STATE_MACEDONIA": {
       "province_count": 9,
@@ -1874,7 +1876,7 @@
     "STATE_MOLUCCAS": {
       "province_count": 16,
       "port": "xB346EB",
-      "component_count": 9
+      "component_count": 1
     },
     "STATE_MONTANA": {
       "province_count": 131,
@@ -1949,7 +1951,7 @@
     "STATE_NENETSIA": {
       "province_count": 382,
       "port": "x533140",
-      "component_count": 4
+      "component_count": 1
     },
     "STATE_NEVADA": {
       "province_count": 81,
@@ -1959,12 +1961,12 @@
     "STATE_NEWFOUNDLAND": {
       "province_count": 154,
       "port": "xD1D79F",
-      "component_count": 4
+      "component_count": 2
     },
     "STATE_NEW_BRUNSWICK": {
       "province_count": 40,
       "port": "xCA0399",
-      "component_count": 2
+      "component_count": 1
     },
     "STATE_NEW_CASTILE": {
       "province_count": 18,
@@ -2064,12 +2066,12 @@
     "STATE_NORTHERN_NORWAY": {
       "province_count": 133,
       "port": "xE5B868",
-      "component_count": 5
+      "component_count": 2
     },
     "STATE_NORTHERN_TERRITORY": {
       "province_count": 292,
       "port": "x7ED764",
-      "component_count": 3
+      "component_count": 1
     },
     "STATE_NORTHERN_THRACE": {
       "province_count": 11,
@@ -2104,7 +2106,7 @@
     "STATE_NORTH_CAROLINA": {
       "province_count": 32,
       "port": "x00F040",
-      "component_count": 2
+      "component_count": 1
     },
     "STATE_NORTH_CAUCASUS": {
       "province_count": 18,
@@ -2134,7 +2136,7 @@
     "STATE_NORTH_SUMATRA": {
       "province_count": 37,
       "port": "x8A3E15",
-      "component_count": 5
+      "component_count": 1
     },
     "STATE_NOVGOROD": {
       "province_count": 70,
@@ -2144,7 +2146,7 @@
     "STATE_NUNAVUT": {
       "province_count": 1085,
       "port": "xD79E7B",
-      "component_count": 16
+      "component_count": 14
     },
     "STATE_OAXACA": {
       "province_count": 20,
@@ -2154,7 +2156,7 @@
     "STATE_OB": {
       "province_count": 488,
       "port": null,
-      "component_count": 3
+      "component_count": 2
     },
     "STATE_OHIO": {
       "province_count": 29,
@@ -2374,7 +2376,7 @@
     "STATE_QUEBEC": {
       "province_count": 640,
       "port": "xD84B92",
-      "component_count": 7
+      "component_count": 6
     },
     "STATE_QUEENSLAND": {
       "province_count": 367,
@@ -2399,7 +2401,7 @@
     "STATE_RHODE_ISLAND": {
       "province_count": 3,
       "port": "x939ACE",
-      "component_count": 2
+      "component_count": 1
     },
     "STATE_RHONE": {
       "province_count": 11,
@@ -2469,7 +2471,7 @@
     "STATE_RYUKYU_ISLANDS": {
       "province_count": 3,
       "port": "xF0D080",
-      "component_count": 3
+      "component_count": 2
     },
     "STATE_SAHARA": {
       "province_count": 182,
@@ -2479,7 +2481,7 @@
     "STATE_SAKHALIN": {
       "province_count": 31,
       "port": "x2492AA",
-      "component_count": 6
+      "component_count": 5
     },
     "STATE_SAMARA": {
       "province_count": 76,
@@ -2669,7 +2671,7 @@
     "STATE_SOLOMON_ISLANDS": {
       "province_count": 7,
       "port": "x898945",
-      "component_count": 7
+      "component_count": 2
     },
     "STATE_SOMALILAND": {
       "province_count": 123,
@@ -2704,17 +2706,17 @@
     "STATE_SOUTH_ATLANTIC_ISLANDS": {
       "province_count": 7,
       "port": "x9EF337",
-      "component_count": 5
+      "component_count": 4
     },
     "STATE_SOUTH_AUSTRALIA": {
       "province_count": 205,
       "port": "x90DF50",
-      "component_count": 2
+      "component_count": 1
     },
     "STATE_SOUTH_CAMEROON": {
       "province_count": 37,
       "port": "xC6087A",
-      "component_count": 2
+      "component_count": 1
     },
     "STATE_SOUTH_CAROLINA": {
       "province_count": 19,
@@ -2729,7 +2731,7 @@
     "STATE_SOUTH_ISLAND": {
       "province_count": 47,
       "port": "xC5AD14",
-      "component_count": 2
+      "component_count": 1
     },
     "STATE_SOUTH_MADAGASCAR": {
       "province_count": 62,
@@ -2739,7 +2741,7 @@
     "STATE_SOUTH_SUMATRA": {
       "province_count": 30,
       "port": "xA97585",
-      "component_count": 3
+      "component_count": 1
     },
     "STATE_SOUTH_TYROL": {
       "province_count": 4,
@@ -2759,7 +2761,7 @@
     "STATE_SUNDA_ISLANDS": {
       "province_count": 16,
       "port": "x5ABA94",
-      "component_count": 9
+      "component_count": 1
     },
     "STATE_SURGUT": {
       "province_count": 312,
@@ -2794,7 +2796,7 @@
     "STATE_TAHITI": {
       "province_count": 23,
       "port": "xA000B0",
-      "component_count": 21
+      "component_count": 3
     },
     "STATE_TAJIKISTAN": {
       "province_count": 35,
@@ -2804,7 +2806,7 @@
     "STATE_TALINN": {
       "province_count": 12,
       "port": "xD29762",
-      "component_count": 3
+      "component_count": 1
     },
     "STATE_TAMBOV": {
       "province_count": 41,
@@ -2834,7 +2836,7 @@
     "STATE_TASMANIA": {
       "province_count": 21,
       "port": "x9088C7",
-      "component_count": 3
+      "component_count": 1
     },
     "STATE_TAURIDA": {
       "province_count": 26,
@@ -2844,7 +2846,7 @@
     "STATE_TENASSERIM": {
       "province_count": 29,
       "port": "xB36203",
-      "component_count": 2
+      "component_count": 1
     },
     "STATE_TENNESSEE": {
       "province_count": 30,
@@ -2899,7 +2901,7 @@
     "STATE_TONGA": {
       "province_count": 4,
       "port": "xA7F8A1",
-      "component_count": 4
+      "component_count": 3
     },
     "STATE_TONKIN": {
       "province_count": 23,
@@ -3074,7 +3076,7 @@
     "STATE_VANUATU": {
       "province_count": 3,
       "port": "x504090",
-      "component_count": 3
+      "component_count": 2
     },
     "STATE_VENETIA": {
       "province_count": 10,
@@ -3109,7 +3111,7 @@
     "STATE_VISAYAS": {
       "province_count": 15,
       "port": "x90F80A",
-      "component_count": 6
+      "component_count": 2
     },
     "STATE_VITEBSK": {
       "province_count": 16,
@@ -3184,7 +3186,7 @@
     "STATE_WESTERN_NEW_GUINEA": {
       "province_count": 75,
       "port": "x39DD3B",
-      "component_count": 4
+      "component_count": 1
     },
     "STATE_WESTERN_NORWAY": {
       "province_count": 51,
@@ -3199,7 +3201,7 @@
     "STATE_WESTERN_THRACE": {
       "province_count": 7,
       "port": "xF02020",
-      "component_count": 2
+      "component_count": 1
     },
     "STATE_WESTPHALIA": {
       "province_count": 8,
@@ -3209,7 +3211,7 @@
     "STATE_WEST_AEGEAN_ISLANDS": {
       "province_count": 2,
       "port": "x6960A0",
-      "component_count": 2
+      "component_count": 1
     },
     "STATE_WEST_BENGAL": {
       "province_count": 17,
@@ -3224,7 +3226,7 @@
     "STATE_WEST_COUNTRY": {
       "province_count": 11,
       "port": "x63EF7E",
-      "component_count": 2
+      "component_count": 1
     },
     "STATE_WEST_GALICIA": {
       "province_count": 13,
@@ -3234,7 +3236,7 @@
     "STATE_WEST_INDIES": {
       "province_count": 18,
       "port": "xB03080",
-      "component_count": 18
+      "component_count": 4
     },
     "STATE_WEST_JAVA": {
       "province_count": 8,
@@ -3249,7 +3251,7 @@
     "STATE_WEST_MICRONESIA": {
       "province_count": 5,
       "port": "xA7F7E3",
-      "component_count": 5
+      "component_count": 3
     },
     "STATE_WEST_PRUSSIA": {
       "province_count": 9,
@@ -3304,7 +3306,7 @@
     "STATE_YANGHO": {
       "province_count": 11,
       "port": "x8ACAAA",
-      "component_count": 2
+      "component_count": 1
     },
     "STATE_YAROSLAVL": {
       "province_count": 51,
@@ -3364,12 +3366,12 @@
     "STATE_ZANZIBAR": {
       "province_count": 15,
       "port": "xA50F53",
-      "component_count": 3
+      "component_count": 2
     },
     "STATE_ZEALAND": {
       "province_count": 5,
       "port": "xED2792",
-      "component_count": 3
+      "component_count": 2
     },
     "STATE_ZHEJIANG": {
       "province_count": 27,

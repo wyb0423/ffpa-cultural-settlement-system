@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import argparse
+import csv
 import hashlib
 import json
 import re
@@ -220,6 +221,38 @@ def state_region_inventory(directory: Path) -> tuple[set[str], set[str]]:
     return states, provinces
 
 
+def unconditional_strait_edges(
+    path: Path, provinces: set[str]
+) -> set[tuple[str, str]]:
+    known = {province.upper() for province in provinces}
+    edges: set[tuple[str, str]] = set()
+    with path.open(encoding="utf-8-sig", newline="") as source:
+        reader = csv.DictReader(source, delimiter=";")
+        required = {"From", "To", "Type"}
+        if not reader.fieldnames or not required.issubset(reader.fieldnames):
+            raise ValueError(f"invalid adjacency table header: {path}")
+        for row in reader:
+            if row["Type"].strip().lower() != "sea":
+                continue
+            first = row["From"].strip().removeprefix("x").upper()
+            second = row["To"].strip().removeprefix("x").upper()
+            if first in known and second in known:
+                edges.add(tuple(sorted((first, second))))
+    return edges
+
+
+def generated_route_edges(
+    text: str, candidate_pattern: str, neighbour_pattern: str
+) -> set[tuple[str, str]]:
+    edges: set[tuple[str, str]] = set()
+    for line in text.splitlines():
+        candidate = re.search(candidate_pattern, line)
+        if candidate:
+            for neighbour in re.findall(neighbour_pattern, line):
+                edges.add(tuple(sorted((candidate.group(1).upper(), neighbour.upper()))))
+    return edges
+
+
 def final_definition_provider(
     stack_roots: list[StackRoot], database: str, key: str
 ) -> tuple[str, Path] | None:
@@ -281,6 +314,59 @@ def validate_final_stack(
                 "generated map coverage: "
                 f"{len(source_states)} state regions, {len(source_provinces)} provinces"
             )
+        adjacency_provider: tuple[str, Path] | None = None
+        for stack_root in stack_roots:
+            candidate = stack_root.path / "map_data" / "adjacencies.csv"
+            if candidate.is_file():
+                adjacency_provider = (stack_root.label, candidate)
+        if adjacency_provider is None:
+            errors.append("final stack has no map_data/adjacencies.csv")
+        else:
+            label, adjacency_path = adjacency_provider
+            strait_edges = unconditional_strait_edges(adjacency_path, source_provinces)
+            if manifest.get("strait_adjacency_edge_count") != len(strait_edges):
+                errors.append(
+                    "generated strait count differs from final adjacency table: "
+                    f"source={len(strait_edges)}, "
+                    f"generated={manifest.get('strait_adjacency_edge_count')}"
+                )
+            adjacency_hash = hashlib.sha256(adjacency_path.read_bytes()).hexdigest()
+            if manifest.get("adjacencies_input_sha256") != adjacency_hash:
+                errors.append("generated topology does not match final adjacency table")
+            generated_trigger_text = (
+                root / "common" / "scripted_triggers" / "ffcs_generated_province_routes.txt"
+            ).read_text(encoding="utf-8-sig")
+            generated_effect_text = (
+                root / "common" / "scripted_effects" / "ffcs_generated_province_phases.txt"
+            ).read_text(encoding="utf-8-sig")
+            trigger_edges = generated_route_edges(
+                generated_trigger_text,
+                r"p:x([0-9A-Fa-f]{6})\.state\.owner = \$TARGET\$",
+                r"p:x([0-9A-Fa-f]{6})\.state\.owner = \$COUNTRY\$",
+            )
+            effect_edges = generated_route_edges(
+                generated_effect_text,
+                r"var:ffcs_random_original_owner_v5 \?= p:x([0-9A-Fa-f]{6})\.state\.owner",
+                r"var:ffcs_random_sponsor_v5 \?= p:x([0-9A-Fa-f]{6})\.state\.owner",
+            )
+            for label_name, generated_edges in (
+                ("trigger", trigger_edges),
+                ("effect", effect_edges),
+            ):
+                missing = sorted(strait_edges - generated_edges)
+                if missing:
+                    errors.append(
+                        f"generated {label_name} topology misses straits: {missing[:5]}"
+                    )
+            if (
+                manifest.get("strait_adjacency_edge_count") == len(strait_edges)
+                and manifest.get("adjacencies_input_sha256") == adjacency_hash
+                and strait_edges <= trigger_edges
+                and strait_edges <= effect_edges
+            ):
+                report.append(
+                    f"generated strait topology: {len(strait_edges)} edges from {label}"
+                )
 
     for define, expected in COLONY_PORT_DEFINES.items():
         matches: list[tuple[str, Path, str]] = []
@@ -1237,8 +1323,12 @@ def main() -> int:
     manifest_path = root / "tools" / "generated_phase_manifest.json"
     if manifest_path.exists():
         manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
-        if manifest.get("generator_schema") != 5:
-            errors.append("generated manifest schema must be 5")
+        if manifest.get("generator_schema") != 6:
+            errors.append("generated manifest schema must be 6")
+        if manifest.get("strait_adjacency_edge_count", 0) <= 0:
+            errors.append("generated manifest must include unconditional strait adjacency")
+        if not manifest.get("adjacencies_input_sha256"):
+            errors.append("generated manifest must identify its adjacency input")
         if manifest.get("selection_mode") != "root_bound_staged_uniform_random_frontier":
             errors.append("generated manifest selection mode must bind scopes before random selection")
         hashes = (
